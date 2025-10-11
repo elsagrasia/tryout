@@ -27,83 +27,40 @@
 
         @if ($status === '1')
 
-        <li class="menu-label">Course Manage</li>
+        <li class="menu-label">Manage</li>
             
         <li>
-            <a href="javascript:;" class="has-arrow">
-                <div class="parent-icon"><i class='bx bx-cart'></i>
+            <a href="{{route('all.tryout.packages')}}">
+                <div class="parent-icon"><i class="bx bx-rocket"></i>
                 </div>
-                <div class="menu-title">Tryout Manage</div>
+                <div class="menu-title">Tryout Packages</div>
             </a>
-            <ul>        
-                <li> <a href="{{route('all.category')}}"><i class='bx bx-radio-circle'></i>All Category</a>
-                </li>
-                <li> <a href="{{route('all.course')}}"><i class='bx bx-radio-circle'></i>All Course</a>
-                </li>
-                <li> <a href="{{route('all.tryout.packages')}}"><i class='bx bx-radio-circle'></i>All Tryout Packages</a>
-                </li>
-                <li> <a href="{{route('all.question')}}"><i class='bx bx-radio-circle'></i>All Question</a>
-                </li>
-        
-            </ul>
         </li>
         <li>
-            <a class="has-arrow" href="javascript:;">
-                <div class="parent-icon"><i class='bx bx-bookmark-heart'></i>
+            <a href="{{route('all.category')}}">
+                <div class="parent-icon"><i class='bx bx-collection'></i>
                 </div>
-                <div class="menu-title">All Orders</div>
+                <div class="menu-title">Category</div>
             </a>
-            <ul>
-                <li> <a href="{{ route('instructor.all.order') }}"><i class='bx bx-radio-circle'></i>All Orders</a>              
-                </li>
-            
-            </ul>
         </li>
-
+        <li>
+            <a href="{{route('all.question')}}">
+                <div class="parent-icon"><i class='bx bx-question-mark'></i>
+                </div>
+                <div class="menu-title">Questions</div>
+            </a>
+        </li>
+        <li>
+            <a href="">
+                <div class="parent-icon"><i class='bx bxs-report'></i>
+                </div>
+                <div class="menu-title">Results</div>
+            </a>
+        </li>
+    
         
 
-
-        <li>
-            <a class="has-arrow" href="javascript:;">
-                <div class="parent-icon"><i class='bx bx-bookmark-heart'></i>
-                </div>
-                <div class="menu-title">Manage Coupon</div>
-            </a>
-            <ul>
-                <li> <a href="{{ route('instructor.all.coupon') }}"><i class='bx bx-radio-circle'></i>All Coupon</a>
-                </li>
-                
-               
-            </ul>
-        </li>     
-        
-        <li>
-            <a class="has-arrow" href="javascript:;">
-                <div class="parent-icon"><i class='bx bx-bookmark-heart'></i>
-                </div>
-                <div class="menu-title">Manage Review</div>
-            </a>
-            <ul>
-                <li> <a href="{{ route('instructor.all.review') }}"><i class='bx bx-radio-circle'></i>All Review</a>
-                </li>
-                
-               
-            </ul>
-        </li>        
-
-        <li>
-            <a class="has-arrow" href="javascript:;">
-                <div class="parent-icon"><i class='bx bx-bookmark-heart'></i>
-                </div>
-                <div class="menu-title">Live Chat</div>
-            </a>
-            <ul>
-                <li> <a href="{{ route('instructor.live.chat') }}"><i class='bx bx-radio-circle'></i>Live Chat</a>
-                </li>
-                
-               
-            </ul>
-        </li>        
+              
         <li class="menu-label">Charts & Maps</li>
         <li>
             <a class="has-arrow" href="javascript:;">

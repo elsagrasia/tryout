@@ -113,12 +113,6 @@ class TryoutPackageController extends Controller
         // dropdown kategori
         $categories = Category::orderBy('category_name')->get();
 
-        // bank soal per kategori (hanya yang BELUM ter-attach ke paket ini)
-        // $bankByCategory = Question::whereIn('category_id', $categories->pluck('id'))
-        //     ->whereDoesntHave('packages', fn($q) => $q->where('tryout_package_id', $package->id))
-        //     ->get()
-        //     ->groupBy('category_id');
-
         $bankByCategory = Question::whereIn('category_id', $categories->pluck('id'))
             ->whereDoesntHave('tryouts', fn($q) => $q->where('tryout_id', $package->id))
             ->get()
@@ -170,15 +164,19 @@ class TryoutPackageController extends Controller
         return back()->with('message', 'Question detached.');
     }
 
-    // public function questions()
-    // {
-    //     return $this->belongsToMany(Question::class, 'package_question', 'tryout_package_id', 'question_id');
-    // }
+    public function updateTryoutPackageStatus(Request $request)
+    {
+        $data = $request->validate([
+            'tryout_package_id' => 'required|exists:tryout_packages,id',
+            'status' => 'required|in:draft,published',
+        ]);
 
-    // public function questions()
-    // {
-    //     return $this->belongsToMany(Question::class, 'question_tryout', 'tryout_id', 'question_id');
-    // }
+        $tryout = TryoutPackage::findOrFail($data['tryout_package_id']);
+        $tryout->status = $data['status']; // 'draft' / 'published'
+        $tryout->save();
+
+        return response()->json(['message' => 'Tryout Package Status Updated']);
+    }
 
 
 

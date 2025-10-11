@@ -1,4 +1,4 @@
-@php
+{{-- @php
     $category = App\Models\Category::latest()->limit(6)->get();
 @endphp
 <section class="category-area pb-90px">
@@ -42,4 +42,4 @@
             </div><!-- end row -->
         </div><!-- end category-wrapper -->
     </div><!-- end container -->
-</section><!-- end category-area -->
+</section><!-- end category-area --> --}}

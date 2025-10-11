@@ -1,4 +1,4 @@
-@php
+{{-- @php
     $courses = App\Models\Course::where('status',1)->where('featured',1)->orderBy('id','ASC')->limit(5)->get();
      
 @endphp
@@ -110,4 +110,4 @@
             </div><!-- end tab-content -->
         </div><!-- end container -->
     </div><!-- end course-wrapper -->
-</section><!-- end courses-area -->
+</section><!-- end courses-area --> --}}

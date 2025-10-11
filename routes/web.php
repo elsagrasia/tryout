@@ -57,32 +57,8 @@ Route::middleware('auth')->group(function () {
     
     Route::get('/live/chat', [UserController::class, 'liveChat'])->name('live.chat');
 
-    Route::get('/tryout/{tryout_id}/join', [UserTryoutController::class, 'AddToTryout']);
+    // Route::get('/tryout/{tryout_id}/join', [UserTryoutController::class, 'AddToTryout']);
 
-
-        // User Wishlist All Route 
-    // Route::controller(WishListController::class)->group(function(){
-    //     Route::get('/user/wishlist','allWishlist')->name('user.wishlist');
-    //     Route::get('/get-wishlist-course/','getWishlistCourse');
-    //     Route::get('/wishlist-remove/{id}','removeWishlist');       
-
-    // });
-
-    // // User My Course All Route 
-    // Route::controller(OrderController::class)->group(function(){
-    //     Route::get('/my/course','myCourse')->name('my.course'); 
-    //     Route::get('/course/view/{course_id}','courseView')->name('course.view');
-
-    // });  
-
-    // User Tryout Routes
-    // Route::controller(UserTryoutController::class)->group(function () {
-    //     Route::get('/user/tryout', 'myTryout')->name('my.tryout'); // daftar tryout user
-    //     Route::get('/tryout/{id}', 'show')->name('tryout.show'); // detail tryout
-    //     Route::get('/tryout/{id}/start', 'start')->name('tryout.start'); // mulai tryout
-
-    //     // Tombol "Ikuti Tryout"
-    //     Route::post('/tryout/{id}/join', 'AddToTryout')->name('user.join.tryout');
 
     Route::controller(UserTryoutController::class)->group(function () {
         Route::get('/user/tryout', 'myTryout')->name('my.tryout');
@@ -103,14 +79,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/mytryout/history', [TryoutHistoryController::class, 'index'])->middleware('auth')->name('tryout.history');
     
 
-
-
-
-    //  // User Question All Route 
-    //  Route::controller(QuestionController::class)->group(function(){
-    //     Route::post('/user/question','userQuestion')->name('user.question');  
-    
-    // });    
+  
 });
 
 require __DIR__.'/auth.php';
@@ -124,25 +93,9 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
     Route::get('/admin/change/password', [AdminController::class, 'adminChangePassword'])->name('admin.change.password');
     Route::post('/admin/password/update', [AdminController::class, 'adminPasswordUpdate'])->name('admin.password.update');
 
-    // // Category Routes
-    // Route::controller(CategoryController::class)->group(function () {
-    //     Route::get('/all/category','allCategory')->name('all.category')->middleware('permission:category.all');
-    //     Route::get('/add/category', 'addCategory')->name('add.category');
-    //     Route::post('/store/category', 'storeCategory')->name('store.category');
-    //     Route::get('/edit/category/{id}', 'editCategory')->name('edit.category');
-    //     Route::post('/update/category', 'updateCategory')->name('update.category');
-    //     Route::get('/delete/category/{id}', 'deleteCategory')->name('delete.category');
-    // });
+    
 
-    // Subcategory Routes
-    Route::controller(CategoryController::class)->group(function () {
-        Route::get('/all/subcategory','allSubCategory')->name('all.subcategory')->middleware('permission:subcategory.all');
-        Route::get('/add/subcategory', 'addSubCategory')->name('add.subcategory');
-        Route::post('/store/subcategory', 'storeSubCategory')->name('store.subcategory');
-        Route::get('/edit/subcategory/{id}', 'editSubCategory')->name('edit.subcategory');
-        Route::post('/update/subcategory', 'updateSubCategory')->name('update.subcategory');
-        Route::get('/delete/subcategory/{id}', 'deleteSubCategory')->name('delete.subcategory');
-    });
+    
 
     // Instructor All Routes
     Route::controller(AdminController::class)->group(function () {
@@ -150,22 +103,9 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
         Route::post('/update/user/status', 'updateUserStatus')->name('update.user.status');
        
     });
-    // Admin Courses All Route
-    Route::controller(AdminController::class)->group(function(){
-    Route::get('/admin/all/course','adminAllCourse')->name('admin.all.course');
-    Route::post('/update/course/status', 'updateCourseStatus')->name('update.course.status');
-    Route::get('/admin/course/details/{id}', 'adminCourseDetails')->name('admin.course.details');
-    });
+    
 
-    // Admin Coupon All Route 
-    Route::controller(CouponController::class)->group(function(){
-        Route::get('/admin/all/coupon','adminAllCoupon')->name('admin.all.coupon');
-        Route::get('/admin/add/coupon','adminAddCoupon')->name('admin.add.coupon');
-        Route::post('/admin/store/coupon','adminStoreCoupon')->name('admin.store.coupon');
-        Route::get('/admin/edit/coupon/{id}','adminEditCoupon')->name('admin.edit.coupon');
-        Route::post('/admin/update/coupon','adminUpdateCoupon')->name('admin.update.coupon');
-        Route::get('/admin/delete/coupon/{id}','adminDeleteCoupon')->name('admin.delete.coupon');
-    });
+    
 
     // SMPT All Route 
     Route::controller(SettingController::class)->group(function(){
@@ -183,14 +123,7 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
 
 
 
-        // Admin Order All Route
-    Route::controller(OrderController::class)->group(function(){
-        Route::get('/admin/pending/order','adminPendingOrder')->name('admin.pending.order'); 
-        Route::get('/admin/order/details/{id}','adminOrderDetails')->name('admin.order.details');
-        Route::get('/pending-confirm/{id}','pendingToConfirm')->name('pending-confirm');     
-        Route::get('/admin/confirm/order','adminConfirmOrder')->name('admin.confirm.order');
-        });
-
+        
 
     // Admin Report All Route 
     Route::controller(ReportController::class)->group(function(){
@@ -294,6 +227,7 @@ Route::middleware(['auth', 'roles:instructor'])->group(function () {
         Route::get('/edit/tryout/package/{id}', 'editTryoutPackage')->name('edit.tryout.package');
         Route::post('/update/tryout/package', 'updateTryoutPackage')->name('update.tryout.package');
         Route::get('/delete/tryout/package/{id}', 'deleteTryoutPackage')->name('delete.tryout.package');
+        Route::post('/update/tryout/package/status', 'updateTryoutPackageStatus')->name('update.tryout.package.status');
    
     Route::get('/instructor/packages/{package}/manage','managePackage')->name('packages.manage');
 
@@ -324,31 +258,19 @@ Route::middleware(['auth', 'roles:instructor'])->group(function () {
 
     });
 
-    Route::controller(CourseController::class)->group(function () {
-        Route::get('/all/course', 'allCourse')->name('all.course');
-        Route::get('/add/course', 'addCourse')->name('add.course');
-        // Route::get('/subcategory/ajax/{category_id}', 'getSubCategory');
-        Route::post('/store/course', 'storeCourse')->name('store.course');
-        Route::get('/edit/course/{id}', 'editCourse')->name('edit.course');
-        Route::post('/update/course', 'updateCourse')->name('update.course');
-        Route::post('/update/course/image', 'updateCourseImage')->name('update.course.image');
-        Route::post('/update/course/video', 'updateCourseVideo')->name('update.course.video');
-        Route::post('/update/course/goal', 'updateCourseGoal')->name('update.course.goal');
-        Route::get('/delete/course/{id}', 'DeleteCourse')->name('delete.course');
+    
 
-    });
+    // // Course Section and Lecture Routes
+    // Route::controller(CourseController::class)->group(function () {
+    //     Route::get('/add/course/lecture/{id}', 'addCourseLecture')->name('add.course.lecture');
+    //     Route::post('/add/course/section/', 'addCourseSection')->name('add.course.section');
+    //     Route::post('/save-lecture/', 'saveLecture')->name('save-lecture');
+    //     Route::get('/edit/lecture/{id}','editLecture')->name('edit.lecture');
+    //     Route::post('/update/course/lecture','updateCourseLecture')->name('update.course.lecture');
+    //     Route::get('/delete/lecture/{id}','deleteLecture')->name('delete.lecture');
+    //     Route::post('/delete/section/{id}','deleteSection')->name('delete.section');
 
-    // Course Section and Lecture Routes
-    Route::controller(CourseController::class)->group(function () {
-        Route::get('/add/course/lecture/{id}', 'addCourseLecture')->name('add.course.lecture');
-        Route::post('/add/course/section/', 'addCourseSection')->name('add.course.section');
-        Route::post('/save-lecture/', 'saveLecture')->name('save-lecture');
-        Route::get('/edit/lecture/{id}','editLecture')->name('edit.lecture');
-        Route::post('/update/course/lecture','updateCourseLecture')->name('update.course.lecture');
-        Route::get('/delete/lecture/{id}','deleteLecture')->name('delete.lecture');
-        Route::post('/delete/section/{id}','deleteSection')->name('delete.section');
-
-    });
+    // });
 
     // instructor All Order Route 
     Route::controller(OrderController::class)->group(function(){
@@ -356,13 +278,6 @@ Route::middleware(['auth', 'roles:instructor'])->group(function () {
         Route::get('/instructor/order/details/{payment_id}','instructorOrderDetails')->name('instructor.order.details');
     Route::get('/instructor/order/invoice/{payment_id}','instructorOrderInvoice')->name('instructor.order.invoice');        
     });      
-
-    // // Question All Order Route 
-    // Route::controller(QuestionController::class)->group(function(){
-    //     Route::get('/instructor/all/question','instructorAllQuestion')->name('instructor.all.question'); 
-    //     Route::get('/question/details/{id}','questionDetails')->name('question.details');         
-    //     Route::post('/instructor/replay','instructorReplay')->name('instructor.replay');           
-    // });    
 
     // Instructor Coupon All Route 
     Route::controller(CouponController::class)->group(function(){

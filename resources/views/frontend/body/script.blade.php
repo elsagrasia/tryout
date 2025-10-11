@@ -149,50 +149,29 @@
 {{-- /// start join tryout  // --}}
 <script type="text/javascript">
 function joinTryout(tryoutId) {
-    $.ajax({
-        type: "POST",
-        dataType: "json",
-        url: "/tryout/" + tryoutId + "/join",
-        data: { 
-            _token: '{{ csrf_token() }}'
-        },
-        success: function(data) {
-            // SweetAlert config
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 3000
-            });
-
-            if ($.isEmptyObject(data.error)) {
-                Toast.fire({
-                    icon: 'success',
-                    title: data.success,
-                });
-            } else {
-                Toast.fire({
-                    icon: 'error',
-                    title: data.error,
-                });
-            }
-        },
-        error: function() {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Something went wrong! Please try again later.',
-            });
-        }
-    });
-
-
+  fetch(`/tryout/${tryoutId}/join`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRF-TOKEN': '{{ csrf_token() }}'
+    }
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      alert(data.success); // atau pakai SweetAlert
+      window.location.href = '/user/tryout'; // redirect otomatis
+    } else if (data.error) {
+      alert(data.error);
+    }
+  })
+  .catch(error => {
+    alert('Terjadi kesalahan, coba lagi.');
+  });
 }
 </script>
+
 {{-- /// end join tryout  // --}}
-
-
-
 
 
 

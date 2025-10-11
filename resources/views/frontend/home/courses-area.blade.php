@@ -1,6 +1,7 @@
 @php
     $tryoutPackages = App\Models\TryoutPackage::where('status',1)->orderBy('id','ASC')->limit(6)->get();
     $categories = App\Models\Category::orderBy('category_name','ASC')->get();
+    $tryoutPackages = App\Models\TryoutPackage::where('status','published')->orderBy('id','DESC')->limit(6)->get();
 @endphp
 
 <section class="course-area pb-120px">
@@ -23,160 +24,63 @@
         </ul>
     </div><!-- end container -->
 
-    {{-- <div class="card-content-wrapper bg-gray pt-50px pb-120px">
-        <div class="container">
-            <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade show active" id="business" role="tabpanel" aria-labelledby="business-tab">
-                    <div class="row">
-                        @foreach ($tryoutPackages as $TryoutPackage)   
-                        <div class="col-lg-4 responsive-column-half">
-                            <div class="card card-item card-preview" data-tooltip-content="#tooltip_content_1{{ $TryoutPackage->id }}">
-                                <div class="card-image">
-                                    
-                                </div><!-- end card-image -->
-            
+  
+   <div class="card-content-wrapper bg-gray pt-50px pb-120px">
+  <div class="container">
+    <div class="row g-4">
+      @forelse ($tryoutPackages as $package)
+        <div class="col-lg-4 col-md-6">
+          <div class="card h-100 shadow-sm border-0">
+            <div class="card-body d-flex flex-column">
 
-                                <div class="card-body">
-                                    
+              {{-- Judul Tryout --}}
+              <h5 class="card-title mb-2">
+                <a href="#" class="text-decoration-none">
+                  {{ $package->tryout_name }}
+                </a>
+              </h5>
 
-                                    <h5 class="card-title"><a href="{{ url('tryout/details/'.$TryoutPackage->id) }}">{{ $TryoutPackage->tryout_name }}</a></h5>
+              {{-- Info singkat --}}
+              <div class="small text-muted mb-3">
+                <span class="me-3"><i class="bi bi-clock"></i> {{ $package->duration }} min</span>
+                <span><i class="bi bi-question-circle"></i>
+                  {{ $package->questions_count ?? $package->questions()->count() }} soal
+                </span>
+              </div>
 
-                                    {{-- <p class="card-text"><a href="{{ route('instructor.details',$TryoutPackage->instructor_id) }}">{{ $TryoutPackage['user']['name']}}</a></p> --}}
-                                    {{-- <div class="rating-wrap d-flex align-items-center py-2">
-                                        
-                                    </div><!-- end rating-wrap -->
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        
-                                            
-                                        <form action="{{ route('user.join.tryout', $TryoutPackage->id) }}" method="POST" style="display:inline;">
-                                            @csrf
-                                            <button type="submit" class="btn btn-sm btn-primary shadow-sm">
-                                                Ikuti Tryout
-                                            </button>
-                                        </form> --}}
-                                        
-                                        {{-- <div class="icon-element icon-element-sm shadow-sm cursor-pointer" title="Add to Wishlist" id="{{ $TryoutPackage->id }}" onclick="addToWishList(this.id)" ><i class="la la-heart-o"></i></div> --}}
-                                    {{-- </div>
-                                </div><!-- end card-body -->
-                            </div><!-- end card -->
-                        </div><!-- end col-lg-4 -->
-                        @endforeach   
-                    </div><!-- end row -->
-                </div><!-- end tab-pane --> --}}
+              {{-- Aksi sejajar --}}
+              <div class="mt-auto d-flex justify-content-between align-items-center">
+                <a href="#" class="btn theme-btn theme-btn-white">Detail</a>
+                <form action="{{ route('user.join.tryout', $package->id) }}" method="POST" class="m-0">
+                  @csrf
+                  <button type="submit" class="btn theme-btn" onclick="joinTryout({{ $package->id }})">
+                    Ikuti Tryout <i class="la la-arrow-right icon ms-1"></i>
+                  </button>
+                </form>
+              </div>
 
-                {{-- @foreach ($categories as $category)
-                <div class="tab-pane fade" id="business{{ $category->id }}" role="tabpanel" aria-labelledby="business-tab">
-                    <div class="row">
-                        @php
-                        $catwiseCourse = App\Models\Course::where('category_id',$category->id)->where('status',1)->orderBy('id','DESC')->get();
-                        @endphp                      
-          
-                            @forelse ($catwiseCourse as $course)
-                            <div class="col-lg-4 responsive-column-half">
-                                <div class="card card-item card-preview" data-tooltip-content="#tooltip_content_2">
-                                    <div class="card-image">
-                                        <img class="card-img-top lazy" src="{{ asset($course->course_image) }}" data-src="images/img8.jpg" alt="Card image cap">
-                                    </div><!-- end card-image -->
-                                    <div class="card-body">
-                            <h6 class="ribbon ribbon-blue-bg fs-14 mb-3">{{ $course->label }}</h6>
-                            <h5 class="card-title"><a href="course-details.html">{{ $course->course_name }}</a></h5>
-                            <p class="card-text"><a href=" ">{{ $course['user']['name'] }}</a></p>
-                                        
-                                        <div class="d-flex justify-content-between align-items-center">
-
-                                            <div class="icon-element icon-element-sm shadow-sm cursor-pointer" title="Add to Wishlist"><i class="la la-heart-o"></i></div>
-                                        </div>
-                                    </div><!-- end card-body -->
-                                </div><!-- end card -->
-                            </div><!-- end col-lg-4 --> 
-                                
-                            @empty
-
-                            <h5 class="text-danger"> No Course Found </h5>
-                                
-                            @endforelse
-                    </div><!-- end row -->
-                </div><!-- end tab-pane -->
-                @endforeach
-            </div><!-- end tab-content -->
-            <div class="more-btn-box mt-4 text-center">
-                <a href="course-grid.html" class="btn theme-btn">Browse all Courses <i class="la la-arrow-right icon ml-1"></i></a>
-            </div><!-- end more-btn-box -->
-        </div><!-- end container -->
-    </div><!-- end card-content-wrapper --> --}} 
-
-    <div class="card-content-wrapper bg-gray pt-50px pb-120px">
-        <div class="container">
-            <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade show active" id="business" role="tabpanel" aria-labelledby="business-tab">
-                    <div class="row">
-                        @foreach ($tryoutPackages as $TryoutPackage)   
-                        <div class="col-lg-4 responsive-column-half">
-                            <div class="card card-item card-preview" data-tooltip-content="#tooltip_content_1{{ $TryoutPackage->id }}">
-                                <div class="card-image">
-                                    {{-- Jika ada gambar tryout, bisa taruh di sini --}}
-                                    {{-- <img src="{{ asset('uploads/tryout/'.$TryoutPackage->image) }}" alt="{{ $TryoutPackage->tryout_name }}" class="card-img-top"> --}}
-                                </div><!-- end card-image -->
-
-                                <div class="card-body">
-                                    <h5 class="card-title">
-                                        <a href="{{ url('tryout/details/'.$TryoutPackage->id) }}">
-                                            {{ $TryoutPackage->tryout_name }}
-                                        </a>
-                                    </h5>
-
-                                    {{-- <p class="card-text"><a href="{{ route('instructor.details',$TryoutPackage->instructor_id) }}">{{ $TryoutPackage['user']['name']}}</a></p> --}}
-
-                                    {{-- ✅ Tambahan info tryout --}}
-                                    <ul class="list-unstyled text-muted mb-3">
-                                        <li><i class="la la-clock me-1"></i> Durasi: {{ $TryoutPackage->duration }} menit</li>
-                                        <li><i class="la la-list me-1"></i> Total Soal: {{ $TryoutPackage->total_questions }}</li>
-                                        {{-- <li><i class="la la-bullhorn me-1"></i> Status: 
-                                            <span class="{{ $TryoutPackage->status == 'published' ? 'text-success' : 'text-warning' }}">
-                                                {{ ucfirst($TryoutPackage->status) }}
-                                            </span>
-                                        </li> --}}
-                                    </ul>
-
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        {{-- <form action="{{ route('user.join.tryout', $TryoutPackage->id) }}" method="POST" style="display:inline;">
-                                            @csrf
-                                            <button type="submit" class="btn btn-sm btn-primary shadow-sm">
-                                                Ikuti Tryout
-                                            </button>
-                                        </form> --}}
-
-                                        <form action="{{ route('user.join.tryout', $TryoutPackage->id) }}" method="POST">
-                                            @csrf
-                                            <button type="button" class="btn btn-sm btn-primary shadow-sm" onclick="joinTryout({{ $TryoutPackage->id }})">
-                                            Ikuti Tryout
-                                            </button>
-
-                                        </form>
-
-
-                                    </div>
-                                </div><!-- end card-body -->
-                            </div><!-- end card -->
-                        </div><!-- end col-lg-4 -->
-                        @endforeach   
-                    </div><!-- end row -->
-                </div><!-- end tab-pane -->
-            </div><!-- end tab-content -->
-        </div><!-- end container -->
-    </div><!-- end card-content-wrapper -->
-
+            </div>
+          </div>
+        </div>
+      @empty
+        <div class="col-12">
+          <div class="text-center text-muted py-5">Belum ada tryout yang tersedia.</div>
+        </div>
+      @endforelse
+    </div>
+  </div>
+</div>
 </section><!-- end courses-area -->
 
 
-@php
+{{-- @php
     $courseData = App\Models\Course::get();
 @endphp
 
 <!-- tooltip_templates -->
-@foreach ($courseData as $item)
+@foreach ($courseData as $item) --}}
      
-<div class="tooltip_templates">
+{{-- <div class="tooltip_templates">
     <div id="tooltip_content_1{{ $item->id }}">
         <div class="card card-item">
             <div class="card-body">
@@ -197,9 +101,10 @@
                 </ul>
                 <p class="card-text pt-1 fs-14 lh-22">{{ $item->prerequisites }}</p>
 
-    @php
-       $goals = App\Models\Course_goal::where('course_id',$item->id)->orderBy('id','DESC')->get(); 
-    @endphp
+                @php
+                $goals = App\Models\Course_goal::where('course_id',$item->id)->orderBy('id','DESC')->get(); 
+                @endphp
+
                 <ul class="generic-list-item fs-14 py-3">
                     @foreach ($goals as $goal)
                     <li><i class="la la-check mr-1 text-black"></i> {{ $goal->goal_name }}</li> 
@@ -212,5 +117,6 @@
             </div>
         </div><!-- end card -->
     </div>
-</div><!-- end tooltip_templates -->
-@endforeach
+</div><!-- end tooltip_templates --> --}}
+
+{{-- @endforeach --}}
