@@ -29,27 +29,53 @@ class UserTryoutController extends Controller
         return view('frontend.mytryout.my_all_tryout', compact('myTryouts'));
     }
 
-    public function AddToTryout(Request $request, $tryoutPackage_id){
+    // public function AddToTryout(Request $request, $tryoutPackage_id){
         
+    //     if (Auth::check()) {
+    //        $exists = UserTryout::where('user_id',Auth::id())->where('tryout_package_id',$tryoutPackage_id)->first();
+        
+    //         if (!$exists) {
+    //             UserTryout::insert([
+    //                 'user_id' => Auth::id(),
+    //                 'tryout_package_id' => $tryoutPackage_id,
+    //                 'created_at' => Carbon::now(),
+    //             ]);
+    //             return response()->json(['success' => 'Successfully joined this tryout!']);
+    //         }else {
+    //             return response()->json(['error' => 'You have already joined this tryout']);
+    //         }
+    
+    //     }else{
+    //         return response()->json(['error' => 'At First Login Your Account']);
+    //     } 
+
+    // }
+
+    public function AddToTryout(Request $request, $tryoutPackage_id)
+    {
         if (Auth::check()) {
-           $exists = UserTryout::where('user_id',Auth::id())->where('tryout_package_id',$tryoutPackage_id)->first();
-        
+            $exists = UserTryout::where('user_id', Auth::id())
+                ->where('tryout_package_id', $tryoutPackage_id)
+                ->first();
+
             if (!$exists) {
-                UserTryout::insert([
+                UserTryout::create([
                     'user_id' => Auth::id(),
                     'tryout_package_id' => $tryoutPackage_id,
                     'created_at' => Carbon::now(),
                 ]);
-                return response()->json(['success' => 'Successfully joined this tryout!']);
-            }else {
-                return response()->json(['error' => 'You have already joined this tryout']);
-            }
-    
-        }else{
-            return response()->json(['error' => 'At First Login Your Account']);
-        } 
 
+                return response()->json(['success' => 'Berhasil bergabung ke tryout ini!']);
+            }else {
+                return response()->json(['error' => 'Kamu sudah bergabung di tryout ini']);
+            }
+        }else{
+            return response()->json(['error' => 'Silakan login terlebih dahulu']);
+        } 
+        
     }
+
+
 
     public function StartTryout($id)
     {

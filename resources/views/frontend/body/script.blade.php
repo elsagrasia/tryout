@@ -159,21 +159,47 @@ function joinTryout(tryoutId) {
   .then(response => response.json())
   .then(data => {
     if (data.success) {
-      alert(data.success); // atau pakai SweetAlert
-      window.location.href = '/user/tryout'; // redirect otomatis
+      Swal.fire({
+        toast: true,
+        position: 'top-end', // pojok kanan atas
+        icon: 'success',
+        title: data.success,
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+      });
+
+      // redirect otomatis setelah notif tampil
+      setTimeout(() => {
+        window.location.href = '/user/tryout';
+      }, 1500);
+
     } else if (data.error) {
-      alert(data.error);
+      Swal.fire({
+        toast: true,
+        position: 'top-end', // posisi kanan atas
+        icon: 'error',
+        title: data.error,
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+      });
     }
   })
   .catch(error => {
-    alert('Terjadi kesalahan, coba lagi.');
+    Swal.fire({
+      toast: true,
+      position: 'top-end',
+      icon: 'warning',
+      title: 'Terjadi kesalahan, coba lagi.',
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+    });
   });
 }
 </script>
-
 {{-- /// end join tryout  // --}}
-
-
 
 
 {{-- /// Start Add To Cart  // --}}
