@@ -20,8 +20,14 @@ class TryoutPackage extends Model
 
     public function questions()
     {
-        return $this->belongsToMany(Question::class, 'question_tryout', 'tryout_id', 'question_id');
+        return $this->belongsToMany(
+            Question::class,
+            'package_question',     // pivot
+            'tryout_package_id',    // FK ke tryout_packages
+            'question_id'           // FK ke questions
+        );
     }
+
 
     public function attempts() {
         return $this->hasMany(Attempt::class);

@@ -11,16 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-         Schema::create('question_tryout', function (Blueprint $table) {
+        Schema::create('user_badges', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('tryout_id')->constrained('tryout_packages')->onDelete('cascade');
-            $table->foreignId('question_id')->constrained('questions')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('badge_id')->constrained()->onDelete('cascade');
+            $table->timestamp('earned_at')->nullable();
             $table->timestamps();
         });
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
-        Schema::dropIfExists('question_tryout');
+        Schema::dropIfExists('user_badges');
     }
 };

@@ -23,9 +23,5 @@ class Question extends Model
         return $this->hasMany(Answer::class);
     }
 
-    public function tryouts()
-    {
-        return $this->belongsToMany(TryoutPackage::class, 'question_tryout', 'question_id', 'tryout_id');
-    }
-
+  
 }

@@ -62,6 +62,16 @@ class User extends Authenticatable
                             return $permissions;
         } // End Method 
 
+    public function points()
+        {
+            return $this->hasMany(UserPoint::class);
+        }
+
+        public function badges()
+        {
+            return $this->belongsToMany(Badge::class, 'user_badges')->withTimestamps();
+        }
+
     public static function roleHasPermissions($role,$permissions){
 
         $hasPermission =  true;
@@ -73,5 +83,17 @@ class User extends Authenticatable
         }
 
     }// End Method 
+
+    public function getLevelAttribute()
+{
+    $points = $this->total_points ?? 0;
+
+    return match (true) {
+        $points < 100 => 'Beginner',
+        $points < 300 => 'Intermediate',
+        $points < 700 => 'Advanced',
+        default => 'Expert',
+    };
+}
 
 }

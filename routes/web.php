@@ -62,7 +62,7 @@ Route::middleware('auth')->group(function () {
 
     Route::controller(UserTryoutController::class)->group(function () {
         Route::get('/user/tryout', 'myTryout')->name('my.tryout');
-        Route::post('/tryout/{tryout_id}/join', 'AddToTryout')->name('user.join.tryout');
+        
         Route::get('/tryout/start/{id}', 'StartTryout')->name('tryout.start');
         Route::post('/tryout/submit/{id}', 'SubmitTryout')->name('tryout.submit');
 
@@ -253,7 +253,7 @@ Route::middleware(['auth', 'roles:instructor'])->group(function () {
         Route::get('/edit/question/{id}', 'editQuestion')->name('edit.question');
         Route::post('/update/question', 'updateQuestion')->name('update.question');
         Route::get('/delete/question/{id}', 'deleteQuestion')->name('delete.question');
-        Route::get('/import/permission','importQuestion')->name('import.question');
+        Route::get('/import/question','importQuestion')->name('import.question');
         Route::post('/import','import')->name('import');
 
     });
@@ -298,6 +298,7 @@ Route::middleware(['auth', 'roles:instructor'])->group(function () {
 
 }); //end instructor group middleware
 
+Route::get('/tryout/{tryout_id}/join',[UserTryoutController::class, 'AddToTryout'])->name('user.join.tryout');
 ///route accessable for all
 Route::get('/instructor/login', [InstructorController::class, 'instructorLogin'])->name('instructor.login')->middleware(RedirectIfAuthenticated::class);
 

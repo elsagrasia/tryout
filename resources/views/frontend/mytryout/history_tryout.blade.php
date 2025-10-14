@@ -3,43 +3,55 @@
 
 <div class="container py-4">
     <h4 class="mb-3">Riwayat Tryout</h4>
-
+    
     @if($histories->isEmpty())
-        <p>Belum ada riwayat tryout.</p>
+        <div class="text-center text-muted mt-5">
+            <i class="la la-folder-open fs-40 mb-3 d-block"></i>
+            <p>Belum ada riwayat tryout.</p>
+        </div>
     @else
-        <table class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th>Nama Tryout</th>
-                    <th>Nilai</th>
-                    <th>Benar</th>
-                    <th>Salah</th>
-                    {{-- <th>Tanggal</th> --}}
-                    <th>Pembahasan</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse($histories as $history)
-                    <tr>
-                        <td>{{ $history->tryoutPackage->tryout_name ?? '-' }}</td>
-                        <td>{{ $history->score }}</td>
-                        <td>{{ $history->correct_count }}</td>
-                        <td>{{ $history->wrong_count }}</td>
-                        {{-- <td>{{ $history->finished_at ? $history->finished_at->format('d M Y H:i') : '-' }}</td> --}}
-                        <td>
-                            <a href="{{ route('tryout.explanation', $history->tryout_package_id) }}" class="btn btn-sm btn-info">
-                                Pembahasan
-                            </a>
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="6" class="text-center">Belum ada riwayat tryout</td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
+        <div class="list-group">
+            @foreach ($histories as $history)
+                @php
+                    $tryout = $history->tryoutPackage;
+                    $tanggal = $history->updated_at->format('d M Y'); // contoh: 13 Okt 2025
+             
+                @endphp
+
+                <div class="list-group-item mb-2 d-flex justify-content-between align-items-center border rounded shadow-sm">
+                    <div class="d-flex align-items-center">
+                        <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" 
+                            style="width:45px; height:45px;">
+                            <i class="la la-check fs-5"></i>
+                        </div>
+                        <div style="margin-left: 15px;">
+                            <h6 class="mb-1 fw-bold">{{ $tryout->tryout_name }}</h6>
+                            <small class="d-block text-muted">
+                                {{ $tanggal }}
+                            </small>
+                      
+                            <small class="text-muted">
+                                {{ $tryout->total_questions }} Soal • {{ $tryout->duration }} Menit
+                            </small>
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-center">
+                        <a href="{{ route('tryout.explanation', $tryout->id) }}" 
+                           class="btn btn-sm btn-info" 
+                           style="margin-right: 8px;">
+                            Lihat Hasil
+                        </a>
+                    </div>
+                </div>
+            @endforeach
+        </div>
     @endif
 </div>
+
+
+
+
+
 
 @endsection

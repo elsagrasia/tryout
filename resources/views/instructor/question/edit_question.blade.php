@@ -101,7 +101,7 @@
                     <div class="page-content">
     <div class="card">
         <div class="card-body">
-           <form action="{{ route('update.course.image') }}" method="post" enctype="multipart/form-data">
+           <form action="{{ route('update.question') }}" method="post" enctype="multipart/form-data">
                 @csrf
             <input type="hidden" name="id" value="{{ $question->id }}"> 
             <input type="hidden" name="old_img" value="{{ $question->image }}">

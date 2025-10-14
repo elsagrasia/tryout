@@ -51,7 +51,7 @@
             </a>
         </li>
         <li>
-            <a href="">
+            <a href="{{route('all.question')}}">
                 <div class="parent-icon"><i class='bx bxs-report'></i>
                 </div>
                 <div class="menu-title">Results</div>

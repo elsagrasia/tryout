@@ -1,7 +1,7 @@
 @extends('instructor.instructor_dashboard')
 @section('instructor')
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-
+<script src></script>
 <style>
     .large-checkbox{
         transform: scale(1.5);
@@ -27,7 +27,7 @@
 					</div>
 				</div>
 				<!--end breadcrumb-->
-				
+	
 				<div class="card">
 					<div class="card-body">
 						<div class="table-responsive">
@@ -83,7 +83,19 @@
 					</div>
 				</div>
 			</div>
-
+					<div class="row row-cols-1 row-cols-md-3 row-cols-xl-5">
+					<div class="col">
+						<div class="card radius-10">
+							<div class="card-body">
+								<div class="text-center">
+									<div class="widgets-icons rounded-circle mx-auto bg-light-primary text-primary mb-3"><i class='bx bxl-facebook-square'></i>
+									</div>
+									<h4 class="my-1">84K</h4>
+									<p class="mb-0 text-secondary">Facebook Users</p>
+								</div>
+							</div>
+						</div>
+					</div>
  <script>
 $(function () {
   $(document).on('change', '.status-switch', function () {

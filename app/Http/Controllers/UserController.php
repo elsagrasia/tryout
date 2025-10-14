@@ -71,6 +71,10 @@ class UserController extends Controller
         $request->validate([
             'old_password' => 'required',
             'new_password' => 'required|confirmed',
+        ],
+        [
+            'old_password.required' => 'Please Enter Old Password',
+            'new_password.required' => 'Please Enter New Password',
         ]);
         if (!Hash::check($request->old_password, auth::user()->password)) {
             $notification = array(

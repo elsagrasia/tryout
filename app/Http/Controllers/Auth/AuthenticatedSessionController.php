@@ -25,10 +25,19 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        
         $request->authenticate();
         
         $request->session()->regenerate();
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]
+        ,
+        [
+            'email.required' => 'Please Enter Your Email',
+            'email.email' => 'Please Enter Valid Email',
+            'password.required' => 'Please Enter Your Password',
+        ]);
         
        $notification = array(
             'message' => 'Login Successfully',

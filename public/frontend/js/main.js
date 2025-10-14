@@ -607,7 +607,8 @@ Author Email:   contact@techydevs.com
                 liveSearch: true,
                 liveSearchPlaceholder: 'Search',
                 liveSearchStyle: 'contains',
-                size: 5
+                size: 5,
+                width: '100%'
             });
         }
         /*==== Share toggle =====*/

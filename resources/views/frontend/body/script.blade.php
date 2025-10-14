@@ -145,7 +145,7 @@
  </script>
 {{-- /// End Load Wishlist Data // --}}
 
-
+<!-- 
 {{-- /// start join tryout  // --}}
 <script type="text/javascript">
 function joinTryout(tryoutId) {
@@ -199,7 +199,7 @@ function joinTryout(tryoutId) {
   });
 }
 </script>
-{{-- /// end join tryout  // --}}
+{{-- /// end join tryout  // --}} -->
 
 
 {{-- /// Start Add To Cart  // --}}

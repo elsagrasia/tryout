@@ -50,17 +50,10 @@
 
                 {{-- Aksi sejajar --}}
                 <div class="mt-auto d-flex justify-content-between align-items-center">
-                    <a href="#" class="btn theme-btn theme-btn-white">Detail</a>
-                    <form action="{{ route('user.join.tryout', $package->id) }}" method="POST" class="m-0">
-                    @csrf
-                    {{-- <button type="submit" class="btn theme-btn" onclick="joinTryout({{ $package->id }})">
-                        Ikuti Tryout <i class="la la-arrow-right icon ms-1"></i>
-                    </button> --}}
-                    <button type="button" class="btn theme-btn" onclick="joinTryout({{ $package->id }})">
-                        Ikuti Tryout <i class="la la-arrow-right icon ms-1"></i>
-                    </button>
-
-                    </form>
+                    <a href="#" class="btn theme-btn theme-btn-white w-100">Detail</a>
+                    &nbsp;                   
+                    <a href="{{ route('user.join.tryout', $package->id) }}" class="btn theme-btn w-100">Ikuti Tryout <i class="la la-arrow-right icon ml-1"></i></a>
+              
                 </div>
 
                 </div>
