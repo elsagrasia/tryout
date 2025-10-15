@@ -45,35 +45,31 @@
 							<tbody>
 							@foreach ($tryoutPackages as $key => $item)
 								<tr>
-								<td>{{ $key+1 }}</td>
-								<td>{{ $item->tryout_name }}</td>
-								<td>{{ $item->duration }}</td>
-								<td>{{ $item->total_questions }}</td>
-								<td>
-									<div class="form-check form-switch">
-									<input
-										class="form-check-input status-switch large-checkbox"
-										type="checkbox"
-										role="switch"
-										id="flexSwitchCheckSuccess status-{{ $item->id }}"
-										data-id="{{ $item->id }}"
-										{{ $item->status === 'published' ? 'checked' : '' }}>
-									<label class="form-check-label ms-2" for="flexSwitchCheckSuccess status-{{ $item->id }}">
-										<span class="badge rounded-pill {{ $item->status === 'published' ? 'bg-success' : 'bg-danger' }} status-badge-{{ $item->id }}">
-										{{ $item->status === 'published' ? 'Published' : 'Draft' }}
-										</span>
-									</label>
-									</div>
-								</td>
-								<td>
-									<a href="{{ route('edit.tryout.package', $item->id) }}" class="btn btn-info"  title="Edit"><i class="lni lni-eraser"></i></a>
-									<a href="{{ route('delete.tryout.package', $item->id) }}" class="btn btn-danger delete-btn" title="Delete"><i class="lni lni-trash"></i></a>
-									<a href="{{ route('packages.manage', $item->id) }}" class="btn btn-warning" title="Soal"><i class="lni lni-list"></i></a>
-								</td>
-								
-
-
-
+									<td>{{ $key+1 }}</td>
+									<td>{{ $item->tryout_name }}</td>
+									<td>{{ $item->duration }}</td>
+									<td>{{ $item->total_questions }}</td>
+									<td>
+										<div class="form-check form-switch">
+										<input
+											class="form-check-input status-switch large-checkbox"
+											type="checkbox"
+											role="switch"
+											id="flexSwitchCheckSuccess status-{{ $item->id }}"
+											data-id="{{ $item->id }}"
+											{{ $item->status === 'published' ? 'checked' : '' }}>
+										<label class="form-check-label ms-2" for="flexSwitchCheckSuccess status-{{ $item->id }}">
+											<span class="badge rounded-pill {{ $item->status === 'published' ? 'bg-success' : 'bg-danger' }} status-badge-{{ $item->id }}">
+											{{ $item->status === 'published' ? 'Published' : 'Draft' }}
+											</span>
+										</label>
+										</div>
+									</td>
+									<td>
+										<a href="{{ route('edit.tryout.package', $item->id) }}" class="btn btn-info"  title="Edit"><i class="lni lni-eraser"></i></a>
+										<a href="{{ route('delete.tryout.package', $item->id) }}" class="btn btn-danger delete-btn" title="Delete"><i class="lni lni-trash"></i></a>
+										<a href="{{ route('packages.manage', $item->id) }}" class="btn btn-warning" title="Soal"><i class="lni lni-list"></i></a>
+									</td>
 								</tr>
 							@endforeach
 							</tbody>

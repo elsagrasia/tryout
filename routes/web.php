@@ -57,7 +57,7 @@ Route::middleware('auth')->group(function () {
     
     Route::get('/live/chat', [UserController::class, 'liveChat'])->name('live.chat');
 
-    // Route::get('/tryout/{tryout_id}/join', [UserTryoutController::class, 'AddToTryout']);
+    Route::get('/tryout/{tryout_id}/join', [UserTryoutController::class, 'AddToTryout']);
 
 
     Route::controller(UserTryoutController::class)->group(function () {

@@ -33,7 +33,6 @@
                         </div>
                     </div>
 
-                   
                     <div class="d-flex align-items-center">
                         <a href="{{ route('tryout.start', $tryout->id) }}" 
                         class="btn btn-success btn-sm" 
@@ -41,7 +40,6 @@
                             <i class="la la-play-circle me-1"></i> Kerjakan
                         </a>
 
-          
                     </div>
 
                 </div>

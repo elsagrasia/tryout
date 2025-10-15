@@ -87,9 +87,8 @@ class UserTryoutController extends Controller
         }
 
     }
-   
 
-      
+
 
     public function StartTryout($id)
     {
