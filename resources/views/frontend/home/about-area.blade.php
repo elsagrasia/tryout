@@ -1,4 +1,4 @@
-<section class="about-area section--padding overflow-hidden">
+{{-- <section class="about-area section--padding overflow-hidden">
     <div class="container">
         <div class="row">
             <div class="col-lg-6">
@@ -95,4 +95,4 @@
             </div><!-- end col-lg-5 -->
         </div><!-- end row -->
     </div><!-- end container -->
-</section><!-- end about-area -->
+</section><!-- end about-area --> --}}

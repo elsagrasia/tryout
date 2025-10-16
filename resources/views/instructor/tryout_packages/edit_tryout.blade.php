@@ -11,7 +11,7 @@
                 <ol class="breadcrumb mb-0 p-0">
                     <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">Edit Tryout Package</li>
+                    <li class="breadcrumb-item active" aria-current="page">Edit Paket Tryout</li>
                 </ol>
             </nav>
         </div>
@@ -20,40 +20,40 @@
     <!--end breadcrumb-->
     
     <div class="card">
-            <div class="card-body p-4">
-                <h5 class="mb-4">Edit Tryout Package</h5>
-                <form id="myForm" action="{{ route('update.tryout.package') }}" method="post" class="row g-3" enctype="multipart/form-data">
-                    @csrf
+        <div class="card-body p-4">
+            <h5 class="mb-4">Edit Paket Tryout</h5>
+            <form id="myForm" action="{{ route('update.tryout.package') }}" method="post" class="row g-3" enctype="multipart/form-data">
+                @csrf
 
-                    <input type="hidden" name="tryout_package_id" value="{{ $tryoutPackage->id }}">
+                <input type="hidden" name="tryout_package_id" value="{{ $tryoutPackage->id }}">
 
-                    <div class="form-group col-md-6">
-                        <label for="input1" class="form-label">Tryout Name</label>
-                        <input type="text" name="tryout_name" class="form-control" id="input1" value="{{ $tryoutPackage->tryout_name }}" >
+                <div class="form-group col-md-6">
+                    <label for="input1" class="form-label">Nama Tryout</label>
+                    <input type="text" name="tryout_name" class="form-control" id="input1" value="{{ $tryoutPackage->tryout_name }}" >
+                </div>
+                <div class="form-group col-md-3">
+                    <label class="form-label">Durasi (menit) <span class="text-danger">*</span></label>
+                    <input type="number" name="duration" min="1" class="form-control" value="{{ $tryoutPackage->duration }}" required>
+                </div>
+                <div class="form-group col-md-3">
+                    <label class="form-label">Total Pertanyaan</label>
+                    <input type="number" name="total_questions" min="0" class="form-control" value="{{ $tryoutPackage->total_questions }}">
+                </div>
+            
+                <div class="form-group col-md-12">
+                    <label for="input1" class="form-label">Deskripsi Tryout</label>
+                    <textarea name="description" class="form-control" id="input11" rows="3">{{ $tryoutPackage->description }}</textarea>         
+                </div>
+            
+                
+                <div class="col-md-12">
+                    <div class="d-md-flex d-grid align-items-center gap-3">
+                <button type="submit" class="btn btn-primary px-4">Simpan Perubahan</button>
+            
                     </div>
-                    <div class="form-group col-md-3">
-                        <label class="form-label">Duration (minutes) <span class="text-danger">*</span></label>
-                        <input type="number" name="duration" min="1" class="form-control" value="{{ $tryoutPackage->duration }}" required>
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label class="form-label">Total Questions</label>
-                        <input type="number" name="total_questions" min="0" class="form-control" value="{{ $tryoutPackage->total_questions }}">
-                    </div>
-             
-                    <div class="form-group col-md-12">
-                        <label for="input1" class="form-label">Tryout Description</label>
-                        <textarea name="description" class="form-control" id="input11" rows="3">{{ $tryoutPackage->description }}</textarea>         
-                    </div>
-              
-                  
-                    <div class="col-md-12">
-                        <div class="d-md-flex d-grid align-items-center gap-3">
-                    <button type="submit" class="btn btn-primary px-4">Save Changes</button>
-               
-                        </div>
-                    </div>
-                </form>
-            </div>
+                </div>
+            </form>
+        </div>
     </div>
     
 </div>

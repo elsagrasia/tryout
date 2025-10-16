@@ -5,7 +5,7 @@
 
 <div class="container mt-4 mb-5">
     <div class="dashboard-heading mb-4">
-        <h3 class="fs-22 fw-semibold">My Tryout</h3>
+        <h3 class="fs-22 fw-semibold">Tryout</h3>
     </div>
 
     @if($myTryouts->isEmpty())

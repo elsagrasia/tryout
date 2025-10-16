@@ -13,7 +13,7 @@
 =======================================-->
 <header class="header-menu-area">
     <div class="header-menu-content bg-white">
-        <div class="container">
+        <div class="container-fluid">
             <div class="main-menu-content">
                 <div class="row align-items-center">
                     <!-- Logo -->

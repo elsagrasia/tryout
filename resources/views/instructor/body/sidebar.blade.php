@@ -33,28 +33,28 @@
             <a href="{{route('all.tryout.packages')}}">
                 <div class="parent-icon"><i class="bx bx-rocket"></i>
                 </div>
-                <div class="menu-title">Tryout Packages</div>
+                <div class="menu-title">Paket Tryout</div>
             </a>
         </li>
         <li>
             <a href="{{route('all.category')}}">
                 <div class="parent-icon"><i class='bx bx-collection'></i>
                 </div>
-                <div class="menu-title">Category</div>
+                <div class="menu-title">Kategori</div>
             </a>
         </li>
         <li>
             <a href="{{route('all.question')}}">
                 <div class="parent-icon"><i class='bx bx-question-mark'></i>
                 </div>
-                <div class="menu-title">Questions</div>
+                <div class="menu-title">Pertanyaan</div>
             </a>
         </li>
         <li>
             <a href="{{route('all.question')}}">
                 <div class="parent-icon"><i class='bx bxs-report'></i>
                 </div>
-                <div class="menu-title">Results</div>
+                <div class="menu-title">Hasil</div>
             </a>
         </li>
     
@@ -68,14 +68,6 @@
                 </div>
                 <div class="menu-title">Charts</div>
             </a>
-            <ul>
-                <li> <a href="charts-apex-chart.html"><i class='bx bx-radio-circle'></i>Apex</a>
-                </li>
-                <li> <a href="charts-chartjs.html"><i class='bx bx-radio-circle'></i>Chartjs</a>
-                </li>
-                <li> <a href="charts-highcharts.html"><i class='bx bx-radio-circle'></i>Highcharts</a>
-                </li>
-            </ul>
         </li>
         <li>
             <a class="has-arrow" href="javascript:;">

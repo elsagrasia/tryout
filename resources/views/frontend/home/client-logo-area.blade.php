@@ -1,4 +1,4 @@
-<section class="client-logo-area section-padding position-relative overflow-hidden text-center">
+{{-- <section class="client-logo-area section-padding position-relative overflow-hidden text-center">
     <span class="stroke-shape stroke-shape-1"></span>
     <span class="stroke-shape stroke-shape-2"></span>
     <span class="stroke-shape stroke-shape-3"></span>
@@ -20,4 +20,4 @@
             <a href="#" class="client-logo-item"><img src="{{ asset('frontend/images/sponsor-img5.png') }}" alt="brand image"></a>        
         </div><!-- end client-logo-carousel -->
     </div><!-- end container -->
-</section><!-- end client-logo-area -->
+</section><!-- end client-logo-area --> --}}

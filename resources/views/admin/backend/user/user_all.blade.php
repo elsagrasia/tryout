@@ -9,7 +9,7 @@
                 <ol class="breadcrumb mb-0 p-0">
                     <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">All User</li>
+                    <li class="breadcrumb-item active" aria-current="page">Semua User</li>
                 </ol>
             </nav>
         </div>
@@ -27,11 +27,11 @@
                 <table id="example" class="table table-striped table-bordered" style="width:100%">
                     <thead>
                         <tr>
-                            <th>Sl</th>
-                            <th>User Image </th>
-                            <th>Name</th> 
+                            <th>No</th>
+                            <th>Gambar Pengguna</th>
+                            <th>Nama</th> 
                             <th>Email</th> 
-                            <th>Phone</th> 
+                            <th>Telepon</th> 
                             <th>Status</th>
                         </tr>
                     </thead>
@@ -46,7 +46,7 @@
                             <td>{{ $item->phone }}</td> 
                             <td>
                                 @if ($item->UserOnline())
-                                <span class="badge badge-pill bg-success">Active Now</span>
+                                <span class="badge badge-pill bg-success">Aktif Sekarang</span>
                                 @else 
                                 <span class="badge badge-pill bg-danger">{{ Carbon\Carbon::parse($item->last_seen)->diffForHumans() }} </span>  
                                     
@@ -63,10 +63,6 @@
             </div>
         </div>
     </div>
-
-
-   
-   
 </div>
  
 

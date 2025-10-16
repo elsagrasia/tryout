@@ -11,7 +11,7 @@
                 <ol class="breadcrumb mb-0 p-0">
                     <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">Add Tryout Package</li>
+                    <li class="breadcrumb-item active" aria-current="page">Tambahkan Paket Tryout</li>
                 </ol>
             </nav>
         </div>
@@ -20,40 +20,37 @@
     <!--end breadcrumb-->
     
     <div class="card">
-            <div class="card-body p-4">
-                <h5 class="mb-4">Add Tryout Package</h5>
-                <form id="myForm" action="{{ route('store.tryout.package') }}" method="post" class="row g-3" enctype="multipart/form-data">
-                    @csrf
-                    <div class="form-group col-md-6">
-                        <label for="input1" class="form-label">Tryout Name</label>
-                        <input type="text" name="tryout_name" class="form-control" id="input1" >
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label class="form-label">Duration (minutes) <span class="text-danger">*</span></label>
-                        <input type="number" name="duration" min="1" class="form-control" value="{{ old('duration', 200) }}" required>
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label class="form-label">Total Questions</label>
-                        <input type="number" name="total_questions" min="0" class="form-control" value="{{ old('total_questions', 150) }}">
-                    </div>
-             
-                    <div class="form-group col-md-12">
-                        <label for="input1" class="form-label">Tryout Description</label>
-                        <textarea name="description" class="form-control" id="input11" rows="3"></textarea>
-                    </div>
-              
+        <div class="card-body p-4">
+            <h5 class="mb-4">Tambahkan Paket Tryout</h5>
+            <form id="myForm" action="{{ route('store.tryout.package') }}" method="post" class="row g-3" enctype="multipart/form-data">
+                @csrf
+                <div class="form-group col-md-6">
+                    <label for="input1" class="form-label">Nama Tryout</label>
+                    <input type="text" name="tryout_name" class="form-control" id="input1" >
                 </div>
-            </div>
-             <div class="col-md-12">
-                <div class="d-md-flex d-grid align-items-center gap-3">
-                    <button type="submit" class="btn btn-primary px-4">Save Changes</button>
+                <div class="form-group col-md-3">
+                    <label class="form-label">Durasi (menit) <span class="text-danger">*</span></label>
+                    <input type="number" name="duration" min="1" class="form-control" value="{{ old('duration', 200) }}" required>
                 </div>
-            </div>
-        </form>
+                <div class="form-group col-md-3">
+                    <label class="form-label">Total Pertanyaan</label>
+                    <input type="number" name="total_questions" min="0" class="form-control" value="{{ old('total_questions', 150) }}">
+                </div>
+            
+                <div class="form-group col-md-12">
+                    <label for="input1" class="form-label">Deskripsi Tryout</label>
+                    <textarea name="description" class="form-control" id="input11" rows="3"></textarea>
+                </div>
+        </div>
     </div>
-    </div>
-    
+                <div class="col-md-12">
+                    <div class="d-md-flex d-grid align-items-center gap-3">
+                        <button type="submit" class="btn btn-primary px-4">Simpan</button>
+                    </div>
+                </div>
+            </form>
 </div>
+    
 
 
 

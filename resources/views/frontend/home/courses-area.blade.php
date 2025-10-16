@@ -27,9 +27,10 @@
   
 <div class="card-content-wrapper bg-gray pt-50px pb-120px">
     <div class="container">
-        <div class="row g-4">
+        <div class="row gx-4 gy-5">
         @forelse ($tryoutPackages as $package)
-            <div class="col-lg-4 col-md-6">
+            <div class="col-lg-4 col-md-6 mb-5">
+
             <div class="card h-100 shadow-sm border-0">
                 <div class="card-body d-flex flex-column">
 

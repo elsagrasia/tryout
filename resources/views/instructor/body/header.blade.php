@@ -37,34 +37,31 @@
 						<div class="dropdown-menu dropdown-menu-end">
 							<a href="javascript:;">
 								<div class="msg-header">
-									<p class="msg-header-title">Notifications</p>
-
+									<p class="msg-header-title">Notifikasi</p>
 								</div>
 							</a>
        
-       @php
-           $user = Auth::user();
-       @endphp
-       							
+							@php
+								$user = Auth::user();
+							@endphp
+														
 							<div class="header-notifications-list">
-        @forelse ($user->notifications as $notification) 
-                               
-            <a class="dropdown-item" href="javascript:;" onclick="markNotificationRead('{{ $notification->id }}')">
-                <div class="d-flex align-items-center">
-                    <div class="notify bg-light-danger text-danger">dc
-                    </div>
-                    <div class="flex-grow-1">
-                        <h6 class="msg-name">{{ $notification->data['message'] }} <span class="msg-time float-end"> {{ Carbon\Carbon::parse($notification->created_at)->diffForHumans() }} </span></h6>
-                        <p class="msg-info">New Order</p>
-                    </div>
-                </div>
-            </a>
-            @empty
-             
-            @endforelse 
-            
-                                
-                          
+								@forelse ($user->notifications as $notification) 
+												
+								<a class="dropdown-item" href="javascript:;" onclick="markNotificationRead('{{ $notification->id }}')">
+									<div class="d-flex align-items-center">
+										<div class="notify bg-light-danger text-danger">dc
+										</div>
+										<div class="flex-grow-1">
+											<h6 class="msg-name">{{ $notification->data['message'] }} <span class="msg-time float-end"> {{ Carbon\Carbon::parse($notification->created_at)->diffForHumans() }} </span></h6>
+											<p class="msg-info">New Order</p>
+										</div>
+									</div>
+								</a>
+								@empty
+								
+								@endforelse 
+		
 							</div>
 							<a href="javascript:;">
 								<div class="text-center msg-footer">

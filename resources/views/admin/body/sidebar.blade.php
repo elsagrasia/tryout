@@ -56,42 +56,17 @@
 				</li>
 	
 
-        <!-- <li>
-            <a class="has-arrow" href="javascript:;">
-                <div class="parent-icon"><i class='bx bx-bookmark-heart'></i>
-                </div>
-                <div class="menu-title">Manage Report</div>
-            </a>
-            <ul>
-                <li> <a href="{{ route('report.view') }}"><i class='bx bx-radio-circle'></i>Report View </a>
-                </li>
-               
-     		</ul>
-        </li> -->
-        <!-- <li>
-            <a class="has-arrow" href="javascript:;">
-                <div class="parent-icon"><i class='bx bx-bookmark-heart'></i>
-                </div>
-                <div class="menu-title">Manage Review</div>
-            </a>
-            <ul>
-                <li> <a href="{{ route('admin.pending.review') }}"><i class='bx bx-radio-circle'></i>Pending Review </a>
-                </li>
-                <li> <a href="{{ route('admin.active.review') }}"><i class='bx bx-radio-circle'></i>Active Review </a>
-                </li>                    
-               
-            </ul>
-        </li>                -->
+                      -->
         <li>
             <a class="has-arrow" href="javascript:;">
                 <div class="parent-icon"><i class='bx bx-bookmark-heart'></i>
                 </div>
-                <div class="menu-title">Manage All User </div>
+                <div class="menu-title">Kelola Semua Pengguna</div>
             </a>
             <ul>
-                <li> <a href="{{ route('all.user') }}"><i class='bx bx-radio-circle'></i>All User </a>
+                <li> <a href="{{ route('all.user') }}"><i class='bx bx-radio-circle'></i>Semua Pengguna</a>
                 </li>
-                <li> <a href="{{ route('all.instructor') }}"><i class='bx bx-radio-circle'></i>All Instructor</a>
+                <li> <a href="{{ route('all.instructor') }}"><i class='bx bx-radio-circle'></i>Semua Instructor</a>
                 </li>        
             </ul>
         </li>        
@@ -102,7 +77,7 @@
             <a class="has-arrow" href="javascript:;">
                 <div class="parent-icon"><i class='bx bx-bookmark-heart'></i>
                 </div>
-                <div class="menu-title">Manage Blog </div>
+                <div class="menu-title">Manage Blog</div>
             </a>
             <ul>
                 <li> <a href="{{ route('blog.category') }}"><i class='bx bx-radio-circle'></i>Blog Category </a>

@@ -11,7 +11,7 @@
                 <ol class="breadcrumb mb-0 p-0">
                     <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">Add Question</li>
+                    <li class="breadcrumb-item active" aria-current="page">Tambah Pertanyaan</li>
                 </ol>
             </nav>
         </div>
@@ -19,11 +19,11 @@
     </div>
     <!--end breadcrumb-->
     @if ($errors->any())
-  <div class="alert alert-danger">
-    <ul class="mb-0">
-      @foreach ($errors->all() as $e) <li>{{ $e }}</li> @endforeach
-    </ul>
-  </div>
+    <div class="alert alert-danger">
+        <ul class="mb-0">
+        @foreach ($errors->all() as $e) <li>{{ $e }}</li> @endforeach
+        </ul>
+    </div>
 @endif
 
 @if(session('message'))
@@ -32,87 +32,86 @@
 
     <div class="card">
         <div class="card-body p-4">
-            <h5 class="mb-4">Add Question</h5>
+            <h5 class="mb-4">Tambah Pertanyaan</h5>
             <form id="myForm" action="{{ route('store.question') }}" method="post" class="row g-3" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group col-md-6">
-                   <label for="input1" class="form-label">Category</label>
+                   <label for="input1" class="form-label">Kategori</label>
                    <select name="category_id" class="form-select mb-3" aria-label="Default select example">
-                       <option selected="" disabled>Open this select menu</option>
+                       <option selected="" disabled>Buka menu pilihan ini</option>
                        @foreach ($categories as $cat)
                        <option value="{{ $cat->id }}">{{ $cat->category_name }}</option>
                        @endforeach
                    </select>
-               </div>
+                </div>
                 <div class="form-group col-md-6">
-                    <label for="input1" class="form-label">Disease</label>
-                        <input type="text" name="disease" class="form-control" id="input1" >
-                    </div>
-                    <div class="form-group col-md-12">
-                        <label for="input1" class="form-label">Vignette</label>
-                        <textarea name="vignette" class="form-control" id="input11"  rows="3"></textarea>
-                    </div>
+                    <label for="input1" class="form-label">Penyakit</label>
+                    <input type="text" name="disease" class="form-control" id="input1" >
+                </div>
+
+                <div class="form-group col-md-12">
+                    <label for="input1" class="form-label">Vignette</label>
+                    <textarea name="vignette" class="form-control" id="input11"  rows="3"></textarea>
+                </div>
                     
-                    <div class="form-group col-md-12">
-                        <label for="input2" class="form-label">Question</label>
-                        <textarea name="question_text" class="form-control" id="input11"  rows="3"></textarea>
-                    </div>
+                <div class="form-group col-md-12">
+                    <label for="input2" class="form-label">Pertanyaan</label>
+                    <textarea name="question_text" class="form-control" id="input11"  rows="3"></textarea>
+                </div>
                     
-                    <!-- Options -->
-                    <div class="form-group col-md-6">
-                        <label class="form-label">Option A</label>
-                        <input type="text" name="option_a" class="form-control" id="input1" >
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label class="form-label">Option B</label>
-                        <input type="text" name="option_b" class="form-control" id="input1" >
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label class="form-label">Option C</label>
-                        <input type="text" name="option_c" class="form-control" id="input1" >
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label class="form-label">Option D</label>
-                        <input type="text" name="option_d" class="form-control" id="input1" >
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label class="form-label">Option E</label>
-                        <input type="text" name="option_e" class="form-control" id="input1" >
-                    </div>
-                                    <!-- Correct Answer -->
-                    <div class="form-group col-md-6">
-                        <label class="form-label">Correct Option</label>
-                        <select name="correct_option" class="form-select" required>
-                            <option disabled selected>-- Select Key --</option>
-                            <option value="A">A</option>
-                            <option value="B">B</option>
-                            <option value="C">C</option>
-                            <option value="D">D</option>
-                            <option value="E">E</option>
-                        </select>
-                    </div>                     
-                        <div class="form-group col-md-12">
-                        <label class="form-label">Explanation</label>
-                        <textarea name="explanation" class="form-control" id="myeditorinstance" ></textarea>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="input2" class="form-label">Image (optional)</label>
-                        <input type="file" name="image" class="form-control" id="image" >
-                    </div>
-                    <div class="col-md-6">
-                        <img id="showImage" src="{{ url('upload/no_image.jpg') }}" alt="image" class="rounded-circle p-1 bg-primary" width="100"> 
-                    </div>
-     
-                    <div class="col-md-12">
-                        <div class="d-md-flex d-grid align-items-center gap-3">
-                            <button type="submit" class="btn btn-primary px-4">Save Changes</button>
-               
-                        </div>
-                    </div>
-                </form>
-            </div>
-    </div>
+                <!-- Options -->
+                <div class="form-group col-md-6">
+                    <label class="form-label">Pilihan A</label>
+                    <input type="text" name="option_a" class="form-control" id="input1" >
+                </div>
+                <div class="form-group col-md-6">
+                    <label class="form-label">Pilihan B</label>
+                    <input type="text" name="option_b" class="form-control" id="input1" >
+                </div>
+                <div class="form-group col-md-6">
+                    <label class="form-label">Pilihan C</label>
+                    <input type="text" name="option_c" class="form-control" id="input1" >
+                </div>
+                <div class="form-group col-md-6">
+                    <label class="form-label">Pilihan D</label>
+                    <input type="text" name="option_d" class="form-control" id="input1" >
+                </div>
+                <div class="form-group col-md-6">
+                    <label class="form-label">Pilihan E</label>
+                    <input type="text" name="option_e" class="form-control" id="input1" >
+                </div>
+                                <!-- Correct Answer -->
+                <div class="form-group col-md-6">
+                    <label class="form-label">Pilihan Benar</label>
+                    <select name="correct_option" class="form-select" required>
+                        <option disabled selected>-- Pilih Kunci --</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                        <option value="D">D</option>
+                        <option value="E">E</option>
+                    </select>
+                </div>                     
+                    <div class="form-group col-md-12">
+                    <label class="form-label">Pembahasan</label>
+                    <textarea name="explanation" class="form-control" id="myeditorinstance" ></textarea>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="input2" class="form-label">Gambar (opsional)</label>
+                    <input type="file" name="image" class="form-control" id="image" >
+                </div>
+                <div class="col-md-6">
+                    <img id="showImage" src="{{ url('upload/no_image.jpg') }}" alt="image" class="rounded-circle p-1 bg-primary" width="100"> 
+                </div>
     
+                <div class="col-md-12">
+                    <div class="d-md-flex d-grid align-items-center gap-3">
+                        <button type="submit" class="btn btn-primary px-4">Simpan Perubahan</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
 
