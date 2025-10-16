@@ -70,6 +70,19 @@
                 </li>        
             </ul>
         </li>        
+        <li>
+            <a class="has-arrow" href="javascript:;">
+                <div class="parent-icon"><i class='bx bx-bookmark-heart'></i>
+                </div>
+                <div class="menu-title">Gamifikasi </div>
+            </a>
+            <ul>
+                <li> <a href="{{ route('points.rules') }}"><i class='bx bx-radio-circle'></i>Point </a>
+                </li>
+                <li> <a href="{{ route('all.instructor') }}"><i class='bx bx-radio-circle'></i>Badge</a>
+                </li>        
+            </ul>
+        </li>        
 		
 
 

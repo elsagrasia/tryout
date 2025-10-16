@@ -159,13 +159,15 @@ public function attachQuestions(Request $r, TryoutPackage $package)
     return back()->with('message', 'Questions attached to package.');
 }
 
-// detach 1 soal dari paket (soal tetap ada di bank)
-public function detachQuestion(TryoutPackage $package, Question $question)
-{
-    $package->questions()->detach($question->id);
-    return back()->with('message', 'Question detached.');
-}
+    // detach 1 soal dari paket (soal tetap ada di bank)
+    public function detachQuestion(TryoutPackage $package, Question $question)
+    {
+        $package->questions()->detach($question->id);
+        return back()->with('message', 'Question detached.');
+    }
 
+
+    
 } // end class
 
 

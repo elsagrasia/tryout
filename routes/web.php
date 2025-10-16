@@ -25,6 +25,7 @@ use App\Http\Controllers\Backend\RoleController;
 use App\Http\Controllers\Backend\ChatController;
 use App\Http\Controllers\Backend\TryoutPackageController;
 use App\Http\Controllers\Backend\QuestionController;
+use App\Http\Controllers\Backend\GamificationController;
 
 
 /*
@@ -72,6 +73,7 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/tryout/explanation/{tryout_id}', 'explanation')->name('tryout.explanation');
 
+        Route::post('tryout/{id}/complete', 'completeTryout')->name('tryout.complete');
 
     });
 
@@ -122,7 +124,24 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
     });
 
 
+    Route::controller(GamificationController::class)->group(function(){
+        Route::get('/points/rules', 'pointsRules')->name('points.rules');
+        Route::get('/points/rules/create', 'createPointsRule')->name('points.rules.create');
+        Route::post('/points/rules/store', 'storePointsRule')->name('points.rules.store');
+        // Route::get('/points/rules/edit/{id}', 'editPointsRule')->name('points.rules.edit');
+        // Route::post('/points/rules/update', 'updatePointsRule')->name('points.rules.update');
+        // Route::get('/points/rules/delete/{id}', 'deletePointsRule')->name('points.rules.delete');
 
+        // Route::get('/badges', 'badges')->name('badges');
+        // Route::get('/badges/create', 'createBadge')->name('badges.create');
+        // Route::post('/badges/store', 'storeBadge')->name('badges.store');
+        // Route::get('/badges/edit/{id}', 'editBadge')->name('badges.edit');
+        // Route::post('/badges/update', 'updateBadge')->name('badges.update');
+        // Route::get('/badges/delete/{id}', 'deleteBadge')->name('badges.delete');
+
+        // Route::get('/user/points', 'userPoints')->name('user.points');
+        // Route::get('/user/badges', 'userBadges')->name('user.badges');
+    });
         
 
     // Admin Report All Route 

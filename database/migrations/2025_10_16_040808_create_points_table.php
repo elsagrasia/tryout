@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_points', function (Blueprint $table) {
+        Schema::create('points', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('activity'); // contoh: "Selesai Tryout", "Baca Blog"
-            $table->integer('points');
-            $table->foreignId('point_rule_id')->nullable()->constrained()->onDelete('set null');
+            $table->string('activity'); // e.g. 'Complete Tryout'
+            $table->integer('points')->default(0);
+            $table->text('description')->nullable();
+            $table->enum('status', ['active', 'inactive'])->default('active');
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_points');
+        Schema::dropIfExists('points');
     }
 };

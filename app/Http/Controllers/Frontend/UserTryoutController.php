@@ -9,6 +9,8 @@ use App\Models\TryoutPackage;
 use App\Models\UserTryout; 
 use App\Models\ResultTryout;
 use App\Models\UserAnswer;
+use App\Models\UserPoint;
+use App\Models\Point;
 use App\Models\Question; 
 use App\Models\TryoutHistory;
 use App\Models\Category;
@@ -173,11 +175,24 @@ public function SubmitTryout(Request $request, $id)
     $result->finished_at     = now();
     $result->save();
 
-    // ✅ debug opsional
-    // dd(compact('total_questions', 'correct', 'wrong', 'unanswered', 'score'));
+    // ========================
+    // TAMBAH POIN USER
+    // ========================
+    $rule = Point::where('activity', 'Menyelesaikan 1 Tryout')->where('status', 'active')->first();
+    if ($rule) {
+        UserPoint::create([
+            'user_id' => $user_id,
+            'point_rule_id' => $rule->id,
+            'activity' => $rule->activity,
+            'points' => $rule->points,
+        ]);
+        Auth::user()->increment('total_points', $rule->points);
+    }
 
     return redirect()->route('user.tryout.result', $tryout_package_id)
-        ->with('success', 'Tryout selesai! Hasil Anda telah disimpan.');
+        ->with('success', 'Tryout selesai! Nilai & poin berhasil ditambahkan.');
+        // ✅ debug opsional
+        // dd(compact('total_questions', 'correct', 'wrong', 'unanswered', 'score'));
 }
 
 
@@ -308,7 +323,6 @@ public function ResultTryout($id)
         'categories'      => $categories,
     ]);
 }
-
 
 
 

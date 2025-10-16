@@ -62,10 +62,11 @@ class User extends Authenticatable
                             return $permissions;
         } // End Method 
 
-    public function points()
+        public function userPoints()
         {
             return $this->hasMany(UserPoint::class);
         }
+
 
         public function badges()
         {

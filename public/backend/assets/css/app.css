@@ -2687,3 +2687,23 @@ input::placeholder {
 		display: none
 	}
 }
+
+.status-toggle {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 18px;
+  border-radius: 30px;
+  font-weight: 600;
+  transition: 0.3s;
+}
+.status-toggle.active {
+  background-color: #e6f4ea;
+  color: #0a7f3b;
+}
+.status-toggle.inactive {
+  background-color: #f6dcdc;
+  color: #a30000;
+}
+.status-toggle i {
+  margin-right: 5px;
+}
