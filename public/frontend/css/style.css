@@ -5924,12 +5924,16 @@ div.datedropper .picker .pick-lg-b li {
   padding-right: 0;
   padding-left: 0; }
 
-.dashboard-menu-close {
-  display: none;
-  z-index: 3; }
-  @media (max-width: 1199px) {
-    .dashboard-menu-close {
-      display: inline-block; } }
+@media (min-width: 1200px) {
+  .dashboard-menu-close {
+    display: block !important;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+    z-index: 9999;
+  }
+}
 
 /*======== dashboard-menu-toggler ========*/
 .dashboard-menu-toggler {
@@ -7823,3 +7827,4 @@ div.datedropper .picker .pick-lg-b li {
 .user-points i {
     font-size: 18px;
 }
+

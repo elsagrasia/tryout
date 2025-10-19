@@ -79,11 +79,11 @@
                                                 <li class="menu-heading-block d-flex align-items-center">
                                                     <a href="#" class="avatar-sm flex-shrink-0 d-block">
                                                         <img class="img-fluid" 
-                                                    src="{{ !empty($profileData->photo)
-                                                        ? url('upload/user_images/' . $profileData->photo)
-                                                        : url('upload/no_image.jpg') }}"
-                                                    alt="Avatar image"
-                                                    style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+                                                            src="{{ !empty($profileData->photo)
+                                                                ? url('upload/user_images/' . $profileData->photo)
+                                                                : url('upload/no_image.jpg') }}"
+                                                            alt="Avatar image"
+                                                            style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
                                                     </a>
                                                     <div class="ml-2">
                                                         <h4><a href="#" class="text-black">{{ $profileData->name }}</a></h4>

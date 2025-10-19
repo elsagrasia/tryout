@@ -40,14 +40,23 @@
                     <li>
                         <div class="shop-cart-btn">
                             <div class="avatar-xs">
-                                <img class="rounded-full img-fluid" src="{{ (!empty($profileData->photo)) ? url('upload/user_images/'.$profileData->photo) : url('upload/no_image.jpg') }}" alt="Avatar image">
-                            </div>
-                            <span class="dot-status bg-1"></span>
+                                                                <img class="img-fluid" 
+                                    src="{{ !empty($profileData->photo)
+                                        ? url('upload/user_images/' . $profileData->photo)
+                                        : url('upload/no_image.jpg') }}"
+                                    alt="Avatar image"
+                                    style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+                            </div>                            
                         </div>
                         <ul class="cart-dropdown-menu after-none p-0 notification-dropdown-menu">
                             <li class="menu-heading-block d-flex align-items-center">
                                 <a href="teacher-detail.html" class="avatar-sm flex-shrink-0 d-block">
-                                    <img class="rounded-full img-fluid" src="{{ (!empty($profileData->photo)) ? url('upload/user_images/'.$profileData->photo) : url('upload/no_image.jpg') }}" alt="Avatar image">
+                                    <img class="img-fluid" 
+                                    src="{{ !empty($profileData->photo)
+                                        ? url('upload/user_images/' . $profileData->photo)
+                                        : url('upload/no_image.jpg') }}"
+                                    alt="Avatar image"
+                                    style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
                                 </a>
                                 <div class="ml-2">
                                     <h4><a href="teacher-detail.html" class="text-black">{{ $profileData->name }}</a></h4>

@@ -10,40 +10,27 @@
             <p>Belum ada riwayat tryout.</p>
         </div>
     @else
-        <div class="list-group">
-            @foreach ($histories as $history)
-                @php
-                    $tryout = $history->tryoutPackage;
-                    $tanggal = $history->updated_at->format('d M Y'); // contoh: 13 Okt 2025
-             
-                @endphp
-
-                <div class="list-group-item mb-2 d-flex justify-content-between align-items-center border rounded shadow-sm">
-                    <div class="d-flex align-items-center">
-                        <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" 
-                            style="width:45px; height:45px;">
-                            <i class="la la-check fs-5"></i>
-                        </div>
-                        <div style="margin-left: 15px;">
-                            <h6 class="mb-1 fw-bold">{{ $tryout->tryout_name }}</h6>
-                            <small class="d-block text-muted">
-                                {{ $tanggal }}
-                            </small>
-                      
-                            <small class="text-muted">
-                                {{ $tryout->total_questions }} Soal • {{ $tryout->duration }} Menit
-                            </small>
-                        </div>
+    @foreach ($histories as $history)
+    @php
+    $tryout = $history->tryoutPackage;
+    $tanggal = $history->updated_at->format('d M Y'); // contoh: 13 Okt 2025
+    
+    @endphp
+    <a href="{{ route('tryout.explanation', $tryout->id) }}" class="card card-item hover-s mb-3">
+                <div class="card-body d-flex flex-wrap align-items-center justify-content-between">
+                    <div class="pr-4">
+                        <h5 class="card-title">{{ $tryout->tryout_name }}</h5>
+                        <small>
+                            <i class="la la-calendar mr-1"></i> {{ $tanggal }}
+                        </small>
+                        <p class="card-text text-gray">{{ $tryout->total_questions }} Soal • {{ $tryout->duration }} Menit</p>
                     </div>
-
-                    <div class="d-flex align-items-center">
-                        <a href="{{ route('tryout.explanation', $tryout->id) }}" 
-                           class="btn btn-sm btn-info" 
-                           style="margin-right: 8px;">
-                            Lihat Hasil
-                        </a>
-                    </div>
-                </div>
+                    <div class="btn-box">
+                        <span class="fs-18 text-black">Lihat Hasil<i class="la la-arrow-right ml-1"></i></span>
+                    </div><!-- end btn-box -->
+                </div><!-- end card-body -->
+            </a><!-- end card -->
+   
             @endforeach
         </div>
     @endif

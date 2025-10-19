@@ -79,7 +79,7 @@
             <ul>
                 <li> <a href="{{ route('points.rules') }}"><i class='bx bx-radio-circle'></i>Point </a>
                 </li>
-                <li> <a href="{{ route('all.instructor') }}"><i class='bx bx-radio-circle'></i>Badge</a>
+                <li> <a href="{{ route('badges') }}"><i class='bx bx-radio-circle'></i>Badge</a>
                 </li>        
             </ul>
         </li>        

@@ -141,7 +141,7 @@
     /// End WishList Remove // 
 </script>
 {{-- /// End Load Wishlist Data // --}}
-
+<!-- 
 <!-- 
 {{-- /// start join tryout  // --}}
 <script type="text/javascript">
@@ -196,9 +196,7 @@ function joinTryout(tryoutId) {
     });
 }
 </script>
-
-
-
+ -->
 
 
 

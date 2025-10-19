@@ -189,10 +189,38 @@ public function SubmitTryout(Request $request, $id)
         Auth::user()->increment('total_points', $rule->points);
     }
 
-    return redirect()->route('user.tryout.result', $tryout_package_id)
-        ->with('success', 'Tryout selesai! Nilai & poin berhasil ditambahkan.');
-        // ✅ debug opsional
-        // dd(compact('total_questions', 'correct', 'wrong', 'unanswered', 'score'));
+    // ========================
+// CEK & BERIKAN BADGE
+// ========================
+$completedTryouts = \App\Models\ResultTryout::where('user_id', $user_id)->count();
+
+$badges = \App\Models\Badge::where('type', 'tryout')
+    ->where('status', 'active')
+    ->orderBy('threshold', 'asc')
+    ->get();
+
+foreach ($badges as $badge) {
+    $alreadyHas = \App\Models\UserBadge::where('user_id', $user_id)
+        ->where('badge_id', $badge->id)
+        ->exists();
+
+    if (!$alreadyHas && $completedTryouts >= $badge->threshold) {
+        \App\Models\UserBadge::create([
+            'user_id' => $user_id,
+            'badge_id' => $badge->id,
+        ]);
+
+        // Opsional: Tambahkan notifikasi kecil
+        session()->flash('success', 'Selamat! Kamu mendapatkan badge "' . $badge->name . '"');
+    }
+}
+
+    $notification = array(
+        'message' => 'Tryout selesai! Nilai & poin berhasil ditambahkan.',
+        'alert-type' => 'success'
+    );
+    return redirect()->route('user.tryout.result', $tryout_package_id)->with($notification);
+ 
 }
 
 

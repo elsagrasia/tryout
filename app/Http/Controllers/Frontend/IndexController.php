@@ -12,6 +12,9 @@ use App\Models\Course_goal;
 use App\Models\CourseSection;
 use App\Models\CourseLecture;
 use App\Models\User;
+use App\Models\Tryout;
+use App\Models\userBadge;
+use App\Models\Badge;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Auth; 
 use Carbon\Carbon;
@@ -113,6 +116,18 @@ class IndexController extends Controller
     }
 
 
+public function myBadges()
+{
+    $userId = Auth::id();
+
+    $badges = \App\Models\Badge::orderBy('threshold', 'asc')->get();
+
+    $ownedBadges = \App\Models\UserBadge::where('user_id', $userId)
+        ->pluck('badge_id')
+        ->toArray();
+
+    return view('frontend.badge.all_badge', compact('badges', 'ownedBadges'));
+}
 
 
 }

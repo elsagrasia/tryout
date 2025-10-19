@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('threshold')->default(0); // misal 100 poin
             $table->string('type')->default('points'); // 'points'/'tryout'/'blog'
             $table->string('icon')->nullable();
+            $table->enum('status', ['active', 'inactive'])->default('active');
             $table->timestamps();
         });
     }

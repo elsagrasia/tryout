@@ -80,6 +80,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/mytryout/history', [TryoutHistoryController::class, 'index'])->middleware('auth')->name('tryout.history');
     
+    Route::get('/my-badges', [IndexController::class, 'myBadges'])->name('user.badges');
 
   
 });
@@ -128,15 +129,16 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
         Route::get('/points/rules', 'pointsRules')->name('points.rules');
         Route::get('/points/rules/create', 'createPointsRule')->name('points.rules.create');
         Route::post('/points/rules/store', 'storePointsRule')->name('points.rules.store');
-        // Route::get('/points/rules/edit/{id}', 'editPointsRule')->name('points.rules.edit');
-        // Route::post('/points/rules/update', 'updatePointsRule')->name('points.rules.update');
-        // Route::get('/points/rules/delete/{id}', 'deletePointsRule')->name('points.rules.delete');
+        Route::get('/points/rules/edit/{id}', 'editPointsRule')->name('points.rules.edit');
+        Route::post('/points/rules/update', 'updatePointsRule')->name('points.rules.update');
+        Route::get('/points/rules/delete/{id}', 'deletePointsRule')->name('points.rules.delete');
 
-        // Route::get('/badges', 'badges')->name('badges');
-        // Route::get('/badges/create', 'createBadge')->name('badges.create');
-        // Route::post('/badges/store', 'storeBadge')->name('badges.store');
-        // Route::get('/badges/edit/{id}', 'editBadge')->name('badges.edit');
-        // Route::post('/badges/update', 'updateBadge')->name('badges.update');
+        Route::get('/badges', 'badges')->name('badges');
+        Route::get('/badges/create', 'createBadge')->name('badges.create');
+        Route::post('/badges/store', 'storeBadge')->name('badges.store');
+        Route::patch('/admin/badge/{id}/toggle', [GamificationController::class, 'toggleBadge'])->name('badge.toggle');
+        Route::get('/badges/edit/{id}', 'editBadge')->name('badges.edit');
+        Route::post('/badges/update', 'updateBadge')->name('badges.update');
         // Route::get('/badges/delete/{id}', 'deleteBadge')->name('badges.delete');
 
         // Route::get('/user/points', 'userPoints')->name('user.points');

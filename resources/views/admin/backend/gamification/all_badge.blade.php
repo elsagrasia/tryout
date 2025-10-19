@@ -1,6 +1,5 @@
 @extends('admin.admin_dashboard')
 @section('admin')
-
 <div class="page-content">
     <!--breadcrumb-->
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3"> 
@@ -9,18 +8,19 @@
                 <ol class="breadcrumb mb-0 p-0">
                     <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">Poin</li>
+                    <li class="breadcrumb-item active" aria-current="page">Daftar Badge</li>
                 </ol>
             </nav>
         </div>
         <div class="ms-auto">
             <div class="btn-group">
-           <a href="{{ route('points.rules.create') }}" class="btn btn-primary px-5">Tambah Aturan Poin</a>  
+           <a href="{{ route('badges.create') }}" class="btn btn-primary px-5">Tambah Aturan Lencana</a>  
             </div>
         </div>
     </div>
     <!--end breadcrumb-->
   
+
     <div class="card">
         <div class="card-body">
             <div class="table-responsive">
@@ -28,21 +28,25 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Aktivitas</th>
-                            <th>Poin</th> 
+                            <th>Gambar</th>
+                            <th>Nama</th> 
                             <th>Deskripsi</th>
+                            <th>Kriteria</th>
+                            <th>Ambang</th>
                             <th>Status</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                        
-                        @foreach ($points as $key=> $item) 
+                        @foreach ($badges as $key=> $item) 
                         <tr>
-                            <td>{{ $key+1 }}</td>
-                            <td>{{ $item->activity }}</td>
-                            <td>{{ $item->points }}</td>
+                            <td>{{ $key+1 }}</td>                           
+                            <td><img src="{{ asset($item->icon) }}" alt="{{ $item->name }}" style="width: 60px; height:60px;"></td>
+                            <td>{{ $item->name }}</td>
                             <td>{{ $item->description }}</td>
+                            <td>{{ ucfirst($item->type) }}</td>
+                            <td>{{ $item->threshold }}</td>
                             <td>
                             		<label class="form-check-label ms-2" for="flexSwitchCheckSuccess status-{{ $item->id }}">
 										<span class="badge rounded-pill {{ $item->status === 'active' ? 'bg-success' : 'bg-danger' }} status-badge-{{ $item->id }}">
@@ -51,8 +55,8 @@
 									</label>
                             </td>
                             <td>
-       <a href="{{ route('points.rules.edit',$item->id) }}" class="btn btn-info px-5">Edit </a>   
-       <a href="{{ route('points.rules.delete',$item->id) }}" class="btn btn-danger px-5 delete-btn">Delete </a>                    
+       <a href="{{ route('badges.edit',$item->id) }}" class="btn btn-info" title="Edit"><i class="lni lni-eraser"></i></a>   
+       <a href="{{ route('points.rules.delete',$item->id) }}" class="btn btn-danger delete-btn" title="Delete"><i class="lni lni-trash"></i></a>                    
                             </td>
                         </tr>
                         @endforeach
@@ -68,8 +72,5 @@
    
    
 </div>
- 
-
-
 
 @endsection

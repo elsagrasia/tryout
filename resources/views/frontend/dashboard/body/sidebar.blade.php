@@ -48,8 +48,8 @@
     </li>
 
     {{-- Gamifikasi --}}
-    <li class="{{ request()->is('dashboard-reviews*') ? 'page-active' : '' }}">
-        <a href="dashboard-reviews.html">
+    <li class="{{ request()->is('user.badges*') ? 'page-active' : '' }}">
+        <a href="{{ route('user.badges') }}">
             <svg class="mr-2" xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 0 24 24" width="18px">
                 <path d="M0 0h24v24H0V0z" fill="none"/>
                 <path d="M22 9.24l-7.19-.62L12 2
@@ -65,3 +65,5 @@
 
 
 </ul>
+
+
