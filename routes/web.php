@@ -45,9 +45,7 @@ use App\Http\Controllers\Backend\GamificationController;
 
 Route::get('/', [UserController::class, 'index'])->name('index');
 
-Route::get('/dashboard', function () {
-    return view('frontend.dashboard.index');
-})->middleware(['auth','roles:user','verified'])->name('dashboard');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/user/profile', [UserController::class, 'userProfile'])->name('user.profile');
@@ -279,19 +277,6 @@ Route::middleware(['auth', 'roles:instructor'])->group(function () {
 
     });
 
-    
-
-    // // Course Section and Lecture Routes
-    // Route::controller(CourseController::class)->group(function () {
-    //     Route::get('/add/course/lecture/{id}', 'addCourseLecture')->name('add.course.lecture');
-    //     Route::post('/add/course/section/', 'addCourseSection')->name('add.course.section');
-    //     Route::post('/save-lecture/', 'saveLecture')->name('save-lecture');
-    //     Route::get('/edit/lecture/{id}','editLecture')->name('edit.lecture');
-    //     Route::post('/update/course/lecture','updateCourseLecture')->name('update.course.lecture');
-    //     Route::get('/delete/lecture/{id}','deleteLecture')->name('delete.lecture');
-    //     Route::post('/delete/section/{id}','deleteSection')->name('delete.section');
-
-    // });
 
     // instructor All Order Route 
     Route::controller(OrderController::class)->group(function(){
@@ -324,13 +309,18 @@ Route::get('/tryout/{tryout_id}/join',[UserTryoutController::class, 'AddToTryout
 Route::get('/instructor/login', [InstructorController::class, 'instructorLogin'])->name('instructor.login')->middleware(RedirectIfAuthenticated::class);
 
 Route::get('/course/details/{id}/{slug}', [IndexController::class, 'courseDetails']);
-// Route::get('/category/{id}/{slug}', [IndexController::class, 'categoryCourse']);
-// Route::get('/subcategory/{id}/{slug}', [IndexController::class, 'subcategoryCourse']);
+
 Route::get('/instructor/details/{id}', [IndexController::class, 'instructorDetails'])->name('instructor.details');
 Route::post('/add-to-wishlist/{tryout_id}', [WishListController::class, 'addToWishList']);
 Route::post('/cart/data/store/{id}', [CartController::class, 'addToCart']);
 Route::post('/buy/data/store/{id}', [CartController::class, 'buyToCart']);
 Route::get('/cart/data/', [CartController::class, 'cartData']);
+
+Route::get('/dashboard', [IndexController::class, 'UserDashboard'])
+    ->middleware(['auth', 'roles:user', 'verified'])
+    ->name('user.dashboard');
+
+
 // Get Data from Minicart 
 Route::get('/course/mini/cart/', [CartController::class, 'addMiniCart']);
 Route::get('/minicart/course/remove/{rowId}', [CartController::class, 'removeMiniCart']);

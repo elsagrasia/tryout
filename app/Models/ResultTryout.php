@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class ResultTryout extends Model
 {
     use HasFactory;
-
     protected $guarded = [];
 
     public function user()
@@ -20,4 +19,7 @@ class ResultTryout extends Model
     {
         return $this->belongsTo(TryoutPackage::class, 'tryout_package_id');
     }
+
+
+
 }

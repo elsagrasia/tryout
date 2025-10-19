@@ -1,32 +1,31 @@
+
 $(function(){
     $(document).on('click','.delete-btn',function(e){
         e.preventDefault();
         var link = $(this).attr("href");
 
-  
-                  Swal.fire({
-                    title: 'Are you sure?',
-                    text: "Delete This Data?",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!'
-                  }).then((result) => {
-                    if (result.isConfirmed) {
-                      window.location.href = link
-                      Swal.fire(
-                        'Deleted!',
-                        'Your file has been deleted.',
-                        'success'
-                      )
-                    }
-                  }) 
-
-
+        Swal.fire({
+            title: 'Apakah Anda yakin?',
+            text: "Menghapus Data ini?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yaa, Hapus!',
+            cancelButtonText: 'Batal' // ← tambahkan ini
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = link
+                Swal.fire(
+                    'Dihapus!',
+                    'Berkas Anda telah dihapus.',
+                    'success' // sebaiknya pakai 'success' bukan 'berhasil'
+                )
+            }
+        })
     });
+});
 
-  });
 
   /////////// confirm 
 
@@ -35,25 +34,24 @@ $(function(){
         e.preventDefault();
         var link = $(this).attr("href");
 
-  
-                  Swal.fire({
-                    title: 'Are you sure?',
-                    text: "Confirm This Data?",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, Confirm it!'
-                  }).then((result) => {
-                    if (result.isConfirmed) {
-                      window.location.href = link
-                      Swal.fire(
-                        'Confirm!',
-                        'Your file has been Confirm.',
-                        'success'
-                      )
-                    }
-                  }) 
+        Swal.fire({
+            title: 'Apakah Anda yakin?',
+            text: "Menghapus Data ini?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yaa, Hapus!',
+            cancelButtonText: 'Batal' // ← tambahkan ini
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = link
+                Swal.fire(
+                    'Dihapus!',
+                    'Berkas Anda telah dihapus.',
+                    'success'
+                )
+            }
+        })
     });
-
-  });
+});

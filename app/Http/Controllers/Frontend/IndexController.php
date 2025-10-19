@@ -5,129 +5,110 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-// use App\Models\Category;
-// use App\Models\SubCategory;
-use App\Models\Course;
-use App\Models\Course_goal;
-use App\Models\CourseSection;
-use App\Models\CourseLecture;
 use App\Models\User;
-use App\Models\Tryout;
+use App\Models\UserTryout;
+use App\Models\ResultTryout;
+use App\Models\Category;
 use App\Models\userBadge;
 use App\Models\Badge;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Auth; 
 use Carbon\Carbon;
 use App\Models\TryoutPackage;
+use App\Models\Question;
 
 class IndexController extends Controller
 {
-    //
-    // public function courseDetails($id, $slug)
-    // {
-    //     $course = Course::find($id);
-    //     $goals = Course_goal::where('course_id',$id)->orderBy('id','DESC')->get();
-
-    //     $ins_id = $course->instructor_id;
-    //     $instructorCourses = Course::where('instructor_id',$ins_id)->orderBy('id','DESC')->get();
-
-    //     $categories = Category::latest()->get();
-
-    //     $cat_id = $course->category_id; 
-    //     $relatedCourses = Course::where('category_id',$cat_id)->where('id','!=',$id)->orderBy('id','DESC')->limit(3)->get();
-
-    //     return view('frontend.course.course_details',compact('course','goals','instructorCourses','categories','relatedCourses'));
-    // } // End Method 
     
-    //     public function categoryCourse($id, $slug){
-
-    //     $courses = Course::where('category_id',$id)->where('status','1')->get();
-    //     $category = Category::where('id',$id)->first();
-    //     $categories = Category::latest()->get();
-    //     return view('frontend.category.category_all',compact('courses','category','categories'));
-
-
-    // }// End Method 
-
-    // public function subcategoryCourse($id, $slug){
-
-    //     $courses = Course::where('subcategory_id',$id)->where('status','1')->get();
-    //     $subcategory = SubCategory::where('id',$id)->first();
-    //     $categories = Category::latest()->get();
-    //     return view('frontend.category.subcategory_all',compact('courses','subcategory','categories'));
-
-    // } // End Method
-
-    // public function instructorDetails($id)
+    // public function tryoutDetails($id)
     // {
-    //     $instructor = User::find($id);
-    //     $courses = Course::where('instructor_id', $id)->get();
-    //     return view('frontend.instructor.instructor_details', compact('instructor', 'courses'));
-    // } // End Method
+    //     // Ambil tryout utama berdasarkan ID
+    //     $tryout = Tryout::findOrFail($id);
 
-    // public function tryoutDetails()
-    // {
-    //     $categories = Category::orderBy('category_name', 'ASC')->get();
-    //     $tryoutPackages = TryoutPackage::with('user')->orderBy('id', 'DESC')->get();
+    //     // Ambil instructor dari tryout ini
+    //     $instructor_id = $tryout->instructor_id;
 
-    //     return view('frontend.index', compact('categories', 'tryoutPackages'));
+    //     // Ambil daftar tryout lain dari instructor yang sama (kecuali yang sedang dibuka)
+    //     $instructorTryouts = Tryout::where('instructor_id', $instructor_id)
+    //         ->where('id', '!=', $id)
+    //         ->orderBy('id', 'DESC')
+    //         ->get();
+
+    //     // Ambil semua kategori (kalau ingin ditampilkan di sidebar/tab)
+    //     $categories = Category::latest()->get();
+
+    //     // Ambil tryout lain dari kategori yang sama (related tryouts)
+    //     $relatedTryouts = Tryout::where('category_id', $tryout->category_id)
+    //         ->where('id', '!=', $id)
+    //         ->orderBy('id', 'DESC')
+    //         ->limit(3)
+    //         ->get();
+
+    //     return view('frontend.tryout.tryout_details', compact(
+    //         'tryout',
+    //         'instructorTryouts',
+    //         'categories',
+    //         'relatedTryouts'
+    //     ));
     // }
 
-    public function tryoutDetails($id)
-    {
-        // Ambil tryout utama berdasarkan ID
-        $tryout = Tryout::findOrFail($id);
-
-        // Ambil instructor dari tryout ini
-        $instructor_id = $tryout->instructor_id;
-
-        // Ambil daftar tryout lain dari instructor yang sama (kecuali yang sedang dibuka)
-        $instructorTryouts = Tryout::where('instructor_id', $instructor_id)
-            ->where('id', '!=', $id)
-            ->orderBy('id', 'DESC')
-            ->get();
-
-        // Ambil semua kategori (kalau ingin ditampilkan di sidebar/tab)
-        $categories = Category::latest()->get();
-
-        // Ambil tryout lain dari kategori yang sama (related tryouts)
-        $relatedTryouts = Tryout::where('category_id', $tryout->category_id)
-            ->where('id', '!=', $id)
-            ->orderBy('id', 'DESC')
-            ->limit(3)
-            ->get();
-
-        return view('frontend.tryout.tryout_details', compact(
-            'tryout',
-            'instructorTryouts',
-            'categories',
-            'relatedTryouts'
-        ));
-    }
-
-    public function instructorDetails($id)
-    {
-        $instructor = User::find($id);
-
-        // tambahkan ini untuk ambil data tryout yang dibuat oleh instruktur
-        $tryoutPackages = TryoutPackage::where('instructor_id', $id)->get();
-
-        return view('frontend.instructor.instructor_details', compact('instructor', 'courses', 'tryoutPackages'));
-    }
-
-
-public function myBadges()
+public function UserDashboard()
 {
-    $userId = Auth::id();
+    $user = Auth::user();
 
-    $badges = \App\Models\Badge::orderBy('threshold', 'asc')->get();
+    // Total data umum
+    $totalTryout = UserTryout::where('user_id', $user->id)->count();
+    $totalSelesai = ResultTryout::where('user_id', $user->id)->count();
+    $rataSkor = ResultTryout::where('user_id', $user->id)->avg('score') ?? 0;
+    $rataSkor = round($rataSkor, 2);
 
-    $ownedBadges = \App\Models\UserBadge::where('user_id', $userId)
-        ->pluck('badge_id')
-        ->toArray();
+    // Ambil kategori unik dari tabel questions
+    $categoryIds = Question::select('category_id')->distinct()->pluck('category_id');
 
-    return view('frontend.badge.all_badge', compact('badges', 'ownedBadges'));
+    $categoryScores = [];
+
+    foreach ($categoryIds as $categoryId) {
+        // Ambil nama kategori dari tabel categories
+        $categoryName = Category::where('id', $categoryId)->value('category_name') ?? 'Tanpa Kategori';
+
+        // Hitung rata-rata skor untuk kategori ini
+        $avgScore = ResultTryout::where('user_id', $user->id)
+            ->whereHas('tryoutPackage.questions', function ($q) use ($categoryId) {
+                $q->where('category_id', $categoryId);
+            })
+            ->avg('score') ?? 0;
+
+        $categoryScores[$categoryName] = round($avgScore, 2);
+    }
+
+    // Data untuk ChartJS
+    $chartLabels = array_keys($categoryScores); // tampilkan category_name
+    $chartData = array_values($categoryScores);
+
+    return view('frontend.dashboard.index', compact(
+        'totalTryout',
+        'totalSelesai',
+        'rataSkor',
+        'chartLabels',
+        'chartData'
+    ));
 }
+
+
+
+    
+    public function myBadges()
+    {
+        $userId = Auth::id();
+
+        $badges = \App\Models\Badge::orderBy('threshold', 'asc')->get();
+
+        $ownedBadges = \App\Models\UserBadge::where('user_id', $userId)
+            ->pluck('badge_id')
+            ->toArray();
+
+        return view('frontend.badge.all_badge', compact('badges', 'ownedBadges'));
+    }
 
 
 }
