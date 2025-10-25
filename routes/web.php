@@ -323,3 +323,4 @@ Route::get('/user-all', [ChatController::class, 'getAllUsers']);
 
     Route::get('/my-badges', [IndexController::class, 'myBadges'])->name('user.badges');
     Route::get('user/leaderboard',[IndexController::class, 'userLeaderboard'])->name('user.leaderboard');
+    Route::get('user/dashboard',[IndexController::class, 'userDashboard'])->name('user.dashboard');

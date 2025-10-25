@@ -35,7 +35,7 @@
 
 
         <div class="row text-center g-4 mb-4 justify-content-center">
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="card border-0 shadow-sm" style="border-radius: 12px;">
                     <div class="card-body text-center">
                         <h3 class="fw-bold mb-0" style="color:#1f8b4c;">{{ $totalTryout }}</h3>
@@ -44,7 +44,7 @@
                 </div>
             </div>
 
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="card border-0 shadow-sm" style="border-radius: 12px;">
                     <div class="card-body text-center">
                         <h3 class="fw-bold mb-0" style="color:#0d6efd;">{{ $totalSelesai }}</h3>
@@ -53,7 +53,7 @@
                 </div>
             </div>
 
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="card border-0 shadow-sm" style="border-radius: 12px;">
                     <div class="card-body text-center">
                         <h3 class="fw-bold mb-0" style="color:#f4b400;">{{ $rataSkor }}</h3>
@@ -128,8 +128,8 @@ new Chart(ctx, {
 
 <style>
 body { 
-    font-family: 'Poppins', sans-serif; 
-    background-color: #f5f7fa; 
+  
+   
 }
 .card { 
     transition: all 0.2s ease; 
