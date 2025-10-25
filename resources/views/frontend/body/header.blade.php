@@ -36,8 +36,8 @@
                         <div class="menu-wrapper">
                             <nav class="main-menu">
                                 <ul>
-                                    <li><a href="#">Tryout </a></li>
-                                    <li><a href="#">Blog </a></li>
+                                    <li><a href="#tryout">Tryout </a></li>
+                                    <li><a href="#blog">Blog </a></li>
                                     <li><a href="#">Kontak </a></li>
                                 </ul><!-- end ul -->
                             </nav><!-- end main-menu -->

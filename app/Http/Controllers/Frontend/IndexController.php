@@ -6,11 +6,13 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
-use App\Models\UserTryout;
-use App\Models\ResultTryout;
-use App\Models\Category;
+use App\Models\Tryout;
 use App\Models\userBadge;
 use App\Models\Badge;
+use App\Models\userTryout;
+use App\Models\category;
+
+use App\Models\resultTryout;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Auth; 
 use Carbon\Carbon;
@@ -104,8 +106,36 @@ class IndexController extends Controller
             ->pluck('badge_id')
             ->toArray();
 
-        return view('frontend.badge.all_badge', compact('badges', 'ownedBadges'));
-    }
+    return view('frontend.badge.all_badge', compact('badges', 'ownedBadges'));
+}
+
+public function userLeaderboard()
+{
+    $leaderboard = User::where('role', 'student')
+        ->orderByDesc('total_points')
+        ->select('id', 'name', 'total_points', 'photo')
+        ->take(50)
+        ->get();
+
+    // Tambahkan data tryout & nilai rata-rata
+    $leaderboard->transform(function ($user, $index) {
+        $user->total_tryouts = ResultTryout::where('user_id', $user->id)->count();
+        $user->average_score = round(ResultTryout::where('user_id', $user->id)->avg('score') ?? 0, 2);
+        $user->rank = $index + 1;
+        return $user;
+    });
+
+    // Pisahkan top 3 dan sisanya
+    $topThree = $leaderboard->take(3);
+    $others = $leaderboard->slice(3);
+
+    $currentUser = Auth::user();
+    $currentRank = User::where('role', 'student')
+        ->where('total_points', '>', $currentUser->total_points)
+        ->count() + 1;
+
+    return view('frontend.dashboard.user_leaderboard', compact('leaderboard', 'topThree', 'others', 'currentUser', 'currentRank'));
+}
 
 
 }

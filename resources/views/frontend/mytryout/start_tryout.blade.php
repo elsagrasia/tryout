@@ -48,6 +48,11 @@
                         <div class="card shadow-sm border-0">
 
                             <div class="card-body">
+                                @if (!empty($question->category))
+                                    <p class="mb-3 text-muted">
+                                        {{ $question->category->category_name }}
+                                    </p>
+                                @endif
 
                                 {{-- Tampilkan vignette jika ada --}}
                                 @if (!empty($question->vignette))
@@ -100,6 +105,7 @@
 
                                 <div class="d-flex justify-content-between mt-4">
                                     @if ($index > 0)
+                                    
                                         <button type="button" class="btn btn-outline-secondary prev-btn">← Sebelumnya</button>
                                     @else
                                         <div></div>

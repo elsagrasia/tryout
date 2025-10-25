@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Point;
 use App\Models\Badge;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Facades\Image;
 use Carbon\Carbon;
 class GamificationController extends Controller
@@ -170,9 +172,30 @@ class GamificationController extends Controller
         $badge->save();
 
         $notification = array(
-            'message' => 'Badge Berhasil Diupdate',
+            'message' => 'Badge Berhasil Diperbarui',
             'alert-type' => 'success'
         );
         return redirect()->route('badges')->with($notification);
     }// End Method
+
+    public function deleteBadge($id){
+        $badge = Badge::findOrFail($id);
+
+        // Hapus ikon badge jika ada
+        if ($badge->icon && file_exists(public_path($badge->icon))) {
+            unlink(public_path($badge->icon));
+        }
+
+        $badge->delete();
+
+        $notification = array(
+            'message' => 'Badge Berhasil Dihapus',
+            'alert-type' => 'success'
+        );
+        return redirect()->route('badges')->with($notification);
+    }// End Method
+
+
+
+
 }

@@ -24,27 +24,21 @@ Easy Learning
 <!--======================================
         START COURSE AREA
 ======================================-->
-@include('frontend.home.courses-area') 
+<section id="tryout">
+        @include('frontend.home.courses-area') 
+</section>
 <!--======================================
         END COURSE AREA
 ======================================-->
 
-<div class="section-block"></div>
 
-<!--======================================
-        START REGISTER AREA
-======================================-->
-@include('frontend.home.register-area')
-<!--======================================
-        END REGISTER AREA
-======================================-->
-
-<div class="section-block"></div>
 
 <!-- ================================
        START BLOG AREA
 ================================= -->
-@include('frontend.home.blog-area')
+<section id="blog">
+  @include('frontend.home.blog-area')
+</section>
 <!-- ================================
        START BLOG AREA
 ================================= -->
