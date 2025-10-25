@@ -6,7 +6,7 @@
     $profileData = App\Models\User::find($id);
 @endphp
 
-<div class="container py-5" style="max-width: 1100px;">
+<div class="container py-4" style="max-width: 1100px; margin-top: -20px;">
     {{-- Profile Header --}}
     <div class="card border-0 shadow-sm p-4 rounded-4" style="background-color: #f9fcf9; border-radius: 25px;">
         <div class="d-flex align-items-center mb-4">
@@ -62,8 +62,6 @@
                 </div>
             </div>
         </div>
-
-        
 
         {{-- Level Progress --}}
         <div class="mb-3 mt-2">

@@ -52,50 +52,47 @@ class IndexController extends Controller
     //     ));
     // }
 
-public function UserDashboard()
-{
-    $user = Auth::user();
+    public function UserDashboard()
+    {
+        $user = Auth::user();
 
-    // Total data umum
-    $totalTryout = UserTryout::where('user_id', $user->id)->count();
-    $totalSelesai = ResultTryout::where('user_id', $user->id)->count();
-    $rataSkor = ResultTryout::where('user_id', $user->id)->avg('score') ?? 0;
-    $rataSkor = round($rataSkor, 2);
+        // Total data umum
+        $totalTryout = UserTryout::where('user_id', $user->id)->count();
+        $totalSelesai = ResultTryout::where('user_id', $user->id)->count();
+        $rataSkor = ResultTryout::where('user_id', $user->id)->avg('score') ?? 0;
+        $rataSkor = round($rataSkor, 2);
 
-    // Ambil kategori unik dari tabel questions
-    $categoryIds = Question::select('category_id')->distinct()->pluck('category_id');
+        // Ambil kategori unik dari tabel questions
+        $categoryIds = Question::select('category_id')->distinct()->pluck('category_id');
 
-    $categoryScores = [];
+        $categoryScores = [];
 
-    foreach ($categoryIds as $categoryId) {
-        // Ambil nama kategori dari tabel categories
-        $categoryName = Category::where('id', $categoryId)->value('category_name') ?? 'Tanpa Kategori';
+        foreach ($categoryIds as $categoryId) {
+            // Ambil nama kategori dari tabel categories
+            $categoryName = Category::where('id', $categoryId)->value('category_name') ?? 'Tanpa Kategori';
 
-        // Hitung rata-rata skor untuk kategori ini
-        $avgScore = ResultTryout::where('user_id', $user->id)
-            ->whereHas('tryoutPackage.questions', function ($q) use ($categoryId) {
-                $q->where('category_id', $categoryId);
-            })
-            ->avg('score') ?? 0;
+            // Hitung rata-rata skor untuk kategori ini
+            $avgScore = ResultTryout::where('user_id', $user->id)
+                ->whereHas('tryoutPackage.questions', function ($q) use ($categoryId) {
+                    $q->where('category_id', $categoryId);
+                })
+                ->avg('score') ?? 0;
 
-        $categoryScores[$categoryName] = round($avgScore, 2);
+            $categoryScores[$categoryName] = round($avgScore, 2);
+        }
+
+        // Data untuk ChartJS
+        $chartLabels = array_keys($categoryScores); // tampilkan category_name
+        $chartData = array_values($categoryScores);
+
+        return view('frontend.dashboard.index', compact(
+            'totalTryout',
+            'totalSelesai',
+            'rataSkor',
+            'chartLabels',
+            'chartData'
+        ));
     }
-
-    // Data untuk ChartJS
-    $chartLabels = array_keys($categoryScores); // tampilkan category_name
-    $chartData = array_values($categoryScores);
-
-    return view('frontend.dashboard.index', compact(
-        'totalTryout',
-        'totalSelesai',
-        'rataSkor',
-        'chartLabels',
-        'chartData'
-    ));
-}
-
-
-
     
     public function myBadges()
     {

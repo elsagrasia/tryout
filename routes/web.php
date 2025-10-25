@@ -46,7 +46,6 @@ use App\Http\Controllers\Backend\GamificationController;
 Route::get('/', [UserController::class, 'index'])->name('index');
 
 
-
 Route::middleware('auth')->group(function () {
     Route::get('/user/profile', [UserController::class, 'userProfile'])->name('user.profile');
     Route::post('/user/profile/update', [UserController::class, 'userProfileUpdate'])->name('user.profile.update');
@@ -319,6 +318,11 @@ Route::get('/cart/data/', [CartController::class, 'cartData']);
 Route::get('/dashboard', [IndexController::class, 'UserDashboard'])
     ->middleware(['auth', 'roles:user', 'verified'])
     ->name('user.dashboard');
+
+Route::get('/dashboard', [IndexController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
+
 
 
 // Get Data from Minicart 
