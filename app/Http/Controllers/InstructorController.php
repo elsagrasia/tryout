@@ -6,13 +6,49 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use App\Models\UserTryout;
+use App\Models\TryoutPackage;
+use App\Models\Question;
+use App\Models\ResultTryout;
+use Carbon\Carbon;
 
 class InstructorController extends Controller
 {
     public function instructorDashboard()
     {
-        return view('instructor.index');
-    } //end method
+        $instructorId = Auth::id();
+
+        // Total Peserta yang mengikuti Tryout instruktur ini
+        $totalPeserta = UserTryout::whereIn('tryout_package_id', function($query) use ($instructorId) {
+            $query->select('id')
+                ->from('tryout_packages')
+                ->where('instructor_id', $instructorId);
+        })->distinct('user_id')->count('user_id');
+
+        // Total Tryout yang dibuat oleh instruktur
+        $totalTryout = TryoutPackage::where('instructor_id', $instructorId)->count();
+
+        // Total Soal dari semua Tryout milik instruktur
+        $totalSoal = \DB::table('questions')
+            ->leftJoin('package_question', 'questions.id', '=', 'package_question.question_id')
+            ->leftJoin('tryout_packages', 'package_question.tryout_package_id', '=', 'tryout_packages.id')
+            ->where('tryout_packages.instructor_id', $instructorId)
+            ->orWhereNull('tryout_packages.instructor_id') // biar soal tanpa paket ikut
+            ->distinct('questions.id')
+            ->count('questions.id');
+
+        // Hitung rata-rata nilai peserta di tryout instruktur
+        $rataRataNilai = ResultTryout::whereIn('tryout_package_id', function($query) use ($instructorId) {
+            $query->select('id')
+                ->from('tryout_packages')
+                ->where('instructor_id', $instructorId);
+        })->avg('score') ?? 0;
+
+        $rataRataNilai = round($rataRataNilai, 2);
+
+        return view('instructor.index', compact('totalTryout', 'totalSoal', 'totalPeserta', 'rataRataNilai'));
+    }
+
 
     public function instructorLogout(Request $request) {
         Auth::guard('web')->logout();
@@ -66,7 +102,6 @@ class InstructorController extends Controller
         );
         return back()->with($notification);
     } //end method
-
 
     public function instructorChangePassword() {
         

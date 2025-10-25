@@ -141,10 +141,9 @@
     /// End WishList Remove // 
 </script>
 {{-- /// End Load Wishlist Data // --}}
-<!-- 
-<!-- 
+
 {{-- /// start join tryout  // --}}
-<script type="text/javascript">
+{{-- <script type="text/javascript">
 function joinTryout(tryoutId) {
     fetch(`/tryout/${tryoutId}/join`, {
         method: 'POST',
@@ -195,8 +194,7 @@ function joinTryout(tryoutId) {
         });
     });
 }
-</script>
- -->
+</script> --}}
 
 
 

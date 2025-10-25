@@ -32,4 +32,5 @@ class TryoutPackage extends Model
     public function attempts() {
         return $this->hasMany(Attempt::class);
     }
+    
 }
