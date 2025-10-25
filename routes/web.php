@@ -319,10 +319,6 @@ Route::get('/dashboard', [IndexController::class, 'UserDashboard'])
     ->middleware(['auth', 'roles:user', 'verified'])
     ->name('user.dashboard');
 
-Route::get('/dashboard', [IndexController::class, 'index'])
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
-
 
 
 // Get Data from Minicart 
