@@ -1,11 +1,11 @@
 @extends('frontend.dashboard.user_dashboard')
 @section('userdashboard')
 
-<div class="container py-4">
+<div class="container">
     <h4 class="mb-3">Riwayat Tryout</h4>
     
     @if($histories->isEmpty())
-        <div class="text-center text-muted mt-5">
+        <div class="text-center text-muted ">
             <i class="la la-folder-open fs-40 mb-3 d-block"></i>
             <p>Belum ada riwayat tryout.</p>
         </div>

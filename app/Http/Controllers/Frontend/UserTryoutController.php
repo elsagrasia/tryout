@@ -11,6 +11,7 @@ use App\Models\ResultTryout;
 use App\Models\UserAnswer;
 use App\Models\UserPoint;
 use App\Models\Point;
+use App\Models\User;
 use App\Models\Question; 
 use App\Models\TryoutHistory;
 use App\Models\Category;
@@ -31,28 +32,6 @@ class UserTryoutController extends Controller
         // Kirim ke view
         return view('frontend.mytryout.my_all_tryout', compact('myTryouts'));
     }
-
-    // public function AddToTryout(Request $request, $tryoutPackage_id){
-        
-    //     if (Auth::check()) {
-    //        $exists = UserTryout::where('user_id',Auth::id())->where('tryout_package_id',$tryoutPackage_id)->first();
-        
-    //         if (!$exists) {
-    //             UserTryout::insert([
-    //                 'user_id' => Auth::id(),
-    //                 'tryout_package_id' => $tryoutPackage_id,
-    //                 'created_at' => Carbon::now(),
-    //             ]);
-    //             return response()->json(['success' => 'Successfully joined this tryout!']);
-    //         }else {
-    //             return response()->json(['error' => 'You have already joined this tryout']);
-    //         }
-    
-    //     }else{
-    //         return response()->json(['error' => 'At First Login Your Account']);
-    //     } 
-
-    // }
 
     public function AddToTryout(Request $request, $tryoutPackage_id)
     {
@@ -90,14 +69,24 @@ class UserTryoutController extends Controller
 
     }
 
-
-
     public function StartTryout($id)
     {
-        $tryout = TryoutPackage::with('questions')->findOrFail($id);
+        $tryout = TryoutPackage::with(['questions.category'])->findOrFail($id);
+
+        // kalau session urutan belum ada → buat acak baru
+        $questionOrder = session('question_order_' . $id);
+        if (!$questionOrder) {
+            $questionOrder = $tryout->questions->shuffle()->pluck('id')->toArray();
+            session(['question_order_' . $id => $questionOrder]);
+        }
+
+        // urutkan pertanyaan sesuai urutan di session
+        $tryout->questions = $tryout->questions->sortBy(function ($q) use ($questionOrder) {
+            return array_search($q->id, $questionOrder);
+        })->values();
+
         return view('frontend.mytryout.start_tryout', compact('tryout'));
     }
-
 
     public function DeleteTryout($id)
     {
@@ -189,7 +178,7 @@ public function SubmitTryout(Request $request, $id)
         Auth::user()->increment('total_points', $rule->points);
     }
 
-    // ========================
+// ========================
 // CEK & BERIKAN BADGE
 // ========================
 $completedTryouts = \App\Models\ResultTryout::where('user_id', $user_id)->count();
@@ -208,23 +197,28 @@ foreach ($badges as $badge) {
         \App\Models\UserBadge::create([
             'user_id' => $user_id,
             'badge_id' => $badge->id,
+            'earned_at' => now(),
         ]);
 
-        // Opsional: Tambahkan notifikasi kecil
         session()->flash('success', 'Selamat! Kamu mendapatkan badge "' . $badge->name . '"');
     }
 }
 
-    $notification = array(
-        'message' => 'Tryout selesai! Nilai & poin berhasil ditambahkan.',
-        'alert-type' => 'success'
-    );
-    return redirect()->route('user.tryout.result', $tryout_package_id)->with($notification);
- 
+// ✅ HAPUS URUTAN SOAL AGAR RESET UNTUK TRYOUT BERIKUTNYA
+session()->forget('question_order_' . $tryout_package_id);
+
+// ========================
+// NOTIFIKASI & REDIRECT
+// ========================
+$notification = array(
+    'message' => 'Tryout selesai! Nilai & poin berhasil ditambahkan.',
+    'alert-type' => 'success'
+);
+return redirect()->route('user.tryout.result', $tryout_package_id)->with($notification);
+
 }
 
 
-    
 public function ResultTryout($id)
 {
     $user_id = Auth::id();
@@ -246,7 +240,7 @@ public function ResultTryout($id)
         ->latest()
         ->first();
 
-    // Ubah ke struktur hasil untuk blade
+    // Map hasil jawaban untuk Blade
     $results = $userAnswers->map(function ($item) {
         return [
             'question_id'    => $item->question_id,
@@ -266,9 +260,38 @@ public function ResultTryout($id)
             'is_correct'     => $item->is_correct,
         ];
     });
+
+    // 🔹 Leaderboard per tryout: ambil semua peserta tryout ini
+    $leaderboard = ResultTryout::with('user')
+        ->where('tryout_package_id', $id)
+        ->orderByDesc('score')
+        ->take(50)
+        ->get()
+        ->map(function ($result, $index) {
+            return [
+                'rank' => $index + 1,
+                'user_id' => $result->user->id,
+                'name' => $result->user->name,
+                'photo' => $result->user->photo,
+                'score' => $result->score,
+            ];
+        });
+
+    // 🔹 User & ranking saat ini dalam leaderboard tryout tersebut
+    $currentUser = Auth::user();
+    $currentRank = ResultTryout::where('tryout_package_id', $id)
+        ->where('score', '>', $result->score ?? 0)
+        ->count() + 1;
+
+    $histories = ResultTryout::with('tryoutPackage')
+        ->where('user_id', Auth::id())
+        ->latest()
+        ->get();
+
     return view('frontend.mytryout.tryout_result', [
         'tryoutName'      => $tryoutName,
         'results'         => $results,
+        'result'            => $result,
         'correctCount'    => $result->correct_answers ?? 0,
         'wrongCount'      => $result->wrong_answers ?? 0,
         'unansweredCount' => $result->unanswered ?? 0,
@@ -277,6 +300,10 @@ public function ResultTryout($id)
         'totalQuestions'  => $totalQuestions,
         'id'              => $id,
         'allQuestionIds'  => $package->questions->pluck('id')->toArray(),
+        'leaderboard'     => $leaderboard,
+        'currentUser'     => $currentUser,
+        'currentRank'     => $currentRank,
+        'histories'       => $histories
     ]);
 }
 
@@ -305,7 +332,8 @@ public function ResultTryout($id)
         ->first();
 
     // ✅ Urutkan jawaban berdasarkan urutan soal di paket
-    $orderedIds = $package->questions->pluck('id')->toArray();
+    $orderedIds = session('question_order_' . $id, $package->questions->pluck('id')->toArray());
+
     $userAnswers = $userAnswers->sortBy(function ($answer) use ($orderedIds) {
         return array_search($answer->question_id, $orderedIds);
     })->values();

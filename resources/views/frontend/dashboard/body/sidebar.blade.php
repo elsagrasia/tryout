@@ -43,7 +43,7 @@
                 c-0.88,0-0.33-0.75-0.31-0.78C8.48,10.94,10.42,7.54,13.01,3h1l-1,7h3.51
                 c0.4,0,0.62,0.19,0.4,0.66C12.97,17.55,11,21,11,21z"/>
             </svg>
-            History
+            Riwayat
         </a>
     </li>
 
@@ -63,6 +63,15 @@
         </a>
     </li>
 
+{{-- Leaderboard --}}
+<li class="{{ request()->routeIs('user.leaderboard') ? 'page-active' : '' }}">
+    <a href="{{ route('user.leaderboard') }}">
+        <svg class="mr-2" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M7 17V9h10v8h5v2H2v-2h5zM9 11v6h6v-6H9zm3-8c1.1 0 2 .9 2 2h2a4 4 0 0 0-8 0h2c0-1.1.9-2 2-2z"/>
+        </svg>
+        Peringkat
+    </a>
+</li>
 
 </ul>
 

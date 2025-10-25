@@ -1,98 +1,110 @@
 @extends('frontend.dashboard.user_dashboard')
 @section('userdashboard')
+<div class="container">
+    <div class="breadcrumb-btn-box mb-4">
+        <a href="{{ url()->previous() }}" class="btn theme-btn theme-btn-sm-2 "><i class="la la-arrow-left mr-2"></i>Kembali</a>
+    </div>
+    <h4>{{ $tryoutName }}</h4>
 
+    <div class="row">
+        <div class="col-md-3 responsive-column-half align-self-center">
+            <div class="mb-30px text-center">
 
-<h4 class="mb-3">{{ $tryoutName }}</h4>
-
-
+                <p class="fs-18 font-weight-medium mb-10px">Nilai</p>
+                <h4 class="fs-60 font-weight-bold mb-10px text-color-2">{{$finalScore}}</h4>                
+            </div>
+        </div><!-- end col-lg-3 -->
+        <div class="col">
             <div class="row">
-                <div class="col-md-3 responsive-column-half align-self-center">
-                    <div class="mb-30px text-center">
+                <div class="col-md-6 responsive-column-half">
+                    <div class="card card-item dashboard-info-card">
+                        <div class="card-body d-flex align-items-center">
+                            <div class="icon-element icon-element-md flex-shrink-0 bg-5 text-white">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="40" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M16.0303 10.0303C16.3232 9.73744 16.3232 9.26256 16.0303 8.96967C15.7374 8.67678 15.2626 8.67678 14.9697 8.96967L10.5 13.4393L9.03033 11.9697C8.73744 11.6768 8.26256 11.6768 7.96967 11.9697C7.67678 12.2626 7.67678 12.7374 7.96967 13.0303L9.96967 15.0303C10.2626 15.3232 10.7374 15.3232 11.0303 15.0303L16.0303 10.0303Z"/>
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M12 1.25C6.06294 1.25 1.25 6.06294 1.25 12C1.25 17.9371 6.06294 22.75 12 22.75C17.9371 22.75 22.75 17.9371 22.75 12C22.75 6.06294 17.9371 1.25 12 1.25ZM2.75 12C2.75 6.89137 6.89137 2.75 12 2.75C17.1086 2.75 21.25 6.89137 21.25 12C21.25 17.1086 17.1086 21.25 12 21.25C6.89137 21.25 2.75 17.1086 2.75 12Z"/>
+                                </svg>
+                            </div>
+                            <div class="pl-4">
+                                <p class="card-text fs-18">Jawaban Benar</p>
+                                <h5 class="card-title pt-2 fs-26">{{ $correctCount }}</h5>
+                            </div>
+                        </div><!-- end card-body -->
+                    </div><!-- end card -->
+                </div><!-- end col-lg-4 -->
+                
+                <div class="col-md-6 responsive-column-half">
+                    <div class="card card-item dashboard-info-card">
+                        <div class="card-body d-flex align-items-center">
+                            <div class="icon-element icon-element-md flex-shrink-0 bg-6 text-white">
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40"  viewBox="0 0 1024 1024" fill="currentColor" stroke-width="5">
 
-                        <p class="fs-18 font-weight-medium mb-10px">Nilai</p>
-                        <h4 class="fs-60 font-weight-bold mb-10px text-color-2">{{$finalScore}}</h4>                
-                    </div>
-                </div><!-- end col-lg-3 -->
-                <div class="col">
-                    <div class="row">
-                        <div class="col-md-6 responsive-column-half">
-                            <div class="card card-item dashboard-info-card">
-                                <div class="card-body d-flex align-items-center">
-                                    <div class="icon-element flex-shrink-0 bg-5 text-white">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="40" viewBox="0 0 24 24" fill="currentColor">
-                                            <path d="M16.0303 10.0303C16.3232 9.73744 16.3232 9.26256 16.0303 8.96967C15.7374 8.67678 15.2626 8.67678 14.9697 8.96967L10.5 13.4393L9.03033 11.9697C8.73744 11.6768 8.26256 11.6768 7.96967 11.9697C7.67678 12.2626 7.67678 12.7374 7.96967 13.0303L9.96967 15.0303C10.2626 15.3232 10.7374 15.3232 11.0303 15.0303L16.0303 10.0303Z"/>
-                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 1.25C6.06294 1.25 1.25 6.06294 1.25 12C1.25 17.9371 6.06294 22.75 12 22.75C17.9371 22.75 22.75 17.9371 22.75 12C22.75 6.06294 17.9371 1.25 12 1.25ZM2.75 12C2.75 6.89137 6.89137 2.75 12 2.75C17.1086 2.75 21.25 6.89137 21.25 12C21.25 17.1086 17.1086 21.25 12 21.25C6.89137 21.25 2.75 17.1086 2.75 12Z"/>
-                                        </svg>
-                                    </div>
-                                    <div class="pl-4">
-                                        <p class="card-text fs-18">Jawaban Benar</p>
-                                        <h5 class="card-title pt-2 fs-26">{{ $correctCount }}</h5>
-                                    </div>
-                                </div><!-- end card-body -->
-                            </div><!-- end card -->
-                        </div><!-- end col-lg-4 -->
-                        <div class="col-md-6 responsive-column-half">
-                            <div class="card card-item dashboard-info-card">
-                                <div class="card-body d-flex align-items-center">
-                                    <div class="icon-element flex-shrink-0 bg-6 text-white">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="40" viewBox="0 0 1024 1024" fill="currentColor">
-                                        <path d="M332 663.2c-9.6 9.6-9.6 25.6 0 35.2s25.6 9.6 35.2 0l349.6-356c9.6-9.6 9.6-25.6 0-35.2s-25.6-9.6-35.2 0L332 663.2z"/>
-                                        <path d="M681.6 698.4c9.6 9.6 25.6 9.6 35.2 0s9.6-25.6 0-35.2L367.2 307.2c-9.6-9.6-25.6-9.6-35.2 0s-9.6 25.6 0 35.2l349.6 356z"/>
-                                        <path d="M516.8 1014.4c-277.6 0-503.2-225.6-503.2-503.2S239.2 7.2 516.8 7.2s503.2 225.6 503.2 503.2-225.6 504-503.2 504z m0-959.2c-251.2 0-455.2 204.8-455.2 456s204 455.2 455.2 455.2 455.2-204 455.2-455.2-204-456-455.2-456z"/>
-                                    </svg>
-                                    </div>
+                            <g id="SVGRepo_bgCarrier" stroke-width="5"/>
 
-                                    <div class="pl-4">
-                                        <p class="card-text fs-18">Jawaban Salah</p>
-                                        <h5 class="card-title pt-2 fs-26">{{ $wrongCount }}</h5>
-                                    </div>
-                                </div><!-- end card-body -->
-                            </div><!-- end card -->
-                        </div><!-- end col-lg-4 -->
-                        <div class="col-md-6 responsive-column-half">
-                            <div class="card card-item dashboard-info-card">
-                                <div class="card-body d-flex align-items-center">
-                                    <div class="icon-element flex-shrink-0 bg-6 text-white">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="40" viewBox="0 0 1024 1024" fill="currentColor">
-                                        <path d="M332 663.2c-9.6 9.6-9.6 25.6 0 35.2s25.6 9.6 35.2 0l349.6-356c9.6-9.6 9.6-25.6 0-35.2s-25.6-9.6-35.2 0L332 663.2z"/>
-                                        <path d="M681.6 698.4c9.6 9.6 25.6 9.6 35.2 0s9.6-25.6 0-35.2L367.2 307.2c-9.6-9.6-25.6-9.6-35.2 0s-9.6 25.6 0 35.2l349.6 356z"/>
-                                        <path d="M516.8 1014.4c-277.6 0-503.2-225.6-503.2-503.2S239.2 7.2 516.8 7.2s503.2 225.6 503.2 503.2-225.6 504-503.2 504z m0-959.2c-251.2 0-455.2 204.8-455.2 456s204 455.2 455.2 455.2 455.2-204 455.2-455.2-204-456-455.2-456z"/>
-                                    </svg>
-                                    </div>
+                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
 
-                                    <div class="pl-4">
-                                        <p class="card-text fs-18">Tidak Terjawab</p>
-                                        <h5 class="card-title pt-2 fs-26">{{ $unansweredCount }}</h5>
-                                    </div>
-                                </div><!-- end card-body -->
-                            </div><!-- end card -->
-                        </div><!-- end col-lg-4 -->
-                        <div class="col-md-6 responsive-column-half">
-                            <div class="card card-item dashboard-info-card">
-                                <div class="card-body d-flex align-items-center">
-                                    <div class="icon-element flex-shrink-0 bg-3 text-white">
-                                    <svg class="svg-icon-color-white" 
-                                        xmlns="http://www.w3.org/2000/svg" 
-                                        width="40" 
-                                        viewBox="0 0 24 24" 
-                                        fill="currentColor">
-                                        <path d="M24,12A12,12,0,0,1,0,12a1,1,0,0,1,2,0A10,10,0,1,0,12,2a1,1,0,0,1,0-2A12.013,12.013,0,0,1,24,12ZM10.277,11H8a1,1,0,0,0,0,2h2.277A1.994,1.994,0,1,0,13,10.277V7a1,1,0,0,0-2,0v3.277A2,2,0,0,0,10.277,11ZM1.827,8.784a1,1,0,1,0-1-1A1,1,0,0,0,1.827,8.784ZM4.221,5.207a1,1,0,1,0-1-1A1,1,0,0,0,4.221,5.207ZM7.779,2.841a1,1,0,1,0-1-1A1,1,0,0,0,7.779,2.841Z"/>
-                                    </svg>
-                                    </div>
-                                    <div class="pl-4">
-                                        <p class="card-text fs-18">Waktu</p>
-                                        <h5 class="card-title pt-2 fs-26" >{{ gmdate("H:i:s", $elapsed_time) }}</h5>
-                                    </div>
-                                </div><!-- end card-body -->
-                            </div><!-- end card -->
-                        </div><!-- end col-lg-4 -->
-                    </div><!-- end row -->
+                            <g id="SVGRepo_iconCarrier">
+
+                            <path d="M332 663.2c-9.6 9.6-9.6 25.6 0 35.2s25.6 9.6 35.2 0l349.6-356c9.6-9.6 9.6-25.6 0-35.2s-25.6-9.6-35.2 0L332 663.2z" fill=""/>
+
+                            <path d="M681.6 698.4c9.6 9.6 25.6 9.6 35.2 0s9.6-25.6 0-35.2L367.2 307.2c-9.6-9.6-25.6-9.6-35.2 0s-9.6 25.6 0 35.2l349.6 356z" fill=""/>
+
+                            <path d="M516.8 1014.4c-277.6 0-503.2-225.6-503.2-503.2S239.2 7.2 516.8 7.2s503.2 225.6 503.2 503.2-225.6 504-503.2 504z m0-959.2c-251.2 0-455.2 204.8-455.2 456s204 455.2 455.2 455.2 455.2-204 455.2-455.2-204-456-455.2-456z" fill=""/>
+
+                            </g>
+
+                            </svg>
+                            </div>
+
+                            <div class="pl-4">
+                                <p class="card-text fs-18">Jawaban Salah</p>
+                                <h5 class="card-title pt-2 fs-26">{{ $wrongCount }}</h5>
+                            </div>
+                        </div><!-- end card-body -->
+                    </div><!-- end card -->
+                </div><!-- end col-lg-4 -->
+                <div class="col-md-6 responsive-column-half">
+                    <div class="card card-item dashboard-info-card">
+                        <div class="card-body d-flex align-items-center">
+                            <div class="icon-element icon-element-md flex-shrink-0 bg-7 text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" viewBox="0 0 24 24" fill="none">
+                            <circle cx="12" cy="12" r="10" stroke="#fff" stroke-width="1.5"/>
+                            <path d="M10.125 8.875C10.125 7.83947 10.9645 7 12 7C13.0355 7 13.875 7.83947 13.875 8.875C13.875 9.56245 13.505 10.1635 12.9534 10.4899C12.478 10.7711 12 11.1977 12 11.75V13" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/>
+                            <circle cx="12" cy="16" r="1" fill="#fff"/>
+                            </svg>
+                            </div>
+
+                            <div class="pl-4">
+                                <p class="card-text fs-18">Tidak Terjawab</p>
+                                <h5 class="card-title pt-2 fs-26">{{ $unansweredCount }}</h5>
+                            </div>
+                        </div><!-- end card-body -->
+                    </div><!-- end card -->
+                </div><!-- end col-lg-4 -->
+                <div class="col-md-6 responsive-column-half">
+                    <div class="card card-item dashboard-info-card">
+                        <div class="card-body d-flex align-items-center">
+                            <div class="icon-element icon-element-md flex-shrink-0 bg-3 text-white">
+                            <svg class="svg-icon-color-white" 
+                                xmlns="http://www.w3.org/2000/svg" 
+                                width="40" 
+                                viewBox="0 0 24 24" 
+                                fill="currentColor">
+                                <path d="M24,12A12,12,0,0,1,0,12a1,1,0,0,1,2,0A10,10,0,1,0,12,2a1,1,0,0,1,0-2A12.013,12.013,0,0,1,24,12ZM10.277,11H8a1,1,0,0,0,0,2h2.277A1.994,1.994,0,1,0,13,10.277V7a1,1,0,0,0-2,0v3.277A2,2,0,0,0,10.277,11ZM1.827,8.784a1,1,0,1,0-1-1A1,1,0,0,0,1.827,8.784ZM4.221,5.207a1,1,0,1,0-1-1A1,1,0,0,0,4.221,5.207ZM7.779,2.841a1,1,0,1,0-1-1A1,1,0,0,0,7.779,2.841Z"/>
+                            </svg>
+                            </div>
+                            <div class="pl-4">
+                                <p class="card-text fs-18">Waktu</p>
+                                <h5 class="card-title pt-2 fs-26" >{{ gmdate("H:i:s", $elapsed_time) }}</h5>
+                            </div>
+                        </div><!-- end card-body -->
+                    </div><!-- end card -->
                 </div><!-- end col-lg-4 -->
             </div><!-- end row -->
+        </div><!-- end col-lg-4 -->
+    </div><!-- end row -->
 
-           
-
-  
     {{-- =======================
         Filter Bar
     ======================== --}}
@@ -221,12 +233,12 @@
             <div class="alert alert-info">Belum ada hasil untuk tryout ini.</div>
         @endforelse
     </div>
-<div class="d-flex justify-content-center">
-    <nav aria-label="Page navigation example" class="pagination-box w-auto shadow-sm">
-        <ul class="pagination d-inline-flex justify-content-center mb-0" id="paginationContainer"></ul>
-    </nav>
+    <div class="d-flex justify-content-center">
+        <nav aria-label="Page navigation example" class="pagination-box w-auto shadow-sm">
+            <ul class="pagination d-inline-flex justify-content-center mb-0" id="paginationContainer"></ul>
+        </nav>
+    </div>
 </div>
-
 
 
 <script>
