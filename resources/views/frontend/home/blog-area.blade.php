@@ -1,9 +1,8 @@
-
 @php
     $blog = App\Models\BlogPost::latest()->limit(3)->get();
 @endphp
 
-<section class="blog-area section--padding bg-gray overflow-hidden">
+<section class="blog-area pb-0 section--padding overflow-hidden ">
     <div class="container">
         <div class="section-heading text-center">
             <h5 class="ribbon ribbon-lg mb-2">News feeds</h5>
@@ -12,13 +11,11 @@
         </div><!-- end section-heading -->
         <div class="blog-post-carousel owl-action-styled half-shape mt-30px">
 
-
             @foreach ($blog as $item)
             <div class="card card-item">
                 <div class="card-image">
                     <a href="blog-single.html" class="d-block">
                         <img class="card-img-top" src="{{ url($item->post_image) }}" alt="Card image cap">
-
                     </a>
                     <div class="course-badge-labels">
                         <div class="course-badge">
@@ -45,9 +42,7 @@
                     </div>
                 </div><!-- end card-body -->
             </div><!-- end card --> 
-               
             @endforeach
-
 
         </div><!-- end blog-post-carousel -->
     </div><!-- end container -->

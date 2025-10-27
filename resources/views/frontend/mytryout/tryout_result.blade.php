@@ -3,7 +3,7 @@
 
 <div class="mb-4">
     <div class="breadcrumb-btn-box mb-4">
-        <a href="{{ route('dashboard') }}" class="btn theme-btn theme-btn-sm-2 "><i class="la la-arrow-left mr-2"></i>Kembali ke Dashboard</a>
+        <a href="{{ route('user.dashboard') }}" class="btn theme-btn theme-btn-sm-2 "><i class="la la-arrow-left mr-2"></i>Kembali ke Dashboard</a>
     </div>
     {{-- =======================
          HEADER HASIL TRYOUT

@@ -94,7 +94,7 @@
                                                 <li>
                                                     <ul class="generic-list-item">
                                                         <li>
-                                                            <a href="{{ route('dashboard') }}">
+                                                            <a href="{{ route('user.dashboard') }}">
                                                                 <i class="la la-sign-in mr-1"></i> Dashboard
                                                             </a>
                                                         </li>
