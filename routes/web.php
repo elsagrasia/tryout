@@ -8,14 +8,9 @@ use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\CourseController;
 use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\Frontend\IndexController;
-// use App\Http\Controllers\Frontend\WishListController;
 use App\Http\Controllers\Frontend\UserTryoutController;
 use App\Http\Controllers\Frontend\TryoutHistoryController;
 use App\Http\Controllers\Frontend\CartController;
-use App\Http\Controllers\Backend\CouponController;
-use App\Http\Controllers\Backend\SettingController;
-use App\Http\Controllers\Backend\OrderController;
-// use App\Http\Controllers\Backend\QuestionController;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Controllers\Backend\ReportController;
 use App\Http\Controllers\Backend\ReviewController;
@@ -243,12 +238,32 @@ Route::get('/tryout/{tryout_id}/join',[UserTryoutController::class, 'AddToTryout
 Route::get('/instructor/login', [InstructorController::class, 'instructorLogin'])->name('instructor.login')->middleware(RedirectIfAuthenticated::class);
 
 Route::get('/instructor/details/{id}', [IndexController::class, 'instructorDetails'])->name('instructor.details');
+<<<<<<< HEAD
+=======
+Route::post('/add-to-wishlist/{tryout_id}', [WishListController::class, 'addToWishList']);
+Route::post('/cart/data/store/{id}', [CartController::class, 'addToCart']);
+Route::post('/buy/data/store/{id}', [CartController::class, 'buyToCart']);
+Route::get('/cart/data/', [CartController::class, 'cartData']);
+
+// Get Data from Minicart 
+Route::get('/course/mini/cart/', [CartController::class, 'addMiniCart']);
+Route::get('/minicart/course/remove/{rowId}', [CartController::class, 'removeMiniCart']);
+>>>>>>> 96862cb94cd0fc7c2e80952029364fd14b10790b
 
 
 Route::get('/blog/details/{slug}', [BlogController::class, 'blogDetails']);
 Route::get('/blog/cat/list/{id}', [BlogController::class, 'blogCatList']);
 Route::get('/blog', [BlogController::class, 'blogList'])->name('blog');
 
+<<<<<<< HEAD
 Route::get('/my-badges', [IndexController::class, 'myBadges'])->name('user.badges');
 Route::get('user/leaderboard',[IndexController::class, 'userLeaderboard'])->name('user.leaderboard');
 Route::get('/dashboard',[IndexController::class, 'userDashboard'])->name('user.dashboard');
+=======
+
+
+Route::get('/user-all', [ChatController::class, 'getAllUsers']);
+    Route::get('/my-badges', [IndexController::class, 'myBadges'])->name('user.badges');
+    Route::get('user/leaderboard',[IndexController::class, 'userLeaderboard'])->name('user.leaderboard');
+    Route::get('/dashboard',[IndexController::class, 'userDashboard'])->name('user.dashboard');
+>>>>>>> 96862cb94cd0fc7c2e80952029364fd14b10790b

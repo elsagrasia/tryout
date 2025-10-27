@@ -1,4 +1,6 @@
-
+@php
+    $setting = App\Models\SiteSetting::find(1);
+@endphp
 
 <section class="footer-area pt-100px">
     <div class="container">
@@ -68,7 +70,7 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6">
-                    <p class="copy-desc"></p>                    
+                    <p class="copy-desc"> {{ $setting->copyright }}</p>                    
                 </div><!-- end col-lg-6 -->
                 <div class="col-lg-6">
                     <div class="d-flex flex-wrap align-items-center justify-content-end">

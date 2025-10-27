@@ -8,7 +8,7 @@
 
 <div class="container py-4" style="max-width: 1100px; margin-top: -20px;">
     {{-- Profile Header --}}
-    <div class="card border-0 shadow-sm p-4 rounded-4" style="background-color: #f9fcf9; border-radius: 25px;">
+    <div class="card border-0 shadow-sm p-4 rounded-4" style="background-color: rgba(53, 143, 227, 0.040); border-radius: 25px;">
         <div class="d-flex align-items-center mb-4">
             {{-- Foto Profil --}}
             <img src="{{ (!empty($profileData->photo)) ? url('upload/user_images/'.$profileData->photo) : url('upload/no_image.jpg') }}"
@@ -70,7 +70,7 @@
                 <span class="text-muted">{{ $progress ?? '53%' }}</span>
             </div>
             <div class="progress" style="height: 10px; border-radius: 12px; background-color: #e6e6e6;">
-                <div class="progress-bar bg-success" role="progressbar"
+                <div class="progress-bar bg-primary" role="progressbar"
                     style="width: {{ $progress ?? '53%' }}; border-radius: 12px;">
                 </div>
             </div>
@@ -99,7 +99,7 @@ new Chart(ctx, {
         datasets: [{
             label: 'Rata-rata Nilai',
             data: @json($chartData),
-            backgroundColor: '#66bb6a',
+            backgroundColor: '#358FF7',
             borderRadius: 6,
         }]
     },
@@ -127,8 +127,7 @@ new Chart(ctx, {
 </script>
 
 <style>
-body { 
-  
+body {  
    
 }
 .card { 
