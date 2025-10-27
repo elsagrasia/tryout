@@ -27,10 +27,10 @@
                 <table id="example" class="table table-striped table-bordered" style="width:100%">
                     <thead>
                         <tr>
-                            <th>Sl</th>
-                            <th>Category Name </th>
-                            <th>Category Slug</th> 
-                            <th>Action</th>
+                            <th>No</th>
+                            <th>Kategori</th>
+                            <th>Kategori Slug</th> 
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -41,8 +41,8 @@
                             <td> {{ $item->category_name }}  </td>
                             <td>{{ $item->category_slug }}</td> 
                             <td>
-       <button type="button" class="btn btn-info px-5" data-bs-toggle="modal" data-bs-target="#category" id="{{ $item->id }}" onclick="categoryEdit(this.id)">Edit</button>
-       <a href="{{ route('delete.blog.category',$item->id) }}" class="btn btn-danger px-5 delete-btn">Delete </a>                  
+       <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#category" id="{{ $item->id }}" onclick="categoryEdit(this.id)" title="Ubah"><i class="lni lni-eraser"></i></button>
+       <a href="{{ route('delete.blog.category',$item->id) }}" class="btn btn-danger delete-btn" title="Hapus"><i class="lni lni-trash"></i></a>                  
                             </td>
                         </tr>
                         @endforeach

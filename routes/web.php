@@ -235,92 +235,20 @@ Route::middleware(['auth', 'roles:instructor'])->group(function () {
 
     });
 
-    
-
-    // // Course Section and Lecture Routes
-    // Route::controller(CourseController::class)->group(function () {
-    //     Route::get('/add/course/lecture/{id}', 'addCourseLecture')->name('add.course.lecture');
-    //     Route::post('/add/course/section/', 'addCourseSection')->name('add.course.section');
-    //     Route::post('/save-lecture/', 'saveLecture')->name('save-lecture');
-    //     Route::get('/edit/lecture/{id}','editLecture')->name('edit.lecture');
-    //     Route::post('/update/course/lecture','updateCourseLecture')->name('update.course.lecture');
-    //     Route::get('/delete/lecture/{id}','deleteLecture')->name('delete.lecture');
-    //     Route::post('/delete/section/{id}','deleteSection')->name('delete.section');
-
-    // });
-
-    // instructor All Order Route 
-    Route::controller(OrderController::class)->group(function(){
-        Route::get('/instructor/all/order','instructorAllOrder')->name('instructor.all.order'); 
-        Route::get('/instructor/order/details/{payment_id}','instructorOrderDetails')->name('instructor.order.details');
-    Route::get('/instructor/order/invoice/{payment_id}','instructorOrderInvoice')->name('instructor.order.invoice');        
-    });      
-
-    // Instructor Coupon All Route 
-    Route::controller(CouponController::class)->group(function(){
-        Route::get('/instructor/all/coupon','instructorAllCoupon')->name('instructor.all.coupon');
-        Route::get('/instructor/add/coupon','instructorAddCoupon')->name('instructor.add.coupon');
-        Route::post('/instructor/store/coupon','instructorStoreCoupon')->name('instructor.store.coupon');
-        Route::get('/instructor/edit/coupon/{id}','instructorEditCoupon')->name('instructor.edit.coupon');
-        Route::post('/instructor/update/coupon','instructorUpdateCoupon')->name('instructor.update.coupon');
-        Route::get('/instructor/delete/coupon/{id}','instructorDeleteCoupon')->name('instructor.delete.coupon');
-    });    
-
-    // Instructor Review All Route 
-    Route::controller(ReviewController::class)->group(function(){
-        Route::get('/instructor/all/review','instructorAllReview')->name('instructor.all.review');  
-        
-    });
-
 
 }); //end instructor group middleware
 
 Route::get('/tryout/{tryout_id}/join',[UserTryoutController::class, 'AddToTryout'])->name('user.join.tryout');
-///route accessable for all
+///route accessable for allnote
 Route::get('/instructor/login', [InstructorController::class, 'instructorLogin'])->name('instructor.login')->middleware(RedirectIfAuthenticated::class);
 
-Route::get('/course/details/{id}/{slug}', [IndexController::class, 'courseDetails']);
-// Route::get('/category/{id}/{slug}', [IndexController::class, 'categoryCourse']);
-// Route::get('/subcategory/{id}/{slug}', [IndexController::class, 'subcategoryCourse']);
 Route::get('/instructor/details/{id}', [IndexController::class, 'instructorDetails'])->name('instructor.details');
-Route::post('/add-to-wishlist/{tryout_id}', [WishListController::class, 'addToWishList']);
-Route::post('/cart/data/store/{id}', [CartController::class, 'addToCart']);
-Route::post('/buy/data/store/{id}', [CartController::class, 'buyToCart']);
-Route::get('/cart/data/', [CartController::class, 'cartData']);
-// Get Data from Minicart 
-Route::get('/course/mini/cart/', [CartController::class, 'addMiniCart']);
-Route::get('/minicart/course/remove/{rowId}', [CartController::class, 'removeMiniCart']);
 
-// Cart All Route 
-Route::controller(CartController::class)->group(function(){
-    Route::get('/mycart','myCart')->name('mycart');
-    Route::get('/get-cart-course','getCartCourse');
-    Route::get('/cart-remove/{rowId}','cartRemove');
-
-});
-
-Route::post('/coupon-apply', [CartController::class, 'couponApply']);
-Route::post('/inscoupon-apply', [CartController::class, 'insCouponApply']);
-Route::get('/coupon-calculation', [CartController::class, 'couponCalculation']);
-Route::get('/coupon-remove', [CartController::class, 'couponRemove']);
-
-/// Checkout Page Route 
-Route::get('/checkout', [CartController::class, 'checkoutCreate'])->name('checkout');
-Route::post('/payment', [CartController::class, 'payment'])->name('payment');
-Route::post('/stripe_order', [CartController::class, 'stripeOrder'])->name('stripe_order');
-
-Route::post('/store/review', [ReviewController::class, 'storeReview'])->name('store.review');
 
 Route::get('/blog/details/{slug}', [BlogController::class, 'blogDetails']);
 Route::get('/blog/cat/list/{id}', [BlogController::class, 'blogCatList']);
 Route::get('/blog', [BlogController::class, 'blogList'])->name('blog');
 
-
-
-Route::get('/user-all', [ChatController::class, 'getAllUsers']);
-
-
-
-    Route::get('/my-badges', [IndexController::class, 'myBadges'])->name('user.badges');
-    Route::get('user/leaderboard',[IndexController::class, 'userLeaderboard'])->name('user.leaderboard');
-    Route::get('user/dashboard',[IndexController::class, 'userDashboard'])->name('user.dashboard');
+Route::get('/my-badges', [IndexController::class, 'myBadges'])->name('user.badges');
+Route::get('user/leaderboard',[IndexController::class, 'userLeaderboard'])->name('user.leaderboard');
+Route::get('/dashboard',[IndexController::class, 'userDashboard'])->name('user.dashboard');

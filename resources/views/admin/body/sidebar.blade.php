@@ -24,7 +24,7 @@
 
         <li>
             <a class="has-arrow" href="javascript:;">
-                <div class="parent-icon"><i class='bx bx-bookmark-heart'></i>
+                <div class="parent-icon"><i class='bx bx-user-circle'></i>
                 </div>
                 <div class="menu-title">Kelola Semua Pengguna</div>
             </a>
@@ -36,26 +36,27 @@
             </ul>
         </li>        
         <li>
-            <a class="has-arrow" href="javascript:;">
-                <div class="parent-icon"><i class='bx bx-bookmark-heart'></i>
+            <a href="{{ route('points.rules') }}">
+                <div class="parent-icon"><i class='bx bx-diamond'></i>
                 </div>
-                <div class="menu-title">Gamifikasi </div>
+                <div class="menu-title">Kelola Poin</div>
             </a>
-            <ul>
-                <li> <a href="{{ route('points.rules') }}"><i class='bx bx-radio-circle'></i>Point </a>
-                </li>
-                <li> <a href="{{ route('badges') }}"><i class='bx bx-radio-circle'></i>Badge</a>
-                </li>        
-            </ul>
+        </li>        
+        <li>
+            <a href="{{ route('badges') }}">
+                <div class="parent-icon"><i class='bx bx-award'></i>
+                </div>
+                <div class="menu-title">Kelola Lencana</div>
+            </a>
         </li>        
 		
 
 
         <li>
             <a class="has-arrow" href="javascript:;">
-                <div class="parent-icon"><i class='bx bx-bookmark-heart'></i>
+                <div class="parent-icon"><i class="fadeIn animated bx bx-news"></i>
                 </div>
-                <div class="menu-title">Manage Blog</div>
+                <div class="menu-title">Kelola Blog</div>
             </a>
             <ul>
                 <li> <a href="{{ route('blog.category') }}"><i class='bx bx-radio-circle'></i>Blog Category </a>

@@ -94,14 +94,14 @@
                                                 <li>
                                                     <ul class="generic-list-item">
                                                         <li>
-                                                            <a href="{{ route('dashboard') }}">
+                                                            <a href="{{ route('user.dashboard') }}">
                                                                 <i class="la la-sign-in mr-1"></i> Dashboard
                                                             </a>
                                                         </li>
                                                         <li><div class="section-block"></div></li>
                                                         <li>
                                                             <a href="{{ route('user.profile') }}">
-                                                                <i class="la la-user mr-1"></i> My Profile
+                                                                <i class="la la-user mr-1"></i> Profil Saya
                                                             </a>
                                                         </li>
                                                         <li>

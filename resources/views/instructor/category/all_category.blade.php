@@ -28,7 +28,7 @@
 							<table id="example" class="table table-striped table-bordered" style="width:100%">
 								<thead>
 									<tr>
-										<th>No</th>								
+										<th style="width:5px;">No</th>								
 										<th>Nama Kategori</th>
 										<th>Kelola</th>
 							
@@ -42,8 +42,8 @@
 									<td>{{ $item->category_name }}</td>
 																		
 									<td>
-									<button type="button" class="btn btn-info px-5" data-bs-toggle="modal" data-bs-target="#category" id="{{ $item->id }}" onclick="categoryEdit(this.id)">Edit</button>
-                                    <a href="{{ route('delete.category',$item->id) }}" class="btn btn-danger px-5 delete-btn">Hapus</a>
+									<button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#category" id="{{ $item->id }}" onclick="categoryEdit(this.id)" title="Ubah"><i class="lni lni-eraser"></i></button>
+                                    <a href="{{ route('delete.category',$item->id) }}" class="btn btn-danger delete-btn" title="Hapus"><i class="lni lni-trash"></i></a>
 									</td>
 									
 								</tr>

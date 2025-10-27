@@ -149,6 +149,15 @@
                         <div class="d-flex align-items-center mb-3">
                             <h3 class="fs-22 font-weight-semi-bold">Soal {{ $index + 1 }}</h3>
                         </div>
+                        @if(!empty($result['category_id']))
+                            @php 
+                                $cat = $categories->firstWhere('id', $result['category_id']); 
+                            @endphp
+                            @if($cat)
+                                <p class=" text-muted">{{ $cat->category_name }}</p>
+                            @endif
+                        @endif
+
 
                         {{-- Vignette --}}
                         @if(!empty($result['vignette']))
@@ -166,7 +175,7 @@
                         @endif
 
                         {{-- Teks pertanyaan --}}
-                        <p class="pt-2 font-weight-bold">
+                        <p class="pt-2 font-weight-semi-bold">
                             {!! nl2br(e($result['question'] ?? '-')) !!}
                         </p>
 

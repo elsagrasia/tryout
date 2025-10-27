@@ -38,7 +38,7 @@
                 <div class="form-group col-md-6">
                    <label for="input1" class="form-label">Kategori</label>
                    <select name="category_id" class="form-select mb-3" aria-label="Default select example">
-                       <option selected="" disabled>Buka menu pilihan ini</option>
+                       <option selected="" disabled>Pilih Kategori</option>
                        @foreach ($categories as $cat)
                        <option value="{{ $cat->id }}">{{ $cat->category_name }}</option>
                        @endforeach
@@ -84,7 +84,7 @@
                 <div class="form-group col-md-6">
                     <label class="form-label">Pilihan Benar</label>
                     <select name="correct_option" class="form-select" required>
-                        <option disabled selected>-- Pilih Kunci --</option>
+                        <option disabled selected>Pilih Kunci Jawaban</option>
                         <option value="A">A</option>
                         <option value="B">B</option>
                         <option value="C">C</option>

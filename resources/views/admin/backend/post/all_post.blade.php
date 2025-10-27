@@ -27,11 +27,11 @@
                 <table id="example" class="table table-striped table-bordered" style="width:100%">
                     <thead>
                         <tr>
-                            <th>Sl</th>
-                            <th>Post Title </th>
-                            <th>Blog Category </th> 
-                            <th>Blog Image </th>
-                            <th>Action</th>
+                            <th>No</th>
+                            <th>Judul</th>
+                            <th>Blog Kategori</th> 
+                            <th>Gambar</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -44,8 +44,8 @@
                             <td> <img src="{{ asset($item->post_image) }}" alt="" style="width: 70px; height:40px;"> </td>
                             
                             <td>
-       <a href="{{ route('edit.post',$item->id) }}" class="btn btn-info px-5">Edit </a>   
-       <a href="{{ route('delete.post',$item->id) }}" class="btn btn-danger px-5 delete-btn">Delete </a>                    
+       <a href="{{ route('edit.post',$item->id) }}" class="btn btn-info" title="Ubah"><i class="lni lni-eraser"></i></a>   
+       <a href="{{ route('delete.post',$item->id) }}" class="btn btn-danger delete-btn" title="Hapus"><i class="lni lni-trash"></i></a>                    
                             </td>
                         </tr>
                         @endforeach

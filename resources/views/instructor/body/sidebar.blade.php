@@ -47,7 +47,7 @@
             <a href="{{route('all.question')}}">
                 <div class="parent-icon"><i class='bx bx-question-mark'></i>
                 </div>
-                <div class="menu-title">Pertanyaan</div>
+                <div class="menu-title">Daftar Pertanyaan</div>
             </a>
         </li>
         <li>

@@ -27,11 +27,11 @@ class Role
 
          $userRole = $request->user()->role;
 
-         if ($userRole === 'user' && $role !== 'user' ) {
+         if ($userRole === 'student' && $role !== 'student' ) {
             return redirect('dashboard');
-         } elseif ($userRole === 'admin' && $role === 'user') {
+         } elseif ($userRole === 'admin' && $role === 'student') {
             return redirect('/admin/dashboard');
-         } elseif ($userRole === 'instructor' && $role === 'user') {
+         } elseif ($userRole === 'instructor' && $role === 'student') {
             return redirect('/instructor/dashboard');
          }elseif ($userRole === 'admin' && $role === 'instructor') {
             return redirect('/admin/dashboard');

@@ -151,5 +151,23 @@
  
 @include('frontend.body.script')
 
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const sidebar = document.querySelector('.dashboard-off-canvas-menu');
+    const content = document.querySelector('.dashboard-content-wrap');
+    const openBtn = document.querySelector('.dashboard-menu-toggler');
+    const closeBtn = document.querySelector('.dashboard-menu-close');
+
+    function toggleSidebar() {
+        sidebar.classList.toggle('collapsed');
+        content.classList.toggle('full');
+    }
+
+    if (openBtn) openBtn.addEventListener('click', toggleSidebar);
+    if (closeBtn) closeBtn.addEventListener('click', toggleSidebar);
+});
+</script>
+
+
 </body>
 </html>
