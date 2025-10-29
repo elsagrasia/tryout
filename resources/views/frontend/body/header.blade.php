@@ -20,7 +20,7 @@
                     <div class="col-lg-2">
                         <div class="logo-box">
                             <a href="{{ url('/') }}" class="logo">
-                                <img src="{{ asset('images/logo.png') }}" alt="logo">
+                                <img src="{{ asset('upload/logo/logo.jpg') }}" alt="logo" style="height: 40px; width: auto;">
                             </a>
                             <div class="user-btn-action">
                                 <div class="off-canvas-menu-toggle main-menu-toggle icon-element icon-element-sm shadow-sm"
@@ -141,12 +141,6 @@
 
                             <!-- Theme Picker -->
                             <div class="theme-picker d-flex align-items-center">
-                                <button class="theme-picker-btn dark-mode-btn" title="Dark mode">
-                                    <svg id="moon" viewBox="0 0 24 24" stroke-width="1.5"
-                                        stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                                    </svg>
-                                </button>
                                 <button class="theme-picker-btn light-mode-btn" title="Light mode">
                                     <svg id="sun" viewBox="0 0 24 24" stroke-width="1.5"
                                         stroke-linecap="round" stroke-linejoin="round">

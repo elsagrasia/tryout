@@ -14,7 +14,16 @@ class AdminController extends Controller
 {
     public function adminDashboard()
     {
-        return view('admin.index');
+        // Hitung total pengguna (semua user)
+        $totalUsers = User::count();
+
+        // Hitung total instructor
+        $totalInstructors = User::where('role', 'instructor')->count();
+
+        return view('admin.index', compact('totalUsers', 'totalInstructors'));
+        // return view('admin.index');
+
+
     } //end method
 
     public function adminLogout(Request $request) {
