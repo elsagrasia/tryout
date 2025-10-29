@@ -18,7 +18,7 @@
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div>
-                            <p class="mb-0 text-secondary ">Total Pengguna</p>
+                            <p class="mb-0 text-secondary ">Total Peserta</p>
                             <h4 class="my-1 text-primary">{{ $totalUsers ?? 0 }}</h4>
                         </div>
 						<div class="widgets-icons-2 rounded-circle bg-gradient-primary text-primary ms-auto"><i class='bx bxs-group'></i></div>
