@@ -9,21 +9,10 @@
 
     <div class="container" style="margin-top: 40px;">
         <div class="section-heading text-center ">
-            <h5 class="ribbon ribbon-lg mb-2">Choose your desired courses</h5>
-            <h2 class="section__title">The world's largest selection of courses</h2>
+            <h5 class="ribbon ribbon-lg mb-2">Pilih Tryout yang Ingin Diikuti</h5>
+            <h2 class="section__title">Tingkatkan Persiapan Uji Kompetensi Dokter</h2>
             <span class="section-divider"></span>
         </div><!-- end section-heading -->
-        
-        <ul class="nav nav-tabs generic-tab justify-content-center pb-4" id="myTab" role="tablist">
-            <li class="nav-item">
-                <a class="nav-link " id="business-tab" data-toggle="tab" href="#business" role="tab" aria-controls="business" aria-selected="true">All</a>
-            </li>
-            @foreach ($categories as $category)
-                <li class="nav-item">
-                     <a class="nav-link" id="business-tab" data-toggle="tab" href="#business{{ $category->id }}" role="tab" aria-controls="business" aria-selected="false">{{ $category->category_name }}</a>
-                </li>
-            @endforeach
-        </ul>
     </div><!-- end container -->
 
     <div class="card-content-wrapper bg-gray pt-50px pb-120px">
