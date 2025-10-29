@@ -12,6 +12,8 @@ use App\Models\UserAnswer;
 use App\Models\UserPoint;
 use App\Models\Point;
 use App\Models\User;
+use App\Models\Badge;
+use App\Models\UserBadge;
 use App\Models\Question; 
 use App\Models\TryoutHistory;
 use App\Models\Category;
@@ -95,13 +97,25 @@ class UserTryoutController extends Controller
 
         return redirect()->back()->with('success', 'Tryout berhasil dihapus.');
     }
+
+    public function confirm($id)
+{
+    $tryout = TryoutPackage::with('questions')->findOrFail($id);
+    return view('frontend.mytryout.confirmation', compact('tryout'));
+}
+
 public function SubmitTryout(Request $request, $id)
 {
     $user_id = Auth::id();
     $tryout_package_id = $request->tryout_package_id ?? $id;
     $answers = $request->answers ?? [];
 
-    // ✅ Ambil soal dari paket
+    // ✅ Ubah string JSON menjadi array
+    if (is_string($answers)) {
+        $decoded = json_decode($answers, true);
+        $answers = is_array($decoded) ? $decoded : [];
+    }
+
     $package = TryoutPackage::with('questions')->findOrFail($tryout_package_id);
     $questions = $package->questions;
 
@@ -109,13 +123,9 @@ public function SubmitTryout(Request $request, $id)
     $wrong = 0;
     $unanswered = 0;
 
-    // ========================
-    // LOOP SETIAP SOAL
-    // ========================
     foreach ($questions as $question) {
         $qid = $question->id;
 
-        // ✅ kalau key tidak ada / null / kosong → tidak dijawab
         if (!array_key_exists($qid, $answers) || $answers[$qid] === null || $answers[$qid] === '') {
             $unanswered++;
             $selected_option = null;
@@ -126,7 +136,6 @@ public function SubmitTryout(Request $request, $id)
             if ($is_correct) $correct++; else $wrong++;
         }
 
-        // ✅ simpan jawaban ke user_answers
         UserAnswer::updateOrCreate(
             [
                 'user_id' => $user_id,
@@ -140,16 +149,10 @@ public function SubmitTryout(Request $request, $id)
         );
     }
 
-    // ========================
-    // HITUNG NILAI
-    // ========================
     $total_questions = $questions->count();
     $score = $total_questions > 0 ? round(($correct / $total_questions) * 100, 2) : 0;
     $elapsed_time = $request->input('elapsed_time', 0);
 
-    // ========================
-    // SIMPAN KE RESULT_TRYOUTS
-    // ========================
     $result = ResultTryout::firstOrNew([
         'user_id' => $user_id,
         'tryout_package_id' => $tryout_package_id,
@@ -164,9 +167,7 @@ public function SubmitTryout(Request $request, $id)
     $result->finished_at     = now();
     $result->save();
 
-    // ========================
-    // TAMBAH POIN USER
-    // ========================
+    // ✅ Tambah poin
     $rule = Point::where('activity', 'Menyelesaikan 1 Tryout')->where('status', 'active')->first();
     if ($rule) {
         UserPoint::create([
@@ -178,44 +179,26 @@ public function SubmitTryout(Request $request, $id)
         Auth::user()->increment('total_points', $rule->points);
     }
 
-// ========================
-// CEK & BERIKAN BADGE
-// ========================
-$completedTryouts = \App\Models\ResultTryout::where('user_id', $user_id)->count();
+    // ✅ Beri badge
+    $completedTryouts = ResultTryout::where('user_id', $user_id)->count();
+    $badges = Badge::where('type', 'tryout')->where('status', 'active')->orderBy('threshold')->get();
 
-$badges = \App\Models\Badge::where('type', 'tryout')
-    ->where('status', 'active')
-    ->orderBy('threshold', 'asc')
-    ->get();
-
-foreach ($badges as $badge) {
-    $alreadyHas = \App\Models\UserBadge::where('user_id', $user_id)
-        ->where('badge_id', $badge->id)
-        ->exists();
-
-    if (!$alreadyHas && $completedTryouts >= $badge->threshold) {
-        \App\Models\UserBadge::create([
-            'user_id' => $user_id,
-            'badge_id' => $badge->id,
-            'earned_at' => now(),
-        ]);
-
-        session()->flash('success', 'Selamat! Kamu mendapatkan badge "' . $badge->name . '"');
+    foreach ($badges as $badge) {
+        $already = UserBadge::where('user_id', $user_id)->where('badge_id', $badge->id)->exists();
+        if (!$already && $completedTryouts >= $badge->threshold) {
+            UserBadge::create([
+                'user_id' => $user_id,
+                'badge_id' => $badge->id,
+                'earned_at' => now(),
+            ]);
+        }
     }
-}
 
-// ✅ HAPUS URUTAN SOAL AGAR RESET UNTUK TRYOUT BERIKUTNYA
-session()->forget('question_order_' . $tryout_package_id);
+    session()->forget('question_order_' . $tryout_package_id);
 
-// ========================
-// NOTIFIKASI & REDIRECT
-// ========================
-$notification = array(
-    'message' => 'Tryout selesai! Nilai & poin berhasil ditambahkan.',
-    'alert-type' => 'success'
-);
-return redirect()->route('user.tryout.result', $tryout_package_id)->with($notification);
-
+    return redirect()
+        ->route('user.tryout.result', $tryout_package_id)
+        ->with(['message' => 'Tryout selesai! Nilai & poin berhasil ditambahkan.', 'alert-type' => 'success']);
 }
 
 
@@ -365,7 +348,7 @@ public function ResultTryout($id)
     });
 
     // ✅ Kirim ke blade
-    return view('frontend.mytryout.explanation', [
+    return view('frontend.history.explanation', [
         'tryoutName'      => $tryoutName,
         'results'         => $results,
         'correctCount'    => $result->correct_answers ?? 0,

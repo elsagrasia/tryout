@@ -3,6 +3,7 @@
 		<nav class="navbar navbar-expand gap-3">
 			<div class="mobile-toggle-menu"><i class='bx bx-menu'></i></div>
 
+
 			@php
 				$id = Auth::user()->id;
 				$profileData = App\Models\User::find($id);
@@ -11,7 +12,44 @@
 			<div class="user-box dropdown px-3 ms-auto">
 				<a class="d-flex align-items-center nav-link dropdown-toggle gap-3 dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 					<img src="{{ (!empty($profileData->photo)) ? url('upload/admin_images/'.$profileData->photo) : url('upload/no_image.jpg') }}" alt="Admin" class="user-img"> 
+				</a>
+
+				<div class="top-menu ms-auto">
+				<ul class="navbar-nav align-items-center gap-1">
 					
+			
+
+					<li class="nav-item dropdown dropdown-large">
+         			
+						<div class="dropdown-menu dropdown-menu-end">
+						
+														
+							<div class="header-notifications-list">
+								
+							</div>
+					
+						</div>
+					</li>
+					<li class="nav-item dropdown dropdown-large">
+				
+						<div class="dropdown-menu dropdown-menu-end">
+						
+							<div class="header-message-list">
+								
+							
+							</div>
+				
+						</div>
+					</li>
+				</ul>
+			</div>
+				
+				
+					@php
+						$id = Auth::user()->id;
+						$profileData = App\Models\User::find($id);
+					@endphp
+
 					<div class="user-info">
 						<p class="user-name mb-0">{{ $profileData->name }} </p>
 						<p class="designattion mb-0">{{ $profileData->email }}</p>

@@ -1,5 +1,5 @@
 <header class="header-menu-area">
-    <div class="header-menu-content dashboard-menu-content pr-30px pl-30px bg-white shadow-sm">
+    <div class="header-menu-content  pr-30px pl-30px bg-white shadow-sm">
         <div class="container-fluid">
             <div class="main-menu-content">
                 <div class="row align-items-center">
@@ -35,7 +35,7 @@
                                         <ul>
                                             <li>
                                                 <div class="shop-cart-btn">
-                                                    <div class="avatar-xs">
+                                                    <div class="avatar-sm">
                                                             <img class="img-fluid" 
                                                             src="{{ !empty($profileData->photo)
                                                                 ? url('upload/user_images/' . $profileData->photo)

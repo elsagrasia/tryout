@@ -19,31 +19,39 @@
 				</a>
 			</li>
 
-			<li class="menu-label">UI Elements</li>
 
-			<li>
-				<a class="has-arrow" href="javascript:void(0);">
-					<div class="parent-icon"><i class='bx bx-user-circle'></i></div>
-					<div class="menu-title">Kelola Semua Pengguna</div>
-				</a>
-				<ul>
-					<li><a href="{{ route('all.user') }}"><i class='bx bx-radio-circle'></i>Semua Pengguna</a></li>
-					<li><a href="{{ route('all.instructor') }}"><i class='bx bx-radio-circle'></i>Semua Instructor</a></li>        
-				</ul>
-			</li>
-      
-			<li>
-				<a href="{{ route('points.rules') }}">
-					<div class="parent-icon"><i class='bx bx-diamond'></i></div>
-					<div class="menu-title">Kelola Poin</div>
-				</a>
-			</li>        
-			<li>
-				<a href="{{ route('badges') }}">
-					<div class="parent-icon"><i class='bx bx-award'></i></div>
-					<div class="menu-title">Kelola Lencana</div>
-				</a>
-			</li>        
+	
+				<li class="menu-label">UI Elements</li>
+    
+        <li>
+            <a class="has-arrow" href="javascript:;">
+                <div class="parent-icon"><i class='bx bx-user-circle'></i>
+                </div>
+                <div class="menu-title">Kelola Semua Pengguna</div>
+            </a>
+            <ul>
+                <li> <a href="{{ route('all.user') }}"><i class='bx bx-radio-circle'></i>Semua Pengguna</a>
+                </li>
+                <li> <a href="{{ route('all.instructor') }}"><i class='bx bx-radio-circle'></i>Semua Instructor</a>
+                </li>        
+            </ul>
+        </li>        
+        <li>
+            <a href="{{ route('points.rules') }}">
+                <div class="parent-icon"><i class='bx bx-diamond'></i>
+                </div>
+                <div class="menu-title">Kelola Poin</div>
+            </a>
+        </li>        
+        <li>
+            <a href="{{ route('badges') }}">
+                <div class="parent-icon"><i class='bx bx-award'></i>
+                </div>
+                <div class="menu-title">Kelola Lencana</div>
+            </a>
+        </li>        
+		
+
 
 			<li>
 				<a class="has-arrow" href="javascript:;">

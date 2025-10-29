@@ -61,7 +61,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/mytryout/result/{id}', 'ResultTryout')->name('user.tryout.result');
         Route::get('/tryout/explanation/{tryout_id}', 'explanation')->name('tryout.explanation');
         Route::post('tryout/{id}/complete', 'completeTryout')->name('tryout.complete');
-
+        Route::get('/tryout/confirm/{id}', 'confirm')->name('tryout.confirm');
     });
 
 

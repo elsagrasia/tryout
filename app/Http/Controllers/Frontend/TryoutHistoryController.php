@@ -17,6 +17,6 @@ class TryoutHistoryController extends Controller
             ->latest()
             ->get();
 
-        return view('frontend.mytryout.history_tryout', compact('histories'));
+        return view('frontend.history.history_tryout', compact('histories'));
     }
 }

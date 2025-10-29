@@ -1,5 +1,5 @@
-@extends('frontend.dashboard.user_dashboard')
-@section('userdashboard')
+@extends('frontend.mytryout.header_only')
+@section('content')
 
 <div class="container-fluid mt-3 mb-5">
     <div class="row">
@@ -109,9 +109,9 @@
                                     @if ($index < count($tryout->questions) - 1)
                                         <button type="button" class="btn btn-primary next-btn">Selanjutnya →</button>
                                     @else
-                                        <button type="submit" class="btn btn-success">
-                                            <i class="la la-check-circle me-1"></i> Selesai & Kirim Jawaban
-                                        </button>
+<button type="button" id="confirmButton" class="btn btn-primary">
+    <i class="la la-check-circle me-1"></i> Selesai & Kirim Jawaban
+</button>
                                     @endif
                                 </div>
                             </div>
@@ -128,157 +128,92 @@
 ============================= -->
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    const totalQuestions = {{ count($tryout->questions) }};
-    let currentIndex = 0;
-    let answers = {}; // 🧠 Simpan jawaban sementara (qid -> value)
+  const questionCards = document.querySelectorAll('.question-card');
+  if (questionCards.length === 0) return;
 
-    const questionCards = document.querySelectorAll('.question-card');
-    const questionButtons = document.querySelectorAll('.question-btn');
-    const form = document.getElementById('tryoutForm');
-    const timerDisplay = document.getElementById('timer');
+  const totalQuestions = questionCards.length;
+  let currentIndex = parseInt(localStorage.getItem('tryout_index') || '0', 10);
+  if (isNaN(currentIndex) || currentIndex < 0 || currentIndex >= totalQuestions) currentIndex = 0;
 
-    // ============================
-    // 🔁 RESTORE STATE DARI LOCALSTORAGE
-    // ============================
-    const savedAnswers = localStorage.getItem('tryout_answers');
-    const savedIndex = localStorage.getItem('tryout_index');
-    const savedRemainingTime = localStorage.getItem('tryout_remaining_time'); // sisa detik
-    const savedElapsed = localStorage.getItem('tryout_elapsed_time');
+  let answers = {};
+  try { answers = JSON.parse(localStorage.getItem('tryout_answers') || '{}'); } catch {}
 
-    if (savedAnswers) answers = JSON.parse(savedAnswers);
-    if (savedIndex) currentIndex = parseInt(savedIndex);
+  const questionButtons = document.querySelectorAll('.question-btn');
+  const timerDisplay = document.getElementById('timer');
+  const form = document.getElementById('tryoutForm');
 
-    // ============================
-    // 🎨 Ubah warna tombol
-    // ============================
-    function setButtonColor(btn, colorClass) {
-        btn.classList.remove('btn-outline-danger', 'btn-success', 'btn-primary', 'btn-secondary', 'btn-outline-secondary');
-        btn.classList.add(colorClass);
-    }
-
-    function highlightActiveButton() {
-        questionButtons.forEach((btn, idx) => {
-            const qid = btn.dataset.question;
-            if (idx === currentIndex) {
-                setButtonColor(btn, 'btn-primary');
-            } else if (answers[qid]) {
-                setButtonColor(btn, 'btn-success');
-            } else {
-                setButtonColor(btn, 'btn-secondary');
-            }
-        });
-    }
-
-    // ============================
-    // 🧩 Tampilkan soal berdasarkan index
-    // ============================
-    function showQuestion(index) {
-        questionCards.forEach((card, i) => {
-            card.style.display = (i === index) ? 'block' : 'none';
-        });
-
-        const qid = questionCards[index].dataset.question;
-
-        // restore pilihan user sebelumnya
-        if (answers[qid]) {
-            const selected = document.querySelector(`input[name="answers[${qid}]"][value="${answers[qid]}"]`);
-            if (selected) selected.checked = true;
-        }
-
-        localStorage.setItem('tryout_index', index);
-        highlightActiveButton();
-        window.scrollTo(0, 0);
-    }
-
-    showQuestion(currentIndex);
-
-    // ============================
-    // 🔄 Navigasi antar soal
-    // ============================
-    document.querySelectorAll('.next-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            if (currentIndex < totalQuestions - 1) {
-                currentIndex++;
-                showQuestion(currentIndex);
-            }
-        });
-    });
-
-    document.querySelectorAll('.prev-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            if (currentIndex > 0) {
-                currentIndex--;
-                showQuestion(currentIndex);
-            }
-        });
-    });
-
-    // ============================
-    // 💾 Simpan jawaban ke localStorage
-    // ============================
-    document.querySelectorAll('.answer-radio').forEach(radio => {
-        radio.addEventListener('change', function () {
-            const qid = this.dataset.question;
-            answers[qid] = this.value;
-            localStorage.setItem('tryout_answers', JSON.stringify(answers));
-            const btn = document.querySelector(`.question-btn[data-question="${qid}"]`);
-            if (btn) setButtonColor(btn, 'btn-success');
-        });
-    });
-
-    // Klik nomor soal langsung
+  function setButtonColor(btn, color) {
+    btn.classList.remove('btn-outline-danger','btn-success','btn-primary','btn-secondary','btn-outline-secondary');
+    btn.classList.add(color);
+  }
+  function highlightActiveButton() {
     questionButtons.forEach((btn, idx) => {
-        btn.addEventListener('click', function () {
-            currentIndex = parseInt(btn.dataset.index);
-            showQuestion(currentIndex);
-        });
+      const qid = btn.dataset.question;
+      if (idx === currentIndex) setButtonColor(btn, 'btn-primary');
+      else if (answers[qid]) setButtonColor(btn, 'btn-success');
+      else setButtonColor(btn, 'btn-secondary');
     });
+  }
 
-    // ============================
-    // ⏱️ TIMER - PULIHKAN DARI STATE SEBELUMNYA
-    // ============================
-    let duration = {{ $tryout->duration * 60 }};
-    let elapsed = 0;
+  function showQuestion(index) {
+    index = Math.max(0, Math.min(index, totalQuestions - 1));
+    currentIndex = index;
+    questionCards.forEach((card, i) => card.style.display = (i === index) ? 'block' : 'none');
+    const qid = questionCards[index].dataset.question;
+    if (answers[qid]) {
+      const selected = document.querySelector(`input[name="answers[${qid}]"][value="${answers[qid]}"]`);
+      if (selected) selected.checked = true;
+    }
+    localStorage.setItem('tryout_index', index);
+    highlightActiveButton();
+    window.scrollTo(0, 0);
+  }
 
-    if (savedRemainingTime) duration = parseInt(savedRemainingTime);
-    if (savedElapsed) elapsed = parseInt(savedElapsed);
+  showQuestion(currentIndex);
+  document.querySelectorAll('.next-btn').forEach(btn => btn.addEventListener('click', () => showQuestion(currentIndex + 1)));
+  document.querySelectorAll('.prev-btn').forEach(btn => btn.addEventListener('click', () => showQuestion(currentIndex - 1)));
+  questionButtons.forEach(btn => btn.addEventListener('click', () => showQuestion(parseInt(btn.dataset.index))));
 
-    const timerInterval = setInterval(() => {
-        const hours = Math.floor(duration / 3600);
-        const minutes = Math.floor((duration % 3600) / 60);
-        const seconds = duration % 60;
+  document.querySelectorAll('.answer-radio').forEach(radio => {
+    radio.addEventListener('change', function () {
+      const qid = this.dataset.question;
+      answers[qid] = this.value;
+      localStorage.setItem('tryout_answers', JSON.stringify(answers));
+      const btn = document.querySelector(`.question-btn[data-question="${qid}"]`);
+      if (btn) setButtonColor(btn, 'btn-success');
+    });
+  });
 
-        timerDisplay.textContent = 
-            `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  let duration = {{ $tryout->duration * 60 }};
+  let elapsed = 0;
+  if (localStorage.getItem('tryout_remaining_time')) duration = parseInt(localStorage.getItem('tryout_remaining_time'));
+  if (localStorage.getItem('tryout_elapsed_time')) elapsed = parseInt(localStorage.getItem('tryout_elapsed_time'));
 
-        duration--;
-        elapsed++;
-
-        // simpan sisa waktu setiap detik (bisa juga setiap 10 detik)
-        if (duration % 5 === 0) {
-            localStorage.setItem('tryout_remaining_time', duration);
-            localStorage.setItem('tryout_elapsed_time', elapsed);
-        }
-
-        if (duration < 0) {
-            clearInterval(timerInterval);
-            alert('Waktu habis! Jawaban akan dikirim otomatis.');
-            form.submit();
-        }
+  if (timerDisplay) {
+    setInterval(() => {
+      const h = Math.floor(duration / 3600);
+      const m = Math.floor((duration % 3600) / 60);
+      const s = duration % 60;
+      timerDisplay.textContent = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+      duration--; elapsed++;
+      if (duration % 5 === 0) {
+        localStorage.setItem('tryout_remaining_time', duration);
+        localStorage.setItem('tryout_elapsed_time', elapsed);
+      }
+      if (duration < 0) form.submit();
     }, 1000);
+  }
 
-    // ============================
-    // 🧹 HAPUS STORAGE SAAT SUBMIT
-    // ============================
-    form.addEventListener('submit', () => {
-        document.getElementById('elapsedTime').value = elapsed;
-        localStorage.removeItem('tryout_answers');
-        localStorage.removeItem('tryout_index');
-        localStorage.removeItem('tryout_remaining_time');
-        localStorage.removeItem('tryout_elapsed_time');
-    });
+  document.getElementById('confirmButton').addEventListener('click', function () {
+    localStorage.setItem('tryout_answers', JSON.stringify(answers));
+    localStorage.setItem('tryout_index', currentIndex);
+    localStorage.setItem('tryout_remaining_time', duration);
+    localStorage.setItem('tryout_elapsed_time', elapsed);
+    window.location.href = "{{ route('tryout.confirm', $tryout->id) }}";
+  });
 });
 </script>
+
 
 
 @endsection
