@@ -206,6 +206,9 @@ Route::middleware(['auth', 'roles:instructor'])->group(function () {
         Route::get('/instructor/packages/{package}/manage','managePackage')->name('packages.manage');
         Route::post('/instructor/packages/{package}/questions/attach','attachQuestions')->name('packages.questions.attach');
         Route::get('/instructor/packages/{package}/questions/{question}/detach','detachQuestion')->name('packages.questions.detach');
+        Route::get('/instructor/packages/result','allPackageResult')->name('all.packages.result');
+        Route::get('/instructor/packages/{package}/results','viewPackageResult')->name('packages.view.results');
+        Route::get('instructor/packages/{package}/user/{id}/results','userResultTryout')->name('user.results');
 
     });
 
@@ -249,7 +252,4 @@ Route::get('user/leaderboard',[IndexController::class, 'userLeaderboard'])->name
 Route::get('/dashboard',[IndexController::class, 'userDashboard'])->name('user.dashboard');
 
 
-Route::get('/user-all', [ChatController::class, 'getAllUsers']);
-    Route::get('/my-badges', [IndexController::class, 'myBadges'])->name('user.badges');
-    Route::get('user/leaderboard',[IndexController::class, 'userLeaderboard'])->name('user.leaderboard');
-    Route::get('/dashboard',[IndexController::class, 'userDashboard'])->name('user.dashboard');
+

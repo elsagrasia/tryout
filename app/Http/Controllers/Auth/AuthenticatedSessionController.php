@@ -40,7 +40,7 @@ class AuthenticatedSessionController extends Controller
         ]);
         
        $notification = array(
-            'message' => 'Login Successfully',
+            'message' => 'Login Berhasil!',
             'alert-type' => 'success'
         );
         

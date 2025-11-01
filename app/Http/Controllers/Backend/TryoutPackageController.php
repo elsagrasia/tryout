@@ -8,6 +8,7 @@ use App\Models\TryoutPackage;
 use App\Models\Category;
 use App\Models\Question;
 use App\Models\Answer;
+use App\Models\ResultTryout;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;  
 
@@ -166,8 +167,39 @@ public function attachQuestions(Request $r, TryoutPackage $package)
         return back()->with('message', 'Question detached.');
     }
 
-
+    public function allPackageResult()
+    {
+        $id = Auth::user()->id;
+        $tryoutPackages = TryoutPackage::where('instructor_id',$id)->orderBy('id','desc')->get();        
+        return view('instructor.result.all_result', compact('tryoutPackages'));
+    }
     
+    public function viewPackageResult($package_id)
+    {
+        $results = ResultTryout::where('tryout_package_id', $package_id)
+            ->with('user') // eager load user relationship
+            ->orderBy('score', 'desc')
+            ->get();
+
+        return view('instructor.result.package_result', compact('results'));
+    }
+
+    public function userResultTryout($tryout_id, $user_id)
+    {
+        $result = ResultTryout::where('tryout_package_id', $tryout_id)
+            ->where('user_id', $user_id)
+            ->with('tryoutPackage')
+            ->firstOrFail();
+
+        // ambil jawaban user langsung dari tabel user_answers
+        $answers = \App\Models\UserAnswer::where('user_id', $user_id)
+            ->where('tryout_package_id', $tryout_id)
+            ->with('question')
+            ->get();
+
+        return view('instructor.result.user_result', compact('result', 'answers'));
+    }
+
 } // end class
 
 

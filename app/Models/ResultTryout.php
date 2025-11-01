@@ -20,6 +20,9 @@ class ResultTryout extends Model
         return $this->belongsTo(TryoutPackage::class, 'tryout_package_id');
     }
 
-
+    public function answers()
+    {
+        return $this->hasMany(UserAnswer::class, 'tryout_package_id');
+    }
 
 }

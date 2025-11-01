@@ -21,7 +21,7 @@
 
 
 	
-				<li class="menu-label">UI Elements</li>
+				<hr>
 
         <li>
             <a class="has-arrow" href="javascript:;">

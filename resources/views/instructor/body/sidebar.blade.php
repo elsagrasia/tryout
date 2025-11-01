@@ -22,11 +22,10 @@
                 <div class="menu-title">Dashboard</div>
             </a>
         </li>
-
+        <hr>
         @if ($status === '1')
 
-        <li class="menu-label">Manage</li>
-            
+    
         <li>
             <a href="{{route('all.tryout.packages')}}">
                 <div class="parent-icon"><i class="bx bx-rocket"></i></div>
@@ -46,7 +45,7 @@
             </a>
         </li>
         <li>
-            <a href="{{route('all.question')}}">
+            <a href="{{route('all.packages.result')}}">
                 <div class="parent-icon"><i class='bx bxs-report'></i></div>
                 <div class="menu-title">Hasil</div>
             </a>
