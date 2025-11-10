@@ -44,6 +44,7 @@
                        @endforeach
                    </select>
                 </div>
+
                 <div class="form-group col-md-6">
                     <label for="input1" class="form-label">Penyakit</label>
                     <input type="text" name="disease" class="form-control" id="input1" >
