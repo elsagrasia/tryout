@@ -78,7 +78,7 @@
     <script src="{{ asset('backend/assets/plugins/vectormap/jquery-jvectormap-2.0.2.min.js') }}"></script>
     <script src="{{ asset('backend/assets/plugins/vectormap/jquery-jvectormap-world-mill-en.js') }}"></script>
     <script src="{{ asset('backend/assets/plugins/chartjs/js/chart.js') }}"></script>
-    <script src="{{ asset('backend/assets/js/index.js') }}"></script>
+    {{-- <script src="{{ asset('backend/assets/js/index.js') }}"></script> --}}
 
     <!-- App Core -->
     <script src="{{ asset('backend/assets/js/app.js') }}"></script>

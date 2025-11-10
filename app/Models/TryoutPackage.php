@@ -11,13 +11,13 @@ class TryoutPackage extends Model
     protected $guarded = [];
 
     // Relasi ke kategori utama (optional)
-    // public function category()
-    // {
-    //     return $this->belongsTo(Category::class, 'category_id');
-    // }
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'category_id');
+    }
 
     public function categories(){
-        return $this->belongsToMany(Category::class, 'category_tryout_package', 'category_id');
+        return $this->belongsToMany(Category::class, 'category_tryout_package', );
     }
     
     public function instructor() {

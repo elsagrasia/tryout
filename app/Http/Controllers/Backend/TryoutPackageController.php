@@ -24,33 +24,68 @@ class TryoutPackageController extends Controller
     public function addTryoutPackage() {
         $id = Auth::user()->id;
         $categories = Category::all();
-        return view('instructor.tryout_packages.add_tryout');
+        // return view('instructor.tryout_packages.add_tryout');
+        return view('instructor.tryout_packages.add_tryout', compact('categories'));
     }
 
-    public function storeTryoutPackage(Request $request) {
+    // public function storeTryoutPackage(Request $request) {
+    //     $request->validate([
+    //         'tryout_name' => 'required',
+    //         // 'category_id' => 'required',
+    //     ]);
+
+    //     $id = Auth::user()->id;
+    //     TryoutPackage::insert([
+    //         'tryout_name' => $request->tryout_name,
+    //         'description' => $request->description,
+    //         'instructor_id' => $id,
+    //         'duration' => $request->duration,
+    //         'category_id' => $request->category_id, //buat ambil id category
+    //         'total_questions' => 0,
+    //         'status' => 'draft',
+    //         'created_at' => Carbon::now(),
+    //     ]);
+
+    //     $notification = array(
+    //         'message' => 'Tryout Package Inserted Successfully',
+    //         'alert-type' => 'success'
+    //     );
+    //     return redirect()->route('all.tryout.packages')->with($notification);
+    // }
+
+    public function storeTryoutPackage(Request $request)
+    {
         $request->validate([
             'tryout_name' => 'required',
-            'category_id' => 'required',
         ]);
 
         $id = Auth::user()->id;
+
+        // Cek apakah ada kategori dengan nama mirip dengan nama tryout
+        $category = Category::whereRaw('LOWER(category_name) LIKE ?', ['%' . strtolower($request->tryout_name) . '%'])->first();
+
+        // Kalau ada, ambil id, kalau tidak biarkan null
+        $categoryId = $category ? $category->id : null;
+
         TryoutPackage::insert([
             'tryout_name' => $request->tryout_name,
             'description' => $request->description,
-            'instructor_id' => $id,
+            'instructor_id' => Auth::user()->id,
             'duration' => $request->duration,
-            'category_id' => $request->category_id, //buat ambil id category
+            'category_id' => $category ? $category->id : null,
             'total_questions' => 0,
             'status' => 'draft',
             'created_at' => Carbon::now(),
         ]);
 
-        $notification = array(
-            'message' => 'Tryout Package Inserted Successfully',
-            'alert-type' => 'success'
-        );
+        $notification = [
+            'message' => 'Paket Tryout berhasil ditambahkan',
+            'alert-type' => 'success',
+        ];
+
         return redirect()->route('all.tryout.packages')->with($notification);
     }
+
 
     public function editTryoutPackage($id) {
         $tryoutPackage = TryoutPackage::findOrFail($id);
@@ -80,7 +115,7 @@ class TryoutPackageController extends Controller
         ]);
 
         $notification = array(
-                'message' => 'Tryout Package Updated Successfully',
+                'message' => 'Paket Tryout berhasil diperbarui',
                 'alert-type' => 'success'
             );
         return redirect()->route('all.tryout.packages')->with($notification);
@@ -92,7 +127,7 @@ class TryoutPackageController extends Controller
         $tryoutPackage->delete();
 
         $notification = array(
-            'message' => 'Tryout Package Deleted Successfully',
+            'message' => 'Paket Tryout berhasil dihapus',
             'alert-type' => 'success'
         );
         return redirect()->route('all.tryout.packages')->with($notification);
@@ -111,7 +146,7 @@ class TryoutPackageController extends Controller
         $tryout->status = $data['status']; // 'draft' / 'published'
         $tryout->save();
 
-        return response()->json(['message' => 'Tryout Package Status Updated']);
+        return response()->json(['message' => 'Paket Tryout berhasil diperbarui']);
     }
 
     public function managePackage(TryoutPackage $package)
@@ -161,14 +196,14 @@ class TryoutPackageController extends Controller
             ]);
         }
 
-        return back()->with('message', 'Questions attached to package.');
+        return back()->with('message', 'Soal berhasil ditambahkan ke paket');
     }
 
     // detach 1 soal dari paket (soal tetap ada di bank)
     public function detachQuestion(TryoutPackage $package, Question $question)
     {
         $package->questions()->detach($question->id);
-        return back()->with('message', 'Question detached.');
+        return back()->with('message', 'Soal dihapus');
     }
 
     public function allPackageResult()
