@@ -1,5 +1,18 @@
 @extends('frontend.dashboard.user_dashboard')
 @section('userdashboard')
+
+@php
+    if ($finalScore >= 85) {
+        $color = 'text-success';
+    } elseif ($finalScore >= 75) {
+        $color = 'text-primary';
+    } elseif ($finalScore >= 65) {
+        $color = 'text-warning';
+    } else {
+        $color = 'text-danger';
+    }
+@endphp
+
 <div class="container">
     <div class="breadcrumb-btn-box mb-4">
         <a href="{{ url()->previous() }}" class="btn theme-btn theme-btn-sm-2 "><i class="la la-arrow-left mr-2"></i>Kembali</a>
@@ -9,9 +22,8 @@
     <div class="row">
         <div class="col-md-3 responsive-column-half align-self-center">
             <div class="mb-30px text-center">
-
                 <p class="fs-18 font-weight-medium mb-10px">Nilai</p>
-                <h4 class="fs-60 font-weight-bold mb-10px text-color-2">{{$finalScore}}</h4>                
+                <h4 class="fs-60 font-weight-bold mb-10px {{ $color }}">{{ $finalScore }}</h4>          
             </div>
         </div><!-- end col-lg-3 -->
         <div class="col">

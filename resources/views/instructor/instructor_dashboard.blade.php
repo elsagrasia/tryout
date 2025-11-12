@@ -55,7 +55,6 @@
         <div class="overlay toggle-icon"></div>
         <a href="javascript:;" class="back-to-top"><i class='bx bxs-up-arrow-alt'></i></a>
 
-        @include('instructor.body.footer')
     </div>
 
     <!-- ========================================================= -->

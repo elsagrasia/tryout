@@ -22,17 +22,32 @@ use Carbon\Carbon;
 class UserTryoutController extends Controller
 {
 
+    // public function myTryout()
+    // {
+    //     $userId = Auth::id();
+
+    //     // Ambil daftar tryout yang user ikuti
+    //     $myTryouts = UserTryout::with('tryoutPackage')
+    //         ->where('user_id', $userId)
+    //         ->get();
+
+    //     // Kirim ke view
+    //     return view('frontend.mytryout.my_all_tryout', compact('myTryouts'));
+    // }
     public function myTryout()
     {
         $userId = Auth::id();
 
-        // Ambil daftar tryout yang user ikuti
         $myTryouts = UserTryout::with('tryoutPackage')
             ->where('user_id', $userId)
             ->get();
 
-        // Kirim ke view
-        return view('frontend.mytryout.my_all_tryout', compact('myTryouts'));
+        // Ambil hasil terakhir user untuk setiap tryout
+        $results = \App\Models\ResultTryout::where('user_id', $userId)
+            ->get()
+            ->keyBy('tryout_package_id');
+
+        return view('frontend.mytryout.my_all_tryout', compact('myTryouts', 'results'));
     }
 
     public function AddToTryout(Request $request, $tryoutPackage_id)
@@ -265,9 +280,19 @@ class UserTryoutController extends Controller
             ->where('score', '>', $result->score ?? 0)
             ->count() + 1;
 
-        $histories = ResultTryout::with('tryoutPackage')
+        // $histories = ResultTryout::with('tryoutPackage')
+        //     ->where('user_id', Auth::id())
+        //     ->latest()
+        //     ->get();
+        $histories = \App\Models\ResultTryout::with('tryoutPackage')
             ->where('user_id', Auth::id())
-            ->latest()
+            ->select('tryout_package_id', \DB::raw('MAX(id) as latest_id'))
+            ->groupBy('tryout_package_id')
+            ->pluck('latest_id');
+
+        $histories = \App\Models\ResultTryout::with('tryoutPackage')
+            ->whereIn('id', $histories)
+            ->orderByDesc('updated_at')
             ->get();
 
         return view('frontend.mytryout.tryout_result', [
@@ -361,9 +386,6 @@ class UserTryoutController extends Controller
             'categories'      => $categories,
         ]);
     }
-
-
-
 
 }
 

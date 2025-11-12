@@ -79,20 +79,59 @@
         <p class="mt-2 text-muted small mb-0">Level 5 - Expert Quiz Master</p>
     </div>
 
-    {{-- Chart --}}
-    <div class="card border-0 shadow-sm p-4 rounded-4 mt-4" style="border-radius: 25px;">
-        <h6 class="fw-bold mb-3">Rata-rata Nilai per Bidang</h6>
-        <div style="height: 350px;"> 
-            <canvas id="subjectChart"></canvas>
+    <div class="row mt-4" ;>
+    {{-- Card kiri: Chart --}}
+        <div class="col-md-7" >
+            <div class="card border-0 shadow-sm p-4 rounded-4 h-100" style="background-color: rgba(53, 143, 227, 0.04); border-radius: 25px;">
+                <h6 class="fw-bold mb-3">Rata-rata Nilai per Bidang</h6>
+                <div style="height: 350px;">
+                    <canvas id="subjectChart"></canvas>
+                </div>
+            </div>
         </div>
+
+    {{-- Card kanan: Estimasi --}}
+    <div class="col-md-5">
+        <div class="card border-0 shadow-sm p-4 rounded-4 h-100"
+            style="background-color: rgba(53, 143, 227, 0.04); border-radius: 25px;">
+            
+            <h6 class="fw-bold mb-3 text-center" style="font-size: 1rem;">Estimasi Pendalaman per Bidang</h6>
+
+            {{-- Daftar bidang (scrollable) --}}
+            <div id="estimationCards" 
+                style="max-height: 280px; overflow-y: auto; padding-right: 6px; margin-bottom: 20px;">
+            </div>
+
+            {{-- Keterangan warna (tetap di bawah, tidak ikut scroll) --}}
+            <div class="mt-3 text-center small">
+                <h6 class="fw-semibold mb-3" style="font-size: 0.9rem;">Keterangan</h6>
+                <div class="d-flex justify-content-center flex-wrap" style="gap: 8px; margin-top: 6px;">
+                    <div class="d-flex align-items-center" style="margin: 2px 6px;">
+                        <div class="rounded-circle me-2" style="width: 12px; height: 12px; background-color: #dc3545;"></div>
+                        <small>Perlu pendalaman tinggi</small>
+                    </div>
+                    <div class="d-flex align-items-center" style="margin: 2px 6px;">
+                        <div class="rounded-circle me-2" style="width: 12px; height: 12px; background-color: #fd7e14;"></div>
+                        <small>Cukup perlu</small>
+                    </div>
+                    <div class="d-flex align-items-center" style="margin: 2px 6px;">
+                        <div class="rounded-circle me-2" style="width: 12px; height: 12px; background-color: #28a745;"></div>
+                        <small>Sudah baik</small>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
     </div>
 </div>
 
-{{-- ChartJS --}}
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 const ctx = document.getElementById('subjectChart');
-new Chart(ctx, {
+const subjectChart = new Chart(ctx, {
     type: 'bar',
     data: {
         labels: @json($chartLabels),
@@ -110,8 +149,11 @@ new Chart(ctx, {
             x: {
                 ticks: {
                     font: {
-                        weight: 'bold' // bikin tulisan bidang tebal
-                    }
+                        family: 'Poppins, sans-serif',
+                        size: 13,
+                        weight: 'normal'
+                    },
+                    color: '#333'
                 }
             },
             y: {
@@ -124,7 +166,56 @@ new Chart(ctx, {
         }
     }
 });
+
+
+// === BAGIAN TAMBAHAN: Estimasi Pendalaman per Bidang ===
+document.addEventListener('DOMContentLoaded', function() {
+    const chartData = @json($chartData);
+    const chartLabels = @json($chartLabels);
+    const estimationCards = document.getElementById('estimationCards');
+    estimationCards.innerHTML = '';
+
+    chartLabels.forEach((label, index) => {
+        const value = chartData[index];
+        let color = '';
+
+        if (value < 60) {
+            color = '#dc3545'; // merah
+        } else if (value < 80) {
+            color = '#fd7e14'; // oranye
+        } else {
+            color = '#28a745'; // hijau
+        }
+
+        estimationCards.innerHTML += `
+            <div class="col-md-12 mb-2">
+                <div class="card border-0 shadow-sm text-center estimation-card" 
+                    style="
+                        background-color: ${color}0D; 
+                        border-left: 4px solid ${color}; 
+                        border-radius: 10px; 
+                        max-width: 320px; 
+                        margin: 0 auto; 
+                        min-height: 55px; /* ✨ samakan tinggi semua card */
+                        display: flex; 
+                        align-items: center;
+                    ">
+                    <div class="card-body py-2 px-3 d-flex justify-content-between align-items-center w-100">
+                        <h6 class="fw-normal mb-0 text-dark" style="font-size: 13px;">${label}</h6>
+                        <h6 class="fw-normal mb-0" style="font-size: 14px; color: ${color};">${value}%</h6>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+});
+
+
+
 </script>
+
+
+
 
 <style>
 body {  

@@ -94,8 +94,12 @@
                                     </div>
                                 </div>
                             @empty
-                                {{-- <h5 class="text-danger"> Belum ada Tryout di kategori ini </h5> --}}
-                                <div class="col-12 text-center text-danger py-5">Tidak ada Tryout di kategori ini</div>
+                                <div class="col-12 text-center py-5">
+                                   <img src="{{ asset('frontend/images/no-tryout.webp') }}" alt="Tidak ada Tryout" class="img-fluid mb-3" style="max-width: 260px;">
+                                    <h4 class="fw-semibold text-dark">Tryout Tidak Ditemukan</h4>
+                                    <p class="text-muted mb-0">Belum ada tryout di kategori ini. Silakan cek kembali nanti.</p>
+                                </div>
+                                {{-- <div class="col-12 text-center text-danger py-5">Tidak ada Tryout di kategori ini</div> --}}
                             @endforelse
                         </div>
                     </div>
