@@ -11,7 +11,6 @@ use App\Models\UserBadge;
 use App\Models\Badge;
 use App\Models\userTryout;
 use App\Models\category;
-
 use App\Models\resultTryout;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Auth; 

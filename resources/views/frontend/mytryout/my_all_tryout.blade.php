@@ -1,8 +1,6 @@
 @extends('frontend.dashboard.user_dashboard')
 @section('userdashboard')
 
-
-
 <div class="container  mb-5">
     <div class="dashboard-heading mb-4">
         <h3 class="fs-22 fw-semibold">Tryout</h3>
@@ -15,12 +13,13 @@
         </div>
     @else
         <div class="list-group">
-            @foreach ($myTryouts as $item)
+           @foreach ($myTryouts as $item)
                 @php
                     $tryout = $item->tryoutPackage;
+                    $result = $results[$tryout->id] ?? null;
+                    $isDone = $result ? true : false;
                 @endphp
-
-              
+        
                 <div class="list-group-item mb-2 d-flex justify-content-between align-items-center border rounded shadow-sm">
                     <div class="d-flex align-items-center">
                         <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" 
@@ -33,15 +32,19 @@
                         </div>
                     </div>
 
-                    <div class="d-flex align-items-center">
-                        <a href="{{ route('tryout.start', $tryout->id) }}" 
-                        class="btn btn-success btn-sm" 
-                        style="margin-right: 8px;">
-                            <i class="la la-play-circle me-1"></i> Kerjakan
-                        </a>
-
+                    <div class="text-end">
+                        @if($isDone)
+                            <a href="{{ route('tryout.start', $tryout->id) }}" 
+                                class="btn btn-outline-warning btn-sm rounded-pill px-3">
+                                <i class="la la-redo-alt me-1"></i> Ulangi
+                            </a>
+                        @else
+                            <a href="{{ route('tryout.start', $tryout->id) }}" 
+                                class="btn btn-success btn-sm rounded-pill px-3">
+                                <i class="la la-play-circle me-1"></i> Kerjakan
+                            </a>
+                        @endif
                     </div>
-
                 </div>
 
 
@@ -49,9 +52,6 @@
         </div>
     @endif
 </div>
-
-
-
 
 
 

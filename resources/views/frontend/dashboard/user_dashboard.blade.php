@@ -26,6 +26,7 @@
     <link rel="stylesheet" href="{{asset('frontend/css/style.css')}}">
     <!-- end inject -->
 
+
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" >
 </head>
 <body >
@@ -56,7 +57,6 @@
 
         @include('frontend.dashboard.body.sidebar')
 
-  
     </div><!-- end off-canvas-menu -->
 
 
@@ -66,12 +66,11 @@
             <i class="la la-bars mr-1"></i> Dashboard Nav
         </div>
 
-
         <div class="container-fluid">
 
             @yield('userdashboard')
     
-            @include('frontend.dashboard.body.footer')
+            
 
 
         </div><!-- end container-fluid -->

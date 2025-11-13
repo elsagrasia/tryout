@@ -22,17 +22,32 @@ use Carbon\Carbon;
 class UserTryoutController extends Controller
 {
 
+    // public function myTryout()
+    // {
+    //     $userId = Auth::id();
+
+    //     // Ambil daftar tryout yang user ikuti
+    //     $myTryouts = UserTryout::with('tryoutPackage')
+    //         ->where('user_id', $userId)
+    //         ->get();
+
+    //     // Kirim ke view
+    //     return view('frontend.mytryout.my_all_tryout', compact('myTryouts'));
+    // }
     public function myTryout()
     {
         $userId = Auth::id();
 
-        // Ambil daftar tryout yang user ikuti
         $myTryouts = UserTryout::with('tryoutPackage')
             ->where('user_id', $userId)
             ->get();
 
-        // Kirim ke view
-        return view('frontend.mytryout.my_all_tryout', compact('myTryouts'));
+        // Ambil hasil terakhir user untuk setiap tryout
+        $results = \App\Models\ResultTryout::where('user_id', $userId)
+            ->get()
+            ->keyBy('tryout_package_id');
+
+        return view('frontend.mytryout.my_all_tryout', compact('myTryouts', 'results'));
     }
 
     public function AddToTryout(Request $request, $tryoutPackage_id)
@@ -68,7 +83,6 @@ class UserTryoutController extends Controller
             );
             return redirect()->route('login')->with($notification);
         }
-
     }
 
     public function StartTryout($id)
@@ -218,169 +232,178 @@ return redirect()
 
 
 
-public function ResultTryout($id)
-{
-    $user_id = Auth::id();
 
-    // Ambil semua jawaban user + relasi soal
-    $userAnswers = UserAnswer::with('question.packages')
-        ->where('tryout_package_id', $id)
-        ->where('user_id', $user_id)
-        ->get();
+    public function ResultTryout($id)
+    {
+        $user_id = Auth::id();
 
-    // Ambil info paket & nama tryout
-    $package = TryoutPackage::with('questions')->findOrFail($id);
-    $tryoutName = $package->tryout_name ?? '-';
-    $totalQuestions = $package->questions->count();
+        // Ambil semua jawaban user + relasi soal
+        $userAnswers = UserAnswer::with('question.packages')
+            ->where('tryout_package_id', $id)
+            ->where('user_id', $user_id)
+            ->get();
 
-    // Ambil data hasil terakhir user
-    $result = ResultTryout::where('user_id', $user_id)
-        ->where('tryout_package_id', $id)
-        ->latest()
-        ->first();
 
-    // Map hasil jawaban untuk Blade
-    $results = $userAnswers->map(function ($item) {
-        return [
-            'question_id'    => $item->question_id,
-            'question'       => $item->question->question_text,
-            'vignette'       => $item->question->vignette,
-            'image'          => $item->question->image ?? null,
-            'options'        => [
-                'a' => $item->question->option_a,
-                'b' => $item->question->option_b,
-                'c' => $item->question->option_c,
-                'd' => $item->question->option_d,
-                'e' => $item->question->option_e,
-            ],
-            'user_answer'    => strtolower($item->selected_option),
-            'correct_option' => strtolower($item->question->correct_option),
-            'explanation'    => $item->question->explanation,
-            'is_correct'     => $item->is_correct,
-        ];
-    });
+        // Ambil info paket & nama tryout
+        $package = TryoutPackage::with('questions')->findOrFail($id);
+        $tryoutName = $package->tryout_name ?? '-';
+        $totalQuestions = $package->questions->count();
 
-    // 🔹 Leaderboard per tryout: ambil semua peserta tryout ini
-    $leaderboard = ResultTryout::with('user')
-        ->where('tryout_package_id', $id)
-        ->orderByDesc('score')
-        ->take(50)
-        ->get()
-        ->map(function ($result, $index) {
+        // Ambil data hasil terakhir user
+        $result = ResultTryout::where('user_id', $user_id)
+            ->where('tryout_package_id', $id)
+            ->latest()
+            ->first();
+
+        // Map hasil jawaban untuk Blade
+        $results = $userAnswers->map(function ($item) {
             return [
-                'rank' => $index + 1,
-                'user_id' => $result->user->id,
-                'name' => $result->user->name,
-                'photo' => $result->user->photo,
-                'score' => $result->score,
+                'question_id'    => $item->question_id,
+                'question'       => $item->question->question_text,
+                'vignette'       => $item->question->vignette,
+                'image'          => $item->question->image ?? null,
+                'options'        => [
+                    'a' => $item->question->option_a,
+                    'b' => $item->question->option_b,
+                    'c' => $item->question->option_c,
+                    'd' => $item->question->option_d,
+                    'e' => $item->question->option_e,
+                ],
+                'user_answer'    => strtolower($item->selected_option),
+                'correct_option' => strtolower($item->question->correct_option),
+                'explanation'    => $item->question->explanation,
+                'is_correct'     => $item->is_correct,
             ];
         });
 
-    // 🔹 User & ranking saat ini dalam leaderboard tryout tersebut
-    $currentUser = Auth::user();
-    $currentRank = ResultTryout::where('tryout_package_id', $id)
-        ->where('score', '>', $result->score ?? 0)
-        ->count() + 1;
+        // 🔹 Leaderboard per tryout: ambil semua peserta tryout ini
+        $leaderboard = ResultTryout::with('user')
+            ->where('tryout_package_id', $id)
+            ->orderByDesc('score')
+            ->take(50)
+            ->get()
+            ->map(function ($result, $index) {
+                return [
+                    'rank' => $index + 1,
+                    'user_id' => $result->user->id,
+                    'name' => $result->user->name,
+                    'photo' => $result->user->photo,
+                    'score' => $result->score,
+                ];
+            });
 
-    $histories = ResultTryout::with('tryoutPackage')
-        ->where('user_id', Auth::id())
-        ->latest()
-        ->get();
+        // 🔹 User & ranking saat ini dalam leaderboard tryout tersebut
+        $currentUser = Auth::user();
+        $currentRank = ResultTryout::where('tryout_package_id', $id)
+            ->where('score', '>', $result->score ?? 0)
+            ->count() + 1;
 
-    return view('frontend.mytryout.tryout_result', [
-        'tryoutName'      => $tryoutName,
-        'results'         => $results,
-        'result'            => $result,
-        'correctCount'    => $result->correct_answers ?? 0,
-        'wrongCount'      => $result->wrong_answers ?? 0,
-        'unansweredCount' => $result->unanswered ?? 0,
-        'finalScore'      => $result->score ?? 0,
-        'elapsed_time'    => $result->elapsed_time ?? 0,
-        'totalQuestions'  => $totalQuestions,
-        'id'              => $id,
-        'allQuestionIds'  => $package->questions->pluck('id')->toArray(),
-        'leaderboard'     => $leaderboard,
-        'currentUser'     => $currentUser,
-        'currentRank'     => $currentRank,
-        'histories'       => $histories
-    ]);
-}
+        // $histories = ResultTryout::with('tryoutPackage')
+        //     ->where('user_id', Auth::id())
+        //     ->latest()
+        //     ->get();
+        $histories = \App\Models\ResultTryout::with('tryoutPackage')
+            ->where('user_id', Auth::id())
+            ->select('tryout_package_id', \DB::raw('MAX(id) as latest_id'))
+            ->groupBy('tryout_package_id')
+            ->pluck('latest_id');
 
+        $histories = \App\Models\ResultTryout::with('tryoutPackage')
+            ->whereIn('id', $histories)
+            ->orderByDesc('updated_at')
+            ->get();
 
-
- public function explanation($id)
-{
-    $user_id = Auth::id();
-
-    // Ambil semua jawaban user + relasi soal
-    $userAnswers = UserAnswer::with('question.packages')
-        ->where('tryout_package_id', $id)
-        ->where('user_id', $user_id)
-        ->get();
-
-    // Ambil info paket & nama tryout
-    $package = TryoutPackage::with('questions')->findOrFail($id);
-    $tryoutName = $package->tryout_name ?? '-';
-    $category = $package->category_id ?? null;
-    $totalQuestions = $package->questions->count();
-
-    // Ambil data hasil terakhir user
-    $result = ResultTryout::where('user_id', $user_id)
-        ->where('tryout_package_id', $id)
-        ->latest()
-        ->first();
-
-    // ✅ Urutkan jawaban berdasarkan urutan soal di paket
-    $orderedIds = session('question_order_' . $id, $package->questions->pluck('id')->toArray());
-
-    $userAnswers = $userAnswers->sortBy(function ($answer) use ($orderedIds) {
-        return array_search($answer->question_id, $orderedIds);
-    })->values();
-
-    $categories = \App\Models\Category::whereIn('id', 
-        $package->questions->pluck('category_id')->unique()
-    )->get();
-
-    // ✅ Ubah ke struktur hasil untuk blade
-    $results = $userAnswers->map(function ($item) {
-        return [
-            'question_id'    => $item->question_id,
-            'category_id'    => $item->question->category_id ?? null,
-            'question'       => $item->question->question_text,
-            'vignette'       => $item->question->vignette,
-            'image'          => $item->question->image ?? null,
-            'options'        => [
-                'a' => $item->question->option_a,
-                'b' => $item->question->option_b,
-                'c' => $item->question->option_c,
-                'd' => $item->question->option_d,
-                'e' => $item->question->option_e,
-            ],
-            'user_answer'    => strtolower($item->selected_option),
-            'correct_option' => strtolower($item->question->correct_option),
-            'explanation'    => $item->question->explanation,
-            'is_correct'     => $item->is_correct,
-        ];
-    });
-
-    // ✅ Kirim ke blade
-    return view('frontend.history.explanation', [
-        'tryoutName'      => $tryoutName,
-        'results'         => $results,
-        'correctCount'    => $result->correct_answers ?? 0,
-        'wrongCount'      => $result->wrong_answers ?? 0,
-        'unansweredCount' => $result->unanswered ?? 0,
-        'finalScore'      => $result->score ?? 0,
-        'elapsed_time'    => $result->elapsed_time ?? 0,
-        'totalQuestions'  => $totalQuestions,
-        'id'              => $id,
-        'allQuestionIds'  => $package->questions->pluck('id')->toArray(),
-        'categories'      => $categories,
-    ]);
-}
+        return view('frontend.mytryout.tryout_result', [
+            'tryoutName'      => $tryoutName,
+            'results'         => $results,
+            'result'            => $result,
+            'correctCount'    => $result->correct_answers ?? 0,
+            'wrongCount'      => $result->wrong_answers ?? 0,
+            'unansweredCount' => $result->unanswered ?? 0,
+            'finalScore'      => $result->score ?? 0,
+            'elapsed_time'    => $result->elapsed_time ?? 0,
+            'totalQuestions'  => $totalQuestions,
+            'id'              => $id,
+            'allQuestionIds'  => $package->questions->pluck('id')->toArray(),
+            'leaderboard'     => $leaderboard,
+            'currentUser'     => $currentUser,
+            'currentRank'     => $currentRank,
+            'histories'       => $histories
+        ]);
+    }
 
 
 
+    public function explanation($id)
+    {
+        $user_id = Auth::id();
+
+        // Ambil semua jawaban user + relasi soal
+        $userAnswers = UserAnswer::with('question.packages')
+            ->where('tryout_package_id', $id)
+            ->where('user_id', $user_id)
+            ->get();
+
+        // Ambil info paket & nama tryout
+        $package = TryoutPackage::with('questions')->findOrFail($id);
+        $tryoutName = $package->tryout_name ?? '-';
+        $category = $package->category_id ?? null;
+        $totalQuestions = $package->questions->count();
+
+        // Ambil data hasil terakhir user
+        $result = ResultTryout::where('user_id', $user_id)
+            ->where('tryout_package_id', $id)
+            ->latest()
+            ->first();
+
+        // ✅ Urutkan jawaban berdasarkan urutan soal di paket
+        $orderedIds = session('question_order_' . $id, $package->questions->pluck('id')->toArray());
+
+        $userAnswers = $userAnswers->sortBy(function ($answer) use ($orderedIds) {
+            return array_search($answer->question_id, $orderedIds);
+        })->values();
+
+        $categories = \App\Models\Category::whereIn('id', 
+            $package->questions->pluck('category_id')->unique()
+        )->get();
+
+        // ✅ Ubah ke struktur hasil untuk blade
+        $results = $userAnswers->map(function ($item) {
+            return [
+                'question_id'    => $item->question_id,
+                'category_id'    => $item->question->category_id ?? null,
+                'question'       => $item->question->question_text,
+                'vignette'       => $item->question->vignette,
+                'image'          => $item->question->image ?? null,
+                'options'        => [
+                    'a' => $item->question->option_a,
+                    'b' => $item->question->option_b,
+                    'c' => $item->question->option_c,
+                    'd' => $item->question->option_d,
+                    'e' => $item->question->option_e,
+                ],
+                'user_answer'    => strtolower($item->selected_option),
+                'correct_option' => strtolower($item->question->correct_option),
+                'explanation'    => $item->question->explanation,
+                'is_correct'     => $item->is_correct,
+            ];
+        });
+
+        // ✅ Kirim ke blade
+        return view('frontend.history.explanation', [
+            'tryoutName'      => $tryoutName,
+            'results'         => $results,
+            'correctCount'    => $result->correct_answers ?? 0,
+            'wrongCount'      => $result->wrong_answers ?? 0,
+            'unansweredCount' => $result->unanswered ?? 0,
+            'finalScore'      => $result->score ?? 0,
+            'elapsed_time'    => $result->elapsed_time ?? 0,
+            'totalQuestions'  => $totalQuestions,
+            'id'              => $id,
+            'allQuestionIds'  => $package->questions->pluck('id')->toArray(),
+            'categories'      => $categories,
+        ]);
+    }
 
 }
 

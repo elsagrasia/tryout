@@ -10,8 +10,14 @@ class TryoutPackage extends Model
     use HasFactory;
     protected $guarded = [];
 
+    // Relasi ke kategori utama (optional)
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'category_id');
+    }
+
     public function categories(){
-        return $this->belongsToMany(Category::class, 'category_tryout_package');
+        return $this->belongsToMany(Category::class, 'category_tryout_package', );
     }
     
     public function instructor() {
@@ -27,7 +33,6 @@ class TryoutPackage extends Model
             'question_id'           // FK ke questions
         );
     }
-
 
     public function attempts() {
         return $this->hasMany(Attempt::class);
