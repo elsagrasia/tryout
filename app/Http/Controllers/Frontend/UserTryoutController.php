@@ -110,54 +110,42 @@ public function SubmitTryout(Request $request, $id)
     $tryout_package_id = $request->tryout_package_id ?? $id;
     $answers = $request->answers ?? [];
 
-    // ✅ Ubah string JSON menjadi array
     if (is_string($answers)) {
         $decoded = json_decode($answers, true);
         $answers = is_array($decoded) ? $decoded : [];
     }
 
-    $package = TryoutPackage::with('questions')->findOrFail($tryout_package_id);
+    $package   = TryoutPackage::with('questions')->findOrFail($tryout_package_id);
     $questions = $package->questions;
 
-    $correct = 0;
-    $wrong = 0;
-    $unanswered = 0;
+    $correct = 0; $wrong = 0; $unanswered = 0;
 
-    foreach ($questions as $question) {
-        $qid = $question->id;
+    foreach ($questions as $q) {
+        $qid = $q->id;
 
         if (!array_key_exists($qid, $answers) || $answers[$qid] === null || $answers[$qid] === '') {
-            $unanswered++;
-            $selected_option = null;
-            $is_correct = false;
+            $unanswered++; $selected_option = null; $is_correct = false;
         } else {
             $selected_option = strtoupper($answers[$qid]);
-            $is_correct = strtoupper($selected_option) === strtoupper($question->correct_option);
-            if ($is_correct) $correct++; else $wrong++;
+            $is_correct = $selected_option === strtoupper($q->correct_option);
+            $is_correct ? $correct++ : $wrong++;
         }
 
         UserAnswer::updateOrCreate(
-            [
-                'user_id' => $user_id,
-                'tryout_package_id' => $tryout_package_id,
-                'question_id' => $qid,
-            ],
-            [
-                'selected_option' => $selected_option,
-                'is_correct' => $is_correct,
-            ]
+            ['user_id'=>$user_id,'tryout_package_id'=>$tryout_package_id,'question_id'=>$qid],
+            ['selected_option'=>$selected_option,'is_correct'=>$is_correct]
         );
     }
 
     $total_questions = $questions->count();
     $score = $total_questions > 0 ? round(($correct / $total_questions) * 100, 2) : 0;
-    $elapsed_time = $request->input('elapsed_time', 0);
+    $elapsed_time = (int) $request->input('elapsed_time', 0);
 
+    // Simpan/Update hasil
     $result = ResultTryout::firstOrNew([
         'user_id' => $user_id,
         'tryout_package_id' => $tryout_package_id,
     ]);
-
     $result->total_questions = $total_questions;
     $result->correct_answers = $correct;
     $result->wrong_answers   = $wrong;
@@ -167,39 +155,67 @@ public function SubmitTryout(Request $request, $id)
     $result->finished_at     = now();
     $result->save();
 
-    // ✅ Tambah poin
-    $rule = Point::where('activity', 'Menyelesaikan 1 Tryout')->where('status', 'active')->first();
+    // ====== POIN (opsional, contoh singkat) ======
+    $rule = Point::where('activity','Menyelesaikan 1 Tryout')->where('status','active')->first();
     if ($rule) {
         UserPoint::create([
-            'user_id' => $user_id,
-            'point_rule_id' => $rule->id,
-            'activity' => $rule->activity,
-            'points' => $rule->points,
+            'user_id'=>$user_id,'point_rule_id'=>$rule->id,'activity'=>$rule->activity,'points'=>$rule->points,
         ]);
         Auth::user()->increment('total_points', $rule->points);
     }
-
-    // ✅ Beri badge
-    $completedTryouts = ResultTryout::where('user_id', $user_id)->count();
-    $badges = Badge::where('type', 'tryout')->where('status', 'active')->orderBy('threshold')->get();
-
-    foreach ($badges as $badge) {
-        $already = UserBadge::where('user_id', $user_id)->where('badge_id', $badge->id)->exists();
-        if (!$already && $completedTryouts >= $badge->threshold) {
-            UserBadge::create([
-                'user_id' => $user_id,
-                'badge_id' => $badge->id,
-                'earned_at' => now(),
-            ]);
-        }
+    // Bonus per jawaban benar (konfigurasi via config/points.php -> per_correct)
+    $perCorrect   = config('points.per_correct', 2);
+    $bonusPoints  = $correct * $perCorrect;
+    if ($bonusPoints > 0) {
+        UserPoint::create([
+            'user_id'=>$user_id,'point_rule_id'=>null,'activity'=>'Bonus Jawaban Benar','points'=>$bonusPoints,
+        ]);
+        Auth::user()->increment('total_points', $bonusPoints);
     }
 
-    session()->forget('question_order_' . $tryout_package_id);
+ $completedTryouts = ResultTryout::where('user_id', $user_id)->count();
+$badges = Badge::where('type', 'tryout')->where('status', 'active')->orderBy('threshold')->get();
 
-    return redirect()
-        ->route('user.tryout.result', $tryout_package_id)
-        ->with(['message' => 'Tryout selesai! Nilai & poin berhasil ditambahkan.', 'alert-type' => 'success']);
+$newlyEarned = [];
+
+foreach ($badges as $badge) {
+    $already = UserBadge::where('user_id', $user_id)
+        ->where('badge_id', $badge->id)
+        ->exists();
+
+    if (!$already && $completedTryouts >= (int) $badge->threshold) {
+
+        UserBadge::create([
+            'user_id'   => $user_id,
+            'badge_id'  => $badge->id,
+            'earned_at' => now(),
+        ]);
+
+        // ICON SELALU LOKAL → LANGSUNG ASSET()
+        $newlyEarned[] = [
+            'id'          => $badge->id,
+            'name'        => $badge->name,
+            'description' => $badge->description ?? '',
+            'icon'        => $badge->icon,
+        ];
+    }
 }
+
+// reset sesi urutan soal
+session()->forget('question_order_' . $tryout_package_id);
+
+// Kirim data badge baru ke halaman hasil
+return redirect()
+    ->route('user.tryout.result', $tryout_package_id)
+    ->with([
+        'message' => 'Tryout selesai! Nilai & poin berhasil ditambahkan.',
+        'alert-type' => 'success',
+        'earned_badges' => $newlyEarned,
+    ]);
+
+}
+
+
 
 
 public function ResultTryout($id)

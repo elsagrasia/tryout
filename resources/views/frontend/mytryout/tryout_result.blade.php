@@ -1,6 +1,7 @@
 @extends('frontend.dashboard.user_dashboard')
 @section('userdashboard')
-
+<script src="https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <div class="mb-4">
     <div class="breadcrumb-btn-box mb-4">
         <a href="{{ route('user.dashboard') }}" class="btn theme-btn theme-btn-sm-2 "><i class="la la-arrow-left mr-2"></i>Kembali ke Dashboard</a>
@@ -15,6 +16,42 @@
 
         <div class="card-body text-center">
             <h4>Skor Akhir: <strong>{{ $finalScore }}</strong></h4>
+            @php
+    $score = $finalScore;
+
+    if ($score >= 85) {
+        $message = [
+            "Keren Banget! pertahankan!",
+            "Mantul. Gas terusss!",
+            "Good job. Keep going."
+        ];
+    } elseif ($score >= 75) {
+        $message = [
+            "Cukup bagus, tetap semangat!",
+            "Lumayan oke, masih bisa lebih baik.",
+            "Yuk bisa yuk, tingkatkan lagi."
+        ];
+    } elseif ($score >= 65) {
+        $message = [
+            "Not bad. Fokusin bagian miss-nya.",
+            "Dasarnya udah dapet, tinggal perkuat aja.",
+            "Santai, tinggal poles beberapa bagian."
+        ];
+    } else {
+        $message = [
+            "Gapapa, ini bagian dari proses.",
+            "Belum pas, tapi bukan berarti jauh.",
+            "Ambil napas dulu. Besok coba lagi pelan-pelan."
+        ];
+    }
+
+    $chosen = $message[array_rand($message)];
+@endphp
+
+<p class="mt-2 fw-semibold" style="font-size: 15px; color:#333;">
+    {{ $chosen }}
+</p>
+
             <p class="mt-2 mb-0">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20"  viewBox="0 0 24 24" fill="none">
 
@@ -71,5 +108,44 @@
             </tbody>
         </table>
     </div>
+
+@if (session()->has('earned_badges'))
+<script>
+  const earned = @json(session('earned_badges'));
+
+  (async () => {
+    for (const b of earned) {
+      await Swal.fire({
+        title: `${b.name || 'Badge'}`,
+        html: `
+          <div style="text-align:center">
+            <img 
+              src="{{ url('/') }}/${b.icon}" 
+              alt="Badge" 
+              style="width:120px; height:120px; margin-bottom:10px;"
+            >
+            <h5 style="margin-top:8px;">Selamat Kamu Mendapatkan Badge Baru!</h5>            
+          </div>
+        `,
+        width: 560,
+        padding: '1.25em',
+        color: '#1f2937',
+        background: '#fff url("{{ asset('upload/gif/background.jpg') }}") center center / cover no-repeat',
+        backdrop: `
+          linear-gradient(rgba(0,0,0,.35), rgba(0,0,0,.35)),
+          url("{{ asset('upload/gif/confetti-left.gif') }}") left top / 40% auto no-repeat,
+          url("{{ asset('upload/gif/confetti-right.gif') }}") right bottom / 40% auto no-repeat
+        `,
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#3085d6',
+      
+        focusConfirm: false,
+      });
+    }
+  })();
+</script>
+@endif
+
+
 
 @endsection

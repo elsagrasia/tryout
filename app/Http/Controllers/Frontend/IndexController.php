@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Tryout;
-use App\Models\userBadge;
+use App\Models\UserBadge;
 use App\Models\Badge;
 use App\Models\userTryout;
 use App\Models\category;
@@ -125,6 +125,8 @@ class IndexController extends Controller
             return $user;
         });
 
+        $mybadges = UserBadge::where('user_id', Auth::id())->with('badge')->get();
+
         // Pisahkan top 3 dan sisanya
         $topThree = $leaderboard->take(3);
         $others = $leaderboard->slice(3);
@@ -134,7 +136,7 @@ class IndexController extends Controller
             ->where('total_points', '>', $currentUser->total_points)
             ->count() + 1;
 
-        return view('frontend.dashboard.user_leaderboard', compact('leaderboard', 'topThree', 'others', 'currentUser', 'currentRank'));
+        return view('frontend.dashboard.user_leaderboard', compact('leaderboard', 'mybadges', 'topThree', 'others', 'currentUser', 'currentRank'));
     }
 
 

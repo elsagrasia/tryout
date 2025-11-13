@@ -1,3 +1,4 @@
+
 <header class="header-menu-area">
     <div class="header-menu-content  pr-30px pl-30px bg-white shadow-sm">
         <div class="container-fluid">
@@ -7,16 +8,7 @@
                         <div class="logo-box logo--box">
                             <a href="index.html" class="logo"><img src="{{ asset('frontend/images/logo.png') }}" alt="logo"></a>
                             <div class="user-btn-action">
-                                
-                                <div class="search-menu-toggle icon-element icon-element-sm shadow-sm mr-2" data-toggle="tooltip" data-placement="top" title="Search">
-                                    <i class="la la-search"></i>
-                                </div>
-                                <div class="off-canvas-menu-toggle cat-menu-toggle icon-element icon-element-sm shadow-sm mr-2" data-toggle="tooltip" data-placement="top" title="Category menu">
-                                    <i class="la la-th-large"></i>
-                                </div>
-                                <div class="off-canvas-menu-toggle main-menu-toggle icon-element icon-element-sm shadow-sm" data-toggle="tooltip" data-placement="top" title="Main menu">
-                                    <i class="la la-bars"></i>
-                                </div>
+                               
                             </div>  
                         </div><!-- end logo-box -->
                         <div class="menu-wrapper">                      
