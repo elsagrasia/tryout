@@ -119,9 +119,11 @@
                                 @if ($index < count($tryout->questions) - 1)
                                     <button type="button" class="btn btn-primary next-btn">Selanjutnya →</button>
                                 @else
-                                    <button type="button" id="confirmButton" class="btn btn-primary">
-                                        <i class="la la-check-circle me-1"></i> Selesai & Kirim Jawaban
+                                    <button type="button" class="btn btn-primary"
+                                            onclick="window.location='{{ route('tryout.confirm', $tryout->id) }}'">
+                                        <i class="la la-check-circle me-1"></i> Selesai & Konfirmasi
                                     </button>
+
                                 @endif
                             </div>
 
@@ -137,47 +139,72 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-
-    // ======= RESET LOCALSTORAGE UNTUK TRYOUT BARU =======
-    localStorage.removeItem('tryout_answers');
-    localStorage.removeItem('tryout_doubts');
-    localStorage.removeItem('tryout_index');
-    localStorage.removeItem('tryout_remaining_time');
-
-    // ======= KONFIGURASI =======
-    const totalDuration = {{ $tryout->duration * 60 }};
+    const tryoutId = {{ $tryout->id }};
     const questionCards = Array.from(document.querySelectorAll('.question-card'));
     const questionButtons = Array.from(document.querySelectorAll('.question-btn'));
     const timerDisplay = document.getElementById('timer');
-    const form = document.getElementById('tryoutForm');
     const confirmButton = document.getElementById('confirmButton');
 
-    let answers = {}; // kosong karena sudah reset
-    let doubts = {};  // kosong karena sudah reset
+    const totalDuration = Number({{ $tryout->duration ?? 0 }}) * 60; // detik
+    let answers = {};
+    let doubts = {};
     let currentIndex = 0;
     let remainingTime = totalDuration;
+    let timer;
 
-    // ======= TIMER =======
+    // ===== Load progress dari localStorage =====
+    const savedAnswers = localStorage.getItem(`tryout_${tryoutId}_answers`);
+    if (savedAnswers) {
+        answers = JSON.parse(savedAnswers);
+        for (const qid in answers) {
+            const radio = document.querySelector(`input[name="answers[${qid}]"][value="${answers[qid]}"]`);
+            if (radio) radio.checked = true;
+        }
+    }
+
+    const savedDoubts = localStorage.getItem(`tryout_${tryoutId}_doubts`);
+    if (savedDoubts) {
+        doubts = JSON.parse(savedDoubts);
+        for (const qid in doubts) {
+            const cb = document.getElementById(`doubt-${qid}`);
+            if (cb) cb.checked = doubts[qid];
+        }
+    }
+
+    const savedRemaining = localStorage.getItem(`tryout_${tryoutId}_remaining`);
+    remainingTime = savedRemaining ? parseInt(savedRemaining) : totalDuration;
+
+    updateTimerDisplay();
+    highlightButtons();
+    updateGlobalStatusForActive();
+    startTimer();
+
+    // ===== Timer =====
     function updateTimerDisplay() {
         const h = Math.floor(remainingTime / 3600);
         const m = Math.floor((remainingTime % 3600) / 60);
         const s = remainingTime % 60;
         timerDisplay.textContent = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
     }
-    updateTimerDisplay();
 
-    const timerInterval = setInterval(() => {
-        if (remainingTime <= 0) {
-            clearInterval(timerInterval);
-            alert('Waktu habis, jawaban akan dikirim otomatis!');
-            form.submit();
-            return;
-        }
-        remainingTime--;
-        updateTimerDisplay();
-    }, 1000);
+    function startTimer() {
+        timer = setInterval(() => {
+            remainingTime--;
+            updateTimerDisplay();
 
-    // ======= WARNA TOMBOL =======
+            // 🆕 Tambahkan baris ini biar waktu tersimpan tiap detik
+            localStorage.setItem(`tryout_${tryoutId}_remaining`, remainingTime);
+
+            if (remainingTime <= 0) {
+                clearInterval(timer);
+                alert('Waktu habis, jawaban akan dikirim otomatis!');
+                submitTryout();
+            }
+        }, 1000);
+    }
+
+
+    // ===== Soal & tombol =====
     function highlightButtons() {
         questionButtons.forEach((btn, idx) => {
             const qid = btn.dataset.question;
@@ -190,7 +217,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // ======= SHOW QUESTION =======
     function updateGlobalStatusForActive() {
         const qid = questionCards[currentIndex].dataset.question;
         const doubtTextEl = document.getElementById('doubt-text');
@@ -200,7 +226,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function showQuestion(index) {
         if (index < 0) index = 0;
-        if (index >= questionCards.length) index = questionCards.length -1;
+        if (index >= questionCards.length) index = questionCards.length - 1;
         questionCards.forEach((card, i) => {
             card.style.display = (i === index) ? 'block' : 'none';
         });
@@ -209,48 +235,57 @@ document.addEventListener('DOMContentLoaded', function () {
         highlightButtons();
         window.scrollTo({ top: questionCards[currentIndex].offsetTop - 20, behavior:'smooth' });
     }
+
     showQuestion(currentIndex);
 
-    // ======= EVENT PILIHAN JAWABAN =======
+    // Pilih jawaban
     document.querySelectorAll('.answer-radio').forEach(radio => {
         radio.addEventListener('change', function () {
             answers[this.dataset.question] = this.value;
             highlightButtons();
+            saveProgress();
         });
     });
 
-    // ======= EVENT RAGU-RAGU =======
+    // Tandai ragu-ragu
     document.querySelectorAll('.mark-doubt-checkbox').forEach(cb => {
         cb.addEventListener('change', function () {
             doubts[this.dataset.question] = this.checked;
             updateGlobalStatusForActive();
             highlightButtons();
+            saveProgress();
         });
     });
 
-    // ======= NAVIGASI TOMBOL SOAL =======
+    // Navigasi tombol soal
     questionButtons.forEach(btn => {
         btn.addEventListener('click', () => showQuestion(parseInt(btn.dataset.index)));
     });
-    document.querySelectorAll('.next-btn').forEach(btn => {
-        btn.addEventListener('click', () => showQuestion(currentIndex + 1));
-    });
-    document.querySelectorAll('.prev-btn').forEach(btn => {
-        btn.addEventListener('click', () => showQuestion(currentIndex - 1));
-    });
 
-    // ======= KONFIRMASI =======
-    confirmButton.addEventListener('click', function () {
-        // Simpan jawaban & waktu ke localStorage
+    document.querySelectorAll('.next-btn').forEach(btn => btn.addEventListener('click', () => showQuestion(currentIndex + 1)));
+    document.querySelectorAll('.prev-btn').forEach(btn => btn.addEventListener('click', () => showQuestion(currentIndex - 1)));
+
+    // ===== Submit Tryout / Redirect ke Confirm =====
+    confirmButton.addEventListener('click', function() {
+        // Simpan jawaban & waktu di localStorage
         localStorage.setItem('tryout_answers', JSON.stringify(answers));
         localStorage.setItem('tryout_elapsed_time', totalDuration - remainingTime);
 
-        // Redirect ke halaman confirm
-        window.location.href = "{{ route('tryout.confirm', $tryout->id) }}";
+        // Pindah ke halaman konfirmasi
+        window.location.href = '{{ route('tryout.confirm', $tryout->id) }}';
     });
 
 
+    // ===== Simpan progress sebelum refresh / keluar =====
+    function saveProgress() {
+        localStorage.setItem(`tryout_${tryoutId}_answers`, JSON.stringify(answers));
+        localStorage.setItem(`tryout_${tryoutId}_doubts`, JSON.stringify(doubts));
+        localStorage.setItem(`tryout_${tryoutId}_remaining`, remainingTime);
+    }
+
+    window.addEventListener('beforeunload', saveProgress);
 });
 </script>
+
 
 @endsection

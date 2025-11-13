@@ -59,11 +59,16 @@
 ========================= --}}
 <script>
 document.addEventListener('DOMContentLoaded', function () {
+    const tryoutId = {{ $tryout->id }};
     const totalQuestions = {{ count($tryout->questions) }};
-    const savedAnswers = localStorage.getItem('tryout_answers');
-    const savedElapsed = localStorage.getItem('tryout_elapsed_time');
+
+    // === Ambil progress dari localStorage ===
+    const savedAnswers = localStorage.getItem(`tryout_${tryoutId}_answers`);
     const answers = savedAnswers ? JSON.parse(savedAnswers) : {};
-    const elapsed = savedElapsed ? parseInt(savedElapsed) : 0;
+
+    const savedRemaining = localStorage.getItem(`tryout_${tryoutId}_remaining`);
+    const totalDuration = {{ $tryout->duration ?? 0 }} * 60; // detik
+    const elapsed = savedRemaining ? totalDuration - parseInt(savedRemaining) : 0;
 
     // Hitung dan tampilkan data
     const answeredCount = Object.keys(answers).length;
@@ -80,22 +85,27 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('unanswered-count').textContent = unansweredCount;
     document.getElementById('elapsed-time').textContent = formattedTime;
 
-    // Saat kirim
+    // === Saat form submit ===
     const form = document.getElementById('confirmForm');
     form.addEventListener('submit', function() {
+        // Set elapsed time
         document.getElementById('elapsedTimeInput').value = elapsed;
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = 'answers';
-        input.value = JSON.stringify(answers);
-        form.appendChild(input);
 
-        // Bersihkan storage
-        localStorage.removeItem('tryout_answers');
-        localStorage.removeItem('tryout_index');
-        localStorage.removeItem('tryout_remaining_time');
-        localStorage.removeItem('tryout_elapsed_time');
+        // Tambahkan jawaban ke form sebagai array agar Laravel bisa langsung diproses
+        for (const qid in answers) {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = `answers[${qid}]`;
+            input.value = answers[qid];
+            form.appendChild(input);
+        }
+
+        // Bersihkan storage lokal
+        localStorage.removeItem(`tryout_${tryoutId}_answers`);
+        localStorage.removeItem(`tryout_${tryoutId}_remaining`);
+        localStorage.removeItem(`tryout_${tryoutId}_doubts`);
     });
 });
+
 </script>
 @endsection

@@ -62,6 +62,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/tryout/explanation/{tryout_id}', 'explanation')->name('tryout.explanation');
         Route::post('tryout/{id}/complete', 'completeTryout')->name('tryout.complete');
         Route::get('/tryout/confirm/{id}', 'confirm')->name('tryout.confirm');
+
+        Route::get('/tryout/progress/{id}', 'getProgress')->name('tryout.getProgress');
+        Route::post('/tryout/save-progress', 'saveProgress')->name('tryout.saveProgress');
+        Route::get('/tryout/restart/{id}', 'restartTryout')->name('tryout.restart');   
+
     });
 
 

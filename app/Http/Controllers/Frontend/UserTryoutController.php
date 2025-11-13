@@ -85,24 +85,79 @@ class UserTryoutController extends Controller
         }
     }
 
-    public function StartTryout($id)
-    {
-        $tryout = TryoutPackage::with(['questions.category'])->findOrFail($id);
+   public function StartTryout($id)
+{
+    $tryout = TryoutPackage::with(['questions.category'])->findOrFail($id);
 
-        // kalau session urutan belum ada → buat acak baru
-        $questionOrder = session('question_order_' . $id);
-        if (!$questionOrder) {
-            $questionOrder = $tryout->questions->shuffle()->pluck('id')->toArray();
-            session(['question_order_' . $id => $questionOrder]);
-        }
 
-        // urutkan pertanyaan sesuai urutan di session
-        $tryout->questions = $tryout->questions->sortBy(function ($q) use ($questionOrder) {
-            return array_search($q->id, $questionOrder);
-        })->values();
-
-        return view('frontend.mytryout.start_tryout', compact('tryout'));
+    $questionOrder = session('question_order_' . $id);
+    if (!$questionOrder) {
+        $questionOrder = $tryout->questions->shuffle()->pluck('id')->toArray();
+        session(['question_order_' . $id => $questionOrder]);
     }
+
+    $tryout->questions = $tryout->questions->sortBy(function ($q) use ($questionOrder) {
+        return array_search($q->id, $questionOrder);
+    })->values();
+
+    return view('frontend.mytryout.start_tryout', compact('tryout'));
+}
+
+
+   
+
+    // GET progress + answers
+public function getProgress($id)
+{
+    $userId = auth()->id();
+
+    // Pastikan ada record dummy untuk timer
+    $timer = UserAnswer::firstOrCreate([
+        'user_id' => $userId,
+        'tryout_package_id' => $id,
+        'question_id' => 0
+    ], [
+        'selected_option' => null
+    ]);
+
+    // Ambil jawaban yang sudah ada
+    $answers = UserAnswer::where('user_id', $userId)
+        ->where('tryout_package_id', $id)
+        ->where('question_id', '>', 0)
+        ->pluck('selected_option','question_id');
+
+    return response()->json([
+        'elapsed_seconds' => $timer->elapsed_time ?? 0,
+        'answers' => $answers
+    ]);
+}
+
+
+// POST save-progress
+public function saveProgress(Request $request, $id)
+{
+    $userId = auth()->id();
+
+    // Simpan timer
+    $timer = UserAnswer::firstOrCreate([
+        'user_id' => $userId,
+        'tryout_package_id' => $id,
+        'question_id' => 0
+    ]);
+    $timer->elapsed_time = $request->input('elapsed_seconds', 0);
+    $timer->save();
+
+    // Simpan jawaban
+    foreach($request->input('answers', []) as $qid => $val) {
+        UserAnswer::updateOrCreate(
+            ['user_id'=>$userId,'tryout_package_id'=>$id,'question_id'=>$qid],
+            ['selected_option'=>$val]
+        );
+    }
+
+    return response()->json(['status'=>'success']);
+}
+
 
     public function DeleteTryout($id)
     {
