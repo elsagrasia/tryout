@@ -1,6 +1,6 @@
 @extends('frontend.dashboard.user_dashboard')
-
 @section('userdashboard')
+
 <div class="row justify-content-center text-center pt-50px">
     {{-- Peringkat 2 --}}
     @if(isset($topThree[1]))

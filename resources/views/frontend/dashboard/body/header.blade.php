@@ -4,21 +4,12 @@
             <div class="main-menu-content">
                 <div class="row align-items-center">
                     <div class="col-lg-12">
-                        <div class="logo-box logo--box">
-                            <a href="index.html" class="logo"><img src="{{ asset('frontend/images/logo.png') }}" alt="logo"></a>
-                            <div class="user-btn-action">
-                                
-                                <div class="search-menu-toggle icon-element icon-element-sm shadow-sm mr-2" data-toggle="tooltip" data-placement="top" title="Search">
-                                    <i class="la la-search"></i>
-                                </div>
-                                <div class="off-canvas-menu-toggle cat-menu-toggle icon-element icon-element-sm shadow-sm mr-2" data-toggle="tooltip" data-placement="top" title="Category menu">
-                                    <i class="la la-th-large"></i>
-                                </div>
-                                <div class="off-canvas-menu-toggle main-menu-toggle icon-element icon-element-sm shadow-sm" data-toggle="tooltip" data-placement="top" title="Main menu">
-                                    <i class="la la-bars"></i>
-                                </div>
-                            </div>  
-                        </div><!-- end logo-box -->
+                        
+                        <div class="logo-box px-4">
+                            <a href="{{ route('index') }}" class="logo"><img src="{{ asset('upload/logo/logo.jpg') }}" alt="logo" style="height: 40px; width: auto;"></a>
+                        </div>
+                
+
                         <div class="menu-wrapper">                      
                             <div class="nav-right-button d-flex align-items-center">
                                 @php

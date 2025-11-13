@@ -70,8 +70,6 @@
 
 
 
-
-
 <!-- template js files -->
 <script src="{{ asset('frontend/js/jquery-3.4.1.min.js')}}"></script>
 <script src="{{ asset('frontend/js/bootstrap.bundle.min.js')}}"></script>
@@ -88,7 +86,7 @@
 <script src="{{ asset('frontend/js/jquery.lazy.min.js')}}"></script>
 <script src="{{ asset('frontend/js/main.js')}}"></script>
 
-<script>
+<script>stye
     var player = new Plyr('#player');
 </script>
 

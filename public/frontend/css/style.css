@@ -5380,7 +5380,7 @@ div.datedropper .picker .pick-lg-b li {
   .logo-box .logo {
     display: inline-block; }
 
-.logo--box {
+.logo-box {
   display: none; }
   @media (max-width: 1199px) {
     .logo--box {
@@ -5764,7 +5764,7 @@ div.datedropper .picker .pick-lg-b li {
   font-weight: 700; }
 
 /*====== off-canvas-menu =======*/
-.off-canvas-menu {
+/* .off-canvas-menu {
   position: fixed;
   top: 0;
   left: 0;
@@ -5788,80 +5788,113 @@ div.datedropper .picker .pick-lg-b li {
   transform: translateX(-100%); }
   @media (max-width: 375px) {
     .off-canvas-menu {
-      width: 320px; } }
+      width: 320px; } } */
+
+/* ===== OFF CANVAS WRAPPER ===== */
+.off-canvas-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 300px;
+  height: 100vh;
+  background-color: #ffffff;
+  border-top-right-radius: 25px;
+  border-bottom-right-radius: 25px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  z-index: 1035;
+  transition: all 0.3s ease-in-out;
+  transform: none;
+}
+
+@media (max-width: 768px) {
+  .off-canvas-menu {
+    width: 250px;
+  }
+}
 
 .off--canvas-menu {
-  -webkit-transform: translateX(0);
-  -moz-transform: translateX(0);
-  -ms-transform: translateX(0);
-  -o-transform: translateX(0);
-  transform: translateX(0); }
-  @media (max-width: 1199px) {
-    .off--canvas-menu {
-      -webkit-transform: translateX(-100%);
-      -moz-transform: translateX(-100%);
-      -ms-transform: translateX(-100%);
-      -o-transform: translateX(-100%);
-      transform: translateX(-100%); } }
+  transform: translateX(0);
+}
+
+@media (max-width: 1199px) {
+  .off--canvas-menu {
+    transform: translateX(-100%);
+  }
+}
 
 .main-off-canvas-menu.active,
 .category-off-canvas-menu.active,
 .user-off-canvas-menu.active,
 .off--canvas-menu.active {
-  -webkit-transform: translateX(0);
-  -moz-transform: translateX(0);
-  -ms-transform: translateX(0);
-  -o-transform: translateX(0);
-  transform: translateX(0); }
+  transform: translateX(0);
+}
 
-/*====== off-canvas-menu-list ========*/
+/* ===== LIST BASE ===== */
 .off-canvas-menu-list li {
-  margin-bottom: 0;
-  font-size: 15px; }
-  .off-canvas-menu-list li svg {
-    fill: #233d63;
-    -webkit-transition: all 0.3s;
-    -moz-transition: all 0.3s;
-    -ms-transition: all 0.3s;
-    -o-transition: all 0.3s;
-    transition: all 0.3s; }
-  .off-canvas-menu-list li a {
-    background-color: #fff;
-    color: #233d63;
-    text-transform: capitalize;
-    display: -webkit-flex;
-    display: -ms-flex;
-    display: flex;
-    -ms-flex-align: center;
-    align-items: center;
-    -ms-flex-pack: justify;
-    justify-content: space-between;
-    padding: 6px 20px;
-    border-right: 2px solid transparent; }
-  .off-canvas-menu-list li .sub-menu {
-    display: none; }
-    .off-canvas-menu-list li .sub-menu li a {
-      color: #7f8897; }
-      .off-canvas-menu-list li .sub-menu li a:hover {
-        color: #008cff; }
+  font-size: 15px;
+}
 
-/*=========== off--canvas-menu-list ===========*/
-.off--canvas-menu-list li a {
-  padding-top: 12px;
-  padding-bottom: 12px;
-  justify-content: flex-start; }
-  .off--canvas-menu-list li a:hover {
-    color: #358FF7; }
-    .off--canvas-menu-list li a:hover svg {
-      fill: #358FF7; }
+.off-canvas-menu-list li a {
+  background-color: #fff;
+  color: #233d63;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 10px 20px;
+  text-transform: capitalize;
+  border-radius: 10px;
+  transition: 0.25s;
+}
+
+
+.off-canvas-menu-list li svg {
+  fill: #233d63;
+  margin-right: 12px;
+  transition: 0.25s;
+}
+
+/* SUB MENU */
+.off-canvas-menu-list li .sub-menu {
+  display: none;
+}
+
+.off-canvas-menu-list li .sub-menu li a {
+  color: #7f8897;
+}
+
+.off-canvas-menu-list li .sub-menu li a:hover {
+  color: #008cff;
+}
+
+
+/* ===== HOVER STATE ===== */
+.off--canvas-menu-list li a:hover {
+  background-color: #e8f2ff;   /* biru muda */
+  color: #0d6efd;
+  margin: 0 10px;              /* tambahkan jarak kiri-kanan */
+  border-radius: 10px;         /* buat rounded sama seperti active */
+}
+
+.off--canvas-menu-list li a:hover svg {
+  fill: #0d6efd;
+}
+
+
+/* ===== ACTIVE STATE (YANG KAMU MAU) ===== */
+.off--canvas-menu-list li.page-active a {
+  background-color: #0d6efd;      /* biru solid */
+  color: white;                   /* text putih */
+  font-weight: 600;
+  margin: 0 10px;                 /* jarak kiri-kanan */
+  padding: 10px 20px;             /* tetap biar seimbang */
+  border-radius: 10px;            /* biar tetap rounded */
+}
+
 
 .off--canvas-menu-list li.page-active svg {
-  fill: #358FF7; }
-
-.off--canvas-menu-list li.page-active a {
-  background-color: rgba(53, 143, 227, 0.04);
-  color: #358FF7;
-  border-right-color: #358FF7; }
+  fill: white;                    /* icon putih */
+}
 
 .mobile-search-form {
   background-color: #fff;
@@ -6822,6 +6855,7 @@ div.datedropper .picker .pick-lg-b li {
   @media only screen and (min-width: 768px) and (max-width: 991px) {
     .lecture-tab-body .generic-tab .mobile-menu-nav-item {
       display: block; } }
+    
   @media only screen and (min-width: 480px) and (max-width: 767px) {
     .lecture-tab-body .generic-tab .mobile-menu-nav-item {
       display: block; } }

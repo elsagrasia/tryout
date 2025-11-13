@@ -1,12 +1,8 @@
-<div class="off-canvas-menu-close dashboard-menu-close icon-element icon-element-sm shadow-sm" data-toggle="tooltip" data-placement="left" title="Close menu">
-    <i class="la la-times"></i>
-</div><!-- end off-canvas-menu-close -->
-
 <div class="logo-box px-4">
     <a href="{{ route('index') }}" class="logo"><img src="{{ asset('upload/logo/logo.jpg') }}" alt="logo" style="height: 40px; width: auto;"></a>
 </div>
 
-<ul class="generic-list-item off-canvas-menu-list off--canvas-menu-list pt-35px">
+<ul class="generic-list-item off-canvas-menu-list off--canvas-menu-list pt-35px sidebar-menu">
 
     {{-- Dashboard --}}
     <li class="{{ request()->routeIs('user.dashboard') ? 'page-active' : '' }}">
@@ -18,7 +14,6 @@
             Dashboard
         </a>
     </li>
-
  
     {{-- My Tryout --}}
     <li class="{{ request()->routeIs('my.tryout') ? 'page-active' : '' }}">
@@ -89,12 +84,6 @@
         Peringkat
     </a>
 </li>
-
-
-
-
-
-
 
 </ul>
 
