@@ -71,7 +71,7 @@
 {{-- =========================
     SCRIPT KONFIRMASI
 ========================= --}}
-<script>
+{{-- <script>
 document.addEventListener('DOMContentLoaded', function () {
     const tryoutId = {{ $tryout->id }};
     const totalQuestions = {{ count($tryout->questions) }};
@@ -133,6 +133,70 @@ document.addEventListener('DOMContentLoaded', function () {
 
 });
 
+</script> --}}
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const tryoutId = {{ $tryout->id }};
+    const totalQuestions = {{ count($tryout->questions) }};
+
+    // === Ambil data dari localStorage seperti yang disimpan di halaman tryout ===
+    const savedAnswers = localStorage.getItem('tryout_answers');
+    const savedDoubts  = localStorage.getItem('tryout_doubts');
+    const savedElapsed = localStorage.getItem('tryout_elapsed_time');
+
+    const answers = savedAnswers ? JSON.parse(savedAnswers) : {};
+    const doubts  = savedDoubts ? JSON.parse(savedDoubts) : {};
+    const elapsed = savedElapsed ? parseInt(savedElapsed) : 0;
+
+    // === Hitung statistik ===
+    const answeredCount = Object.keys(answers).length;
+    const unansweredCount = totalQuestions - answeredCount;
+
+    const hours = Math.floor(elapsed / 3600);
+    const minutes = Math.floor((elapsed % 3600) / 60);
+    const seconds = elapsed % 60;
+
+    const formattedTime =
+        `${String(hours).padStart(2,'0')}:${String(minutes).padStart(2,'0')}:${String(seconds).padStart(2,'0')}`;
+
+    // === Tampilkan ke halaman ===
+    document.getElementById('total-questions').textContent = totalQuestions;
+    document.getElementById('answered-count').textContent  = answeredCount;
+    document.getElementById('unanswered-count').textContent = unansweredCount;
+    document.getElementById('elapsed-time').textContent     = formattedTime;
+
+    // === Saat submit kirim semua data ke server ===
+    const form = document.getElementById('confirmForm');
+    form.addEventListener('submit', function() {
+
+        // elapsed time
+        document.getElementById('elapsedTimeInput').value = elapsed;
+
+        // kirim answers
+        const inputAnswers = document.createElement('input');
+        inputAnswers.type = 'hidden';
+        inputAnswers.name = 'answers';
+        inputAnswers.value = JSON.stringify(answers);
+        form.appendChild(inputAnswers);
+
+        // kirim doubts
+        const inputDoubts = document.createElement('input');
+        inputDoubts.type = 'hidden';
+        inputDoubts.name = 'doubts';
+        inputDoubts.value = JSON.stringify(doubts);
+        form.appendChild(inputDoubts);
+
+        // Hapus data setelah submit
+        localStorage.removeItem('tryout_answers');
+        localStorage.removeItem('tryout_doubts');
+        localStorage.removeItem('tryout_index');
+        localStorage.removeItem('tryout_remaining_time');
+        localStorage.removeItem('tryout_elapsed_time');
+
+    });
+});
 </script>
+
 
 @endsection

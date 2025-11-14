@@ -136,10 +136,206 @@
 </div>
 
 <script>
+// document.addEventListener('DOMContentLoaded', function () {
+
+//     const totalDuration = {{ $tryout->duration * 60 }};
+
+//     const questionCards    = Array.from(document.querySelectorAll('.question-card'));
+//     const questionButtons  = Array.from(document.querySelectorAll('.question-btn'));
+//     const timerDisplay     = document.getElementById('timer');
+//     const form             = document.getElementById('tryoutForm');
+//     const confirmButton    = document.getElementById('confirmButton');
+//     const doubtTextEl      = document.getElementById('doubt-text');
+
+//     if (questionCards.length === 0) return;
+
+//     let answers = {};
+//     let doubts  = {};
+//     try {
+//         answers = JSON.parse(localStorage.getItem('tryout_answers') || '{}');
+//     } catch {}
+//     try {
+//         doubts = JSON.parse(localStorage.getItem('tryout_doubts') || '{}');
+//     } catch {}
+
+//     let currentIndex = parseInt(localStorage.getItem('tryout_index') || '0', 10);
+//     if (isNaN(currentIndex) || currentIndex < 0 || currentIndex >= questionCards.length) {
+//         currentIndex = 0;
+//     }
+
+//     let remainingTime;
+//     let elapsed;
+
+//     if (localStorage.getItem('tryout_remaining_time')) {
+//         remainingTime = parseInt(localStorage.getItem('tryout_remaining_time'), 10);
+//         if (isNaN(remainingTime) || remainingTime < 0) remainingTime = totalDuration;
+//     } else {
+//         remainingTime = totalDuration;
+//     }
+
+//     if (localStorage.getItem('tryout_elapsed_time')) {
+//         elapsed = parseInt(localStorage.getItem('tryout_elapsed_time'), 10);
+//         if (isNaN(elapsed) || elapsed < 0) elapsed = 0;
+//     } else {
+//         elapsed = 0;
+//     }
+
+
+//     function updateTimerDisplay() {
+//         const h = Math.floor(remainingTime / 3600);
+//         const m = Math.floor((remainingTime % 3600) / 60);
+//         const s = remainingTime % 60;
+//         timerDisplay.textContent = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+//     }
+
+//     const timerInterval = setInterval(() => {
+//         remainingTime--;
+//         elapsed++;
+
+//         updateTimerDisplay();
+
+//         // Simpan periodik ke localStorage biar bisa resume
+//         if (remainingTime % 5 === 0) {
+//             localStorage.setItem('tryout_remaining_time', remainingTime);
+//             localStorage.setItem('tryout_elapsed_time', elapsed);
+//             localStorage.setItem('tryout_answers', JSON.stringify(answers));
+//             localStorage.setItem('tryout_doubts', JSON.stringify(doubts));
+//             localStorage.setItem('tryout_index', currentIndex);
+//         }
+
+//         if (remainingTime < 0) {
+//             clearInterval(timerInterval);
+//             form.submit();
+//         }
+//     }, 1000);
+
+//     // ====== WARNA TOMBOL ======
+
+//     function highlightButtons() {
+//         questionButtons.forEach((btn, idx) => {
+//             const qid = btn.dataset.question;
+
+//             let colorClass = 'btn-secondary';
+//             if (answers[qid]) colorClass = 'btn-success';
+//             if (doubts[qid])  colorClass = 'btn-warning';
+//             if (idx === currentIndex) colorClass = 'btn-primary';
+
+//             btn.classList.remove('btn-secondary','btn-success','btn-primary','btn-warning');
+//             btn.classList.add(colorClass);
+//         });
+//     }
+
+
+//     function updateGlobalStatusForActive() {
+//         if (!doubtTextEl) return;
+//         const qid = questionCards[currentIndex].dataset.question;
+//         doubtTextEl.style.display = doubts[qid] ? 'block' : 'none';
+//     }
+
+//     // ====== TAMPILKAN SOAL SESUAI INDEX ======
+//     function showQuestion(index) {
+//         if (index < 0) index = 0;
+//         if (index >= questionCards.length) index = questionCards.length - 1;
+
+//         questionCards.forEach((card, i) => {
+//             card.style.display = (i === index) ? 'block' : 'none';
+//         });
+
+//         // Set jawaban radio berdasarkan data 'answers'
+//         const activeCard = questionCards[currentIndex];
+//         const qid        = activeCard.dataset.question;
+
+//         if (answers[qid]) {
+//             const selected = activeCard.querySelector(
+//                 `input.answer-radio[data-question="${qid}"][value="${answers[qid]}"]`
+//             );
+//             if (selected) selected.checked = true;
+//         } else {
+//             // kalau belum ada jawaban, clear centang
+//             const radios = activeCard.querySelectorAll(`input.answer-radio[data-question="${qid}"]`);
+//             radios.forEach(r => r.checked = false);
+//         }
+
+//         // Set checkbox ragu dari data 'doubts'
+//         const doubtCheckbox = activeCard.querySelector(`.mark-doubt-checkbox[data-question="${qid}"]`);
+//         if (doubtCheckbox) {
+//             doubtCheckbox.checked = !!doubts[qid];
+//         }
+
+//         updateGlobalStatusForActive();
+//         highlightButtons();
+
+//         // Simpan index aktif
+//         localStorage.setItem('tryout_index', currentIndex);
+
+//         window.scrollTo({
+//             top: questionCards[currentIndex].offsetTop - 20,
+//             behavior: 'smooth'
+//         });
+//     }
+
+
+//     // Pertama kali load halaman → tampilkan soal terakhir yang dikerjakan
+//     showQuestion(currentIndex);
+
+//     // ====== EVENT PILIHAN JAWABAN ======
+
+//     document.querySelectorAll('.answer-radio').forEach(radio => {
+//         radio.addEventListener('change', function () {
+//             const qid = this.dataset.question;
+//             answers[qid] = this.value;
+//             highlightButtons();
+//             saveProgress();
+//         });
+//     });
+
+
+//     document.querySelectorAll('.mark-doubt-checkbox').forEach(cb => {
+//         cb.addEventListener('change', function () {
+//             const qid = this.dataset.question;
+//             doubts[qid] = this.checked;
+//             updateGlobalStatusForActive();
+//             highlightButtons();
+//             saveProgress();
+//         });
+//     });
+
+
+//     questionButtons.forEach(btn => {
+//         btn.addEventListener('click', () => {
+//             const idx = parseInt(btn.dataset.index, 10);
+//             showQuestion(idx);
+//         });
+//     });
+
+
+//     document.querySelectorAll('.next-btn').forEach(btn => {
+//         btn.addEventListener('click', () => showQuestion(currentIndex + 1));
+//     });
+
+//     document.querySelectorAll('.prev-btn').forEach(btn => {
+//         btn.addEventListener('click', () => showQuestion(currentIndex - 1));
+//     });
+
+//     // ====== KONFIRMASI ======
+//     if (confirmButton) {
+//         confirmButton.addEventListener('click', function () {
+//             // Simpan terakhir kali sebelum pindah ke halaman konfirmasi
+//             localStorage.setItem('tryout_answers', JSON.stringify(answers));
+//             localStorage.setItem('tryout_doubts', JSON.stringify(doubts));
+//             localStorage.setItem('tryout_index', currentIndex);
+//             localStorage.setItem('tryout_remaining_time', remainingTime);
+//             localStorage.setItem('tryout_elapsed_time', elapsed);
+
+//             window.location.href = "{{ route('tryout.confirm', $tryout->id) }}";
+//         });
+//     }
+
+// });
+
 document.addEventListener('DOMContentLoaded', function () {
-
-    const totalDuration = {{ $tryout->duration * 60 }};
-
+    // ======= KONFIGURASI =======
+    const totalDuration   = {{ $tryout->duration * 60 }};
     const questionCards    = Array.from(document.querySelectorAll('.question-card'));
     const questionButtons  = Array.from(document.querySelectorAll('.question-btn'));
     const timerDisplay     = document.getElementById('timer');
@@ -149,59 +345,39 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (questionCards.length === 0) return;
 
+    // ======= INISIALISASI DATA =======
     let answers = {};
     let doubts  = {};
-    try {
-        answers = JSON.parse(localStorage.getItem('tryout_answers') || '{}');
-    } catch {}
-    try {
-        doubts = JSON.parse(localStorage.getItem('tryout_doubts') || '{}');
-    } catch {}
+    let currentIndex = 0;
+    let remainingTime = totalDuration;
+    let elapsed = 0;
 
-    let currentIndex = parseInt(localStorage.getItem('tryout_index') || '0', 10);
-    if (isNaN(currentIndex) || currentIndex < 0 || currentIndex >= questionCards.length) {
-        currentIndex = 0;
-    }
+    // ======= LOAD DARI LOCALSTORAGE (RESUME JIKA ADA) =======
+    try { answers = JSON.parse(localStorage.getItem('tryout_answers') || '{}'); } catch {}
+    try { doubts  = JSON.parse(localStorage.getItem('tryout_doubts') || '{}'); } catch {}
+    currentIndex = parseInt(localStorage.getItem('tryout_index') || '0', 10);
+    if (isNaN(currentIndex) || currentIndex < 0 || currentIndex >= questionCards.length) currentIndex = 0;
+    remainingTime = parseInt(localStorage.getItem('tryout_remaining_time') || totalDuration, 10);
+    if (isNaN(remainingTime) || remainingTime < 0) remainingTime = totalDuration;
+    elapsed = parseInt(localStorage.getItem('tryout_elapsed_time') || 0, 10);
+    if (isNaN(elapsed) || elapsed < 0) elapsed = 0;
 
-    let remainingTime;
-    let elapsed;
-
-    if (localStorage.getItem('tryout_remaining_time')) {
-        remainingTime = parseInt(localStorage.getItem('tryout_remaining_time'), 10);
-        if (isNaN(remainingTime) || remainingTime < 0) remainingTime = totalDuration;
-    } else {
-        remainingTime = totalDuration;
-    }
-
-    if (localStorage.getItem('tryout_elapsed_time')) {
-        elapsed = parseInt(localStorage.getItem('tryout_elapsed_time'), 10);
-        if (isNaN(elapsed) || elapsed < 0) elapsed = 0;
-    } else {
-        elapsed = 0;
-    }
-
-
+    // ======= TIMER =======
     function updateTimerDisplay() {
         const h = Math.floor(remainingTime / 3600);
         const m = Math.floor((remainingTime % 3600) / 60);
         const s = remainingTime % 60;
         timerDisplay.textContent = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
     }
+    updateTimerDisplay();
 
     const timerInterval = setInterval(() => {
         remainingTime--;
         elapsed++;
-
         updateTimerDisplay();
 
-        // Simpan periodik ke localStorage biar bisa resume
-        if (remainingTime % 5 === 0) {
-            localStorage.setItem('tryout_remaining_time', remainingTime);
-            localStorage.setItem('tryout_elapsed_time', elapsed);
-            localStorage.setItem('tryout_answers', JSON.stringify(answers));
-            localStorage.setItem('tryout_doubts', JSON.stringify(doubts));
-            localStorage.setItem('tryout_index', currentIndex);
-        }
+        // Simpan periodik agar bisa resume
+        if (remainingTime % 5 === 0) saveProgress();
 
         if (remainingTime < 0) {
             clearInterval(timerInterval);
@@ -209,129 +385,95 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }, 1000);
 
-    // ====== WARNA TOMBOL ======
+    function saveProgress() {
+        localStorage.setItem('tryout_remaining_time', remainingTime);
+        localStorage.setItem('tryout_elapsed_time', elapsed);
+        localStorage.setItem('tryout_answers', JSON.stringify(answers));
+        localStorage.setItem('tryout_doubts', JSON.stringify(doubts));
+        localStorage.setItem('tryout_index', currentIndex);
+    }
 
+    // ======= WARNA TOMBOL =======
     function highlightButtons() {
         questionButtons.forEach((btn, idx) => {
             const qid = btn.dataset.question;
-
             let colorClass = 'btn-secondary';
             if (answers[qid]) colorClass = 'btn-success';
             if (doubts[qid])  colorClass = 'btn-warning';
             if (idx === currentIndex) colorClass = 'btn-primary';
-
             btn.classList.remove('btn-secondary','btn-success','btn-primary','btn-warning');
             btn.classList.add(colorClass);
         });
     }
 
-
+    // ======= STATUS RAGU =======
     function updateGlobalStatusForActive() {
         if (!doubtTextEl) return;
         const qid = questionCards[currentIndex].dataset.question;
         doubtTextEl.style.display = doubts[qid] ? 'block' : 'none';
     }
 
-    // ====== TAMPILKAN SOAL SESUAI INDEX ======
+    // ======= TAMPILKAN SOAL =======
     function showQuestion(index) {
         if (index < 0) index = 0;
         if (index >= questionCards.length) index = questionCards.length - 1;
+        currentIndex = index;
 
-        questionCards.forEach((card, i) => {
-            card.style.display = (i === index) ? 'block' : 'none';
-        });
+        questionCards.forEach((card, i) => card.style.display = (i === index) ? 'block' : 'none');
 
-        // Set jawaban radio berdasarkan data 'answers'
         const activeCard = questionCards[currentIndex];
-        const qid        = activeCard.dataset.question;
+        const qid = activeCard.dataset.question;
 
-        if (answers[qid]) {
-            const selected = activeCard.querySelector(
-                `input.answer-radio[data-question="${qid}"][value="${answers[qid]}"]`
-            );
-            if (selected) selected.checked = true;
-        } else {
-            // kalau belum ada jawaban, clear centang
-            const radios = activeCard.querySelectorAll(`input.answer-radio[data-question="${qid}"]`);
-            radios.forEach(r => r.checked = false);
-        }
+        // Atur jawaban radio
+        const selectedRadio = activeCard.querySelector(`input.answer-radio[data-question="${qid}"][value="${answers[qid]}"]`);
+        if (selectedRadio) selectedRadio.checked = true;
+        else activeCard.querySelectorAll(`input.answer-radio[data-question="${qid}"]`).forEach(r => r.checked = false);
 
-        // Set checkbox ragu dari data 'doubts'
+        // Atur checkbox ragu
         const doubtCheckbox = activeCard.querySelector(`.mark-doubt-checkbox[data-question="${qid}"]`);
-        if (doubtCheckbox) {
-            doubtCheckbox.checked = !!doubts[qid];
-        }
+        if (doubtCheckbox) doubtCheckbox.checked = !!doubts[qid];
 
         updateGlobalStatusForActive();
         highlightButtons();
+        saveProgress();
 
-        // Simpan index aktif
-        localStorage.setItem('tryout_index', currentIndex);
-
-        window.scrollTo({
-            top: questionCards[currentIndex].offsetTop - 20,
-            behavior: 'smooth'
-        });
+        window.scrollTo({ top: questionCards[currentIndex].offsetTop - 20, behavior: 'smooth' });
     }
-
-
-    // Pertama kali load halaman → tampilkan soal terakhir yang dikerjakan
     showQuestion(currentIndex);
 
-    // ====== EVENT PILIHAN JAWABAN ======
-
+    // ======= EVENT PILIHAN JAWABAN =======
     document.querySelectorAll('.answer-radio').forEach(radio => {
         radio.addEventListener('change', function () {
-            const qid = this.dataset.question;
-            answers[qid] = this.value;
+            answers[this.dataset.question] = this.value;
             highlightButtons();
             saveProgress();
         });
     });
 
-
+    // ======= EVENT RAGU =======
     document.querySelectorAll('.mark-doubt-checkbox').forEach(cb => {
         cb.addEventListener('change', function () {
-            const qid = this.dataset.question;
-            doubts[qid] = this.checked;
+            doubts[this.dataset.question] = this.checked;
             updateGlobalStatusForActive();
             highlightButtons();
             saveProgress();
         });
     });
 
+    // ======= NAVIGASI TOMBOL SOAL =======
+    questionButtons.forEach(btn => btn.addEventListener('click', () => showQuestion(parseInt(btn.dataset.index, 10))));
+    document.querySelectorAll('.next-btn').forEach(btn => btn.addEventListener('click', () => showQuestion(currentIndex + 1)));
+    document.querySelectorAll('.prev-btn').forEach(btn => btn.addEventListener('click', () => showQuestion(currentIndex - 1)));
 
-    questionButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const idx = parseInt(btn.dataset.index, 10);
-            showQuestion(idx);
-        });
-    });
-
-
-    document.querySelectorAll('.next-btn').forEach(btn => {
-        btn.addEventListener('click', () => showQuestion(currentIndex + 1));
-    });
-
-    document.querySelectorAll('.prev-btn').forEach(btn => {
-        btn.addEventListener('click', () => showQuestion(currentIndex - 1));
-    });
-
-    // ====== KONFIRMASI ======
+    // ======= KONFIRMASI =======
     if (confirmButton) {
         confirmButton.addEventListener('click', function () {
-            // Simpan terakhir kali sebelum pindah ke halaman konfirmasi
-            localStorage.setItem('tryout_answers', JSON.stringify(answers));
-            localStorage.setItem('tryout_doubts', JSON.stringify(doubts));
-            localStorage.setItem('tryout_index', currentIndex);
-            localStorage.setItem('tryout_remaining_time', remainingTime);
-            localStorage.setItem('tryout_elapsed_time', elapsed);
-
+            saveProgress();
             window.location.href = "{{ route('tryout.confirm', $tryout->id) }}";
         });
     }
-
 });
+
 </script>
 
 
