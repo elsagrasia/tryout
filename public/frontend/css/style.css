@@ -5366,27 +5366,27 @@ div.datedropper .picker .pick-lg-b li {
       transform: rotate(-180deg); }
 
 /*====== logo-box =======*/
+/* Logo box */
 .logo-box {
-  display: -webkit-flex;
-  display: -ms-flex;
   display: flex;
-  -ms-flex-align: center;
   align-items: center;
-  position: relative; }
-  @media (max-width: 1199px) {
-    .logo-box {
-      -ms-flex-pack: justify;
-      justify-content: space-between; } }
-  .logo-box .logo {
-    display: inline-block; }
+  justify-content: flex-start; /* rapatkan ke kiri */
+}
 
-.logo-box {
-  display: none; }
-  @media (max-width: 1199px) {
-    .logo--box {
-      display: -webkit-flex;
-      display: -ms-flex;
-      display: flex; } }
+.menu-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* jarak antar elemen kanan */
+}
+
+/* Kalau pakai media query sebelumnya, ganti di sini juga */
+@media (max-width: 1199px) {
+  .logo-box {
+    justify-content: flex-start; /* jangan space-between */
+  }
+}
+
+
 
 /*====== menu-category =======*/
 @media (max-width: 1199px) {
