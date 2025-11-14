@@ -14,6 +14,7 @@ class UserAnswer extends Model
         'question_id',
         'selected_option',
         'is_correct',
+        'is_doubt',
     ];
 
     // Relasi opsional biar mudah ambil data

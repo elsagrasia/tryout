@@ -17,11 +17,11 @@
                                     $id = Auth::user()->id;
                                     $profileData = App\Models\User::find($id);
                                 @endphp 
-                                    <div class="user-points d-flex align-items-center mr-3 border rounded px-3 py-1 bg-light "data-toggle="tooltip"  title="total poin" style="gap:3px;">
-                                        <i class="la la-gem text-warning fs-23"></i>
-                                        <span class="fw-bold text-dark" style="font-size: 15px;">
-                                            {{ Auth::user()->total_points ?? 0 }}
-                                        </span>
+                                    <div class="user-points d-flex align-items-center mr-3 border rounded px-3 py-1 bg-light pr-4" style="gap:6px;">
+                                    <i class="la la-coins text-warning fs-18"></i>
+                                    <span class="fw-bold text-dark" style="font-size: 15px;">
+                                        {{ Auth::user()->total_points ?? 0 }}
+                                    </span>
                                     </div>
                                     <div class="shop-cart user-profile-cart">
                                         <ul>

@@ -66,16 +66,15 @@
                         <div class="d-flex align-items-center">
                             <img src="{{ !empty($user->photo) ? url('upload/user_images/' . $user->photo) : url('upload/no_image.jpg') }}"
                                  alt="Avatar" width="40" height="40" class="rounded-circle mr-2">
-                            <span class="font-weight-semi-bold">{{ $user->name }}</span>
-                            @foreach($mybadges as $userbadge)
-                                @if($userbadge->badge && $userbadge->user_id == $user->id)
-                                    <img src="{{ asset($userbadge->badge->icon ?? 'upload/badges/default.png') }}"
-                                         alt="{{ $userbadge->badge->name }}"
-                                         title="{{ $userbadge->badge->name }}"
-                                         class="ml-2"
-                                         style="width: 30px; height: 30px;">
-                                @endif
+                            <span class="font-weight-semi-bold mr-2">{{ $user->name }}</span>
+                            @foreach($user->badges as $badge)
+                                <img src="{{ asset($badge->icon ?? 'upload/badges/default.png') }}"
+                                    alt="{{ $badge->name }}"
+                                    title="{{ $badge->name }}"
+                                    style="width: 30px; height: 30px;">
                             @endforeach
+
+                        
                       
                         </div>
                     </td>
@@ -93,3 +92,5 @@
     </div>
 
 @endsection
+
+

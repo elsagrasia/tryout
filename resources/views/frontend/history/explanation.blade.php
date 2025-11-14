@@ -2,12 +2,10 @@
 @section('userdashboard')
 
 @php
-    if ($finalScore >= 85) {
+    if ($finalScore >= 80) {
         $color = 'text-success';
-    } elseif ($finalScore >= 75) {
-        $color = 'text-primary';
-    } elseif ($finalScore >= 65) {
-        $color = 'text-warning';
+    } elseif ($finalScore >= 60) {
+        $color = 'text-warning';   
     } else {
         $color = 'text-danger';
     }
@@ -28,10 +26,11 @@
         </div><!-- end col-lg-3 -->
         <div class="col">
             <div class="row">
+                {{-- Jawaban benar --}}
                 <div class="col-md-6 responsive-column-half">
                     <div class="card card-item dashboard-info-card">
                         <div class="card-body d-flex align-items-center">
-                            <div class="icon-element icon-element-md flex-shrink-0 bg-5 text-white">
+                            <div class="icon-element icon-element-md flex-shrink-0 text-white" style="background-color: #15803d;">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="40" viewBox="0 0 24 24" fill="currentColor">
                                     <path d="M16.0303 10.0303C16.3232 9.73744 16.3232 9.26256 16.0303 8.96967C15.7374 8.67678 15.2626 8.67678 14.9697 8.96967L10.5 13.4393L9.03033 11.9697C8.73744 11.6768 8.26256 11.6768 7.96967 11.9697C7.67678 12.2626 7.67678 12.7374 7.96967 13.0303L9.96967 15.0303C10.2626 15.3232 10.7374 15.3232 11.0303 15.0303L16.0303 10.0303Z"/>
                                     <path fill-rule="evenodd" clip-rule="evenodd" d="M12 1.25C6.06294 1.25 1.25 6.06294 1.25 12C1.25 17.9371 6.06294 22.75 12 22.75C17.9371 22.75 22.75 17.9371 22.75 12C22.75 6.06294 17.9371 1.25 12 1.25ZM2.75 12C2.75 6.89137 6.89137 2.75 12 2.75C17.1086 2.75 21.25 6.89137 21.25 12C21.25 17.1086 17.1086 21.25 12 21.25C6.89137 21.25 2.75 17.1086 2.75 12Z"/>
@@ -39,80 +38,73 @@
                             </div>
                             <div class="pl-4">
                                 <p class="card-text fs-18">Jawaban Benar</p>
-                                <h5 class="card-title pt-2 fs-26">{{ $correctCount }}</h5>
+                                <h5 class="card-title pt-2 fs-26">{{ $correctCount }} / {{ $totalQuestions }}</h5>
                             </div>
-                        </div><!-- end card-body -->
-                    </div><!-- end card -->
-                </div><!-- end col-lg-4 -->
+                        </div>
+                    </div>
+                </div>
                 
+                {{-- Jawaban ragu --}}
                 <div class="col-md-6 responsive-column-half">
                     <div class="card card-item dashboard-info-card">
                         <div class="card-body d-flex align-items-center">
-                            <div class="icon-element icon-element-md flex-shrink-0 bg-6 text-white">
-                        
-                            <svg xmlns="http://www.w3.org/2000/svg" width="40"  viewBox="0 0 1024 1024" fill="currentColor" stroke-width="5">
-
-                            <g id="SVGRepo_bgCarrier" stroke-width="5"/>
-
-                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
-
-                            <g id="SVGRepo_iconCarrier">
-
-                            <path d="M332 663.2c-9.6 9.6-9.6 25.6 0 35.2s25.6 9.6 35.2 0l349.6-356c9.6-9.6 9.6-25.6 0-35.2s-25.6-9.6-35.2 0L332 663.2z" fill=""/>
-
-                            <path d="M681.6 698.4c9.6 9.6 25.6 9.6 35.2 0s9.6-25.6 0-35.2L367.2 307.2c-9.6-9.6-25.6-9.6-35.2 0s-9.6 25.6 0 35.2l349.6 356z" fill=""/>
-
-                            <path d="M516.8 1014.4c-277.6 0-503.2-225.6-503.2-503.2S239.2 7.2 516.8 7.2s503.2 225.6 503.2 503.2-225.6 504-503.2 504z m0-959.2c-251.2 0-455.2 204.8-455.2 456s204 455.2 455.2 455.2 455.2-204 455.2-455.2-204-456-455.2-456z" fill=""/>
-
-                            </g>
-
-                            </svg>
+                            <div class="icon-element icon-element-md flex-shrink-0 text-white" style="background-color: #F59E0B;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="40" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 
+                                            10-10S17.514 2 12 2zm0 18c-4.411 
+                                            0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 
+                                            8zm0-4a1.5 1.5 0 110 3 1.5 1.5 0 010-3zm1.07-3.75c-.66.39-1.07.79-1.07 
+                                            1.75h-2c0-1.66.94-2.58 1.93-3.16.75-.44 1.07-.75 1.07-1.34 
+                                            0-.78-.67-1.25-1.5-1.25-.82 0-1.5.47-1.5 1.25h-2c0-1.89 
+                                            1.56-3.25 3.5-3.25s3.5 1.36 3.5 3.25c0 1.31-.74 1.99-1.43 
+                                            2.45z"/>
+                                </svg>
                             </div>
 
                             <div class="pl-4">
-                                <p class="card-text fs-18">Jawaban Salah</p>
-                                <h5 class="card-title pt-2 fs-26">{{ $wrongCount }}</h5>
+                                <p class="card-text fs-18">Jawaban Ragu</p>
+                                <h5 class="card-title pt-2 fs-26">{{ $doubtCount }}</h5>
                             </div>
-                        </div><!-- end card-body -->
-                    </div><!-- end card -->
-                </div><!-- end col-lg-4 -->
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Tidak terjawab --}}
                 <div class="col-md-6 responsive-column-half">
                     <div class="card card-item dashboard-info-card">
                         <div class="card-body d-flex align-items-center">
-                            <div class="icon-element icon-element-md flex-shrink-0 bg-7 text-white">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="40" viewBox="0 0 24 24" fill="none">
-                            <circle cx="12" cy="12" r="10" stroke="#fff" stroke-width="1.5"/>
-                            <path d="M10.125 8.875C10.125 7.83947 10.9645 7 12 7C13.0355 7 13.875 7.83947 13.875 8.875C13.875 9.56245 13.505 10.1635 12.9534 10.4899C12.478 10.7711 12 11.1977 12 11.75V13" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/>
-                            <circle cx="12" cy="16" r="1" fill="#fff"/>
-                            </svg>
+                            <div class="icon-element icon-element-md flex-shrink-0 text-white" style="background-color:#3E5B99;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="40" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 
+                                            10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 
+                                            8-8 8 3.589 8 8-3.589 8-8 8zm-5-9h10v2H7z"/>
+                                </svg>
                             </div>
 
                             <div class="pl-4">
                                 <p class="card-text fs-18">Tidak Terjawab</p>
                                 <h5 class="card-title pt-2 fs-26">{{ $unansweredCount }}</h5>
                             </div>
-                        </div><!-- end card-body -->
-                    </div><!-- end card -->
-                </div><!-- end col-lg-4 -->
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Waktu --}}
                 <div class="col-md-6 responsive-column-half">
                     <div class="card card-item dashboard-info-card">
                         <div class="card-body d-flex align-items-center">
-                            <div class="icon-element icon-element-md flex-shrink-0 bg-3 text-white">
-                            <svg class="svg-icon-color-white" 
-                                xmlns="http://www.w3.org/2000/svg" 
-                                width="40" 
-                                viewBox="0 0 24 24" 
-                                fill="currentColor">
-                                <path d="M24,12A12,12,0,0,1,0,12a1,1,0,0,1,2,0A10,10,0,1,0,12,2a1,1,0,0,1,0-2A12.013,12.013,0,0,1,24,12ZM10.277,11H8a1,1,0,0,0,0,2h2.277A1.994,1.994,0,1,0,13,10.277V7a1,1,0,0,0-2,0v3.277A2,2,0,0,0,10.277,11ZM1.827,8.784a1,1,0,1,0-1-1A1,1,0,0,0,1.827,8.784ZM4.221,5.207a1,1,0,1,0-1-1A1,1,0,0,0,4.221,5.207ZM7.779,2.841a1,1,0,1,0-1-1A1,1,0,0,0,7.779,2.841Z"/>
-                            </svg>
+                            <div class="icon-element icon-element-md flex-shrink-0 text-white" style="background-color:#9333EA;">
+                                <svg class="svg-icon-color-white" xmlns="http://www.w3.org/2000/svg" width="40" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M24,12A12,12,0,0,1,0,12a1,1,0,0,1,2,0A10,10,0,1,0,12,2a1,1,0,0,1,0-2A12.013,12.013,0,0,1,24,12ZM10.277,11H8a1,1,0,0,0,0,2h2.277A1.994,1.994,0,1,0,13,10.277V7a1,1,0,0,0-2,0v3.277A2,2,0,0,0,10.277,11ZM1.827,8.784a1,1,0,1,0-1-1A1,1,0,0,0,1.827,8.784ZM4.221,5.207a1,1,0,1,0-1-1A1,1,0,0,0,4.221,5.207ZM7.779,2.841a1,1,0,1,0-1-1A1,1,0,0,0,7.779,2.841Z"/>
+                                </svg>
                             </div>
                             <div class="pl-4">
                                 <p class="card-text fs-18">Waktu</p>
-                                <h5 class="card-title pt-2 fs-26" >{{ gmdate("H:i:s", $elapsed_time) }}</h5>
+                                <h5 class="card-title pt-2 fs-26">{{ gmdate("H:i:s", $elapsed_time) }}</h5>
                             </div>
-                        </div><!-- end card-body -->
-                    </div><!-- end card -->
-                </div><!-- end col-lg-4 -->
+                        </div>
+                    </div>
+                </div>
             </div><!-- end row -->
         </div><!-- end col-lg-4 -->
     </div><!-- end row -->
@@ -124,10 +116,11 @@
         <div class="col-md-6 mb-3">
             <span class="fs-14 font-weight-semi-bold">Tipe Jawaban</span>
             <div class="select-container w-100 pt-2">
-                <select id="filterType" class="select-container-select" onchange="filterQuestions()" style="width:100%; min-width:250px;">
+                <select id="filterType" class="select-container-select" style="width:100%; min-width:250px;">
                     <option value="all">Semua</option>
                     <option value="correct">Jawaban Benar</option>
                     <option value="wrong">Jawaban Salah</option>
+                    <option value="doubt">Ragu-ragu</option> 
                     <option value="unanswered">Tidak Dijawab</option>
                 </select>
             </div>
@@ -151,9 +144,24 @@
     ======================== --}}
     <div id="questionContainer">
         @forelse ($results as $index => $result)
+
+            @php
+                $type = 'unanswered';
+                if (!empty($result['user_answer'])) {
+                    if (!empty($result['is_doubt'])) {
+                        $type = 'doubt';
+                    } elseif ($result['is_correct'] === 1) {
+                        $type = 'correct';
+                    } else {
+                        $type = 'wrong';
+                    }
+                }
+            @endphp
+
+
             <section
                 class="quiz-ans-wrap pt-30px pb-30px question-item"
-                data-type="{{ $result['is_correct'] === 1 ? 'correct' : ($result['user_answer'] ? 'wrong' : 'unanswered') }}"
+                data-type="{{ $type }}"
                 data-category="{{ $result['category_id'] ?? 0 }}"
             >
                 <div class="container">
@@ -166,10 +174,9 @@
                                 $cat = $categories->firstWhere('id', $result['category_id']); 
                             @endphp
                             @if($cat)
-                                <p class=" text-muted">{{ $cat->category_name }}</p>
+                                <p class="text-muted">{{ $cat->category_name }}</p>
                             @endif
                         @endif
-
 
                         {{-- Vignette --}}
                         @if(!empty($result['vignette']))
@@ -191,15 +198,15 @@
                             {!! nl2br(e($result['question'] ?? '-')) !!}
                         </p>
 
-                            {{-- Pilihan Jawaban --}}
+                        {{-- Pilihan Jawaban --}}
                         <ul class="quiz-result-list pt-4 pl-3 list-unstyled">
                             @foreach (['a','b','c','d','e'] as $opt)
                                 @php
-                                    $optionText = $result['options'][$opt] ?? null;
-                                    $userAnswer = strtolower($result['user_answer'] ?? '');
+                                    $optionText    = $result['options'][$opt] ?? null;
+                                    $userAnswer    = strtolower($result['user_answer'] ?? '');
                                     $correctOption = strtolower($result['correct_option'] ?? '');
-                                    $isUserAnswer = $userAnswer === $opt;
-                                    $isCorrect = $correctOption === $opt;
+                                    $isUserAnswer  = $userAnswer === $opt;
+                                    $isCorrect     = $correctOption === $opt;
                                 @endphp
 
                                 @if($optionText)
@@ -219,7 +226,6 @@
                                             </span>
                                         @endif
 
-                                        {{-- Teks jawaban --}}
                                         <span style="white-space: normal; word-break: break-word;">
                                             {{ $optionText }}
                                         </span>
@@ -227,11 +233,12 @@
                                 @endif
                             @endforeach
                         </ul>
+
                         {{-- Tampilkan jawaban benar jika salah atau kosong --}}
                         @if(strtolower($result['user_answer']) !== strtolower($result['correct_option']))
                             <p class="pt-2 mb-4">
                                 Jawaban Benar:
-                                <span class=" text-black font-weight-bold">
+                                <span class="text-black font-weight-bold">
                                     {{ strtoupper($result['correct_option']) }}.
                                     {{ $result['options'][strtolower($result['correct_option'])] ?? '-' }}
                                 </span>
@@ -240,13 +247,11 @@
 
                         {{-- Pembahasan --}}
                         @if(!empty($result['explanation']))
-                            <div class=" text-black card mb-4 shadow-sm border-0 font-weight-bold p-3">
+                            <div class="text-black card mb-4 shadow-sm border-0 font-weight-bold p-3">
                                 <p class="mb-2">Pembahasan:</p>
                                 <p>{!! $result['explanation'] !!}</p>
-
                             </div>
                         @endif
-
                     </div>
                 </div>
             </section>
@@ -254,6 +259,7 @@
             <div class="alert alert-info">Belum ada hasil untuk tryout ini.</div>
         @endforelse
     </div>
+
     <div class="d-flex justify-content-center">
         <nav aria-label="Page navigation example" class="pagination-box w-auto shadow-sm">
             <ul class="pagination d-inline-flex justify-content-center mb-0" id="paginationContainer"></ul>
@@ -263,18 +269,39 @@
 
 
 <script>
-
 const itemsPerPage = 10;
 let currentPage = 1;
 
+function changePage(page) {
+    const questions = document.querySelectorAll('.question-item');
+    const visibleQuestions = Array.from(questions).filter(q => q.style.display !== 'none');
+    const totalPages = Math.ceil(visibleQuestions.length / itemsPerPage) || 1;
+
+    if (page < 1 || page > totalPages) return;
+    currentPage = page;
+
+    // Sembunyikan semua dulu
+    questions.forEach(q => q.style.display = 'none');
+
+    // Tampilkan yang sesuai halaman
+    visibleQuestions.forEach((q, i) => {
+        if (i >= (page - 1) * itemsPerPage && i < page * itemsPerPage) {
+            q.style.display = '';
+        }
+    });
+
+    renderPagination();
+}
+
 function renderPagination() {
     const questions = document.querySelectorAll('.question-item');
-    const totalPages = Math.ceil(questions.length / itemsPerPage);
+    const visibleQuestions = Array.from(questions).filter(q => q.style.display !== 'none');
+    const totalPages = Math.ceil(visibleQuestions.length / itemsPerPage) || 1;
     const paginationContainer = document.getElementById('paginationContainer');
 
-    paginationContainer.innerHTML = ''; // reset pagination
+    paginationContainer.innerHTML = '';
 
-    // tombol prev
+    // Prev
     const prev = document.createElement('li');
     prev.className = `page-item ${currentPage === 1 ? 'disabled' : ''}`;
     prev.innerHTML = `
@@ -284,7 +311,7 @@ function renderPagination() {
     prev.onclick = (e) => { e.preventDefault(); if (currentPage > 1) changePage(currentPage - 1); };
     paginationContainer.appendChild(prev);
 
-    // nomor halaman
+    // Pages
     for (let i = 1; i <= totalPages; i++) {
         const page = document.createElement('li');
         page.className = `page-item ${i === currentPage ? 'active' : ''}`;
@@ -293,7 +320,7 @@ function renderPagination() {
         paginationContainer.appendChild(page);
     }
 
-    // tombol next
+    // Next
     const next = document.createElement('li');
     next.className = `page-item ${currentPage === totalPages ? 'disabled' : ''}`;
     next.innerHTML = `
@@ -304,81 +331,31 @@ function renderPagination() {
     paginationContainer.appendChild(next);
 }
 
-function changePage(page) {
-    const questions = document.querySelectorAll('.question-item');
-    const totalPages = Math.ceil(questions.length / itemsPerPage);
-    if (page < 1 || page > totalPages) return;
-    currentPage = page;
-
-    questions.forEach((q, i) => {
-        q.style.display = (i >= (page - 1) * itemsPerPage && i < page * itemsPerPage) ? '' : 'none';
-    });
-
-    renderPagination();
-}
-
-// Integrasi dengan filter
 function filterQuestions() {
     const typeFilter = document.getElementById('filterType').value;
     const categoryFilter = document.getElementById('filterCategory').value;
     const questions = document.querySelectorAll('.question-item');
 
-    let visible = 0;
     questions.forEach(q => {
         const typeMatch = (typeFilter === 'all' || q.dataset.type === typeFilter);
         const categoryMatch = (categoryFilter === '0' || q.dataset.category === categoryFilter);
-        if (typeMatch && categoryMatch) {
-            q.style.display = '';
-            visible++;
-        } else {
-            q.style.display = 'none';
-        }
+        q.style.display = (typeMatch && categoryMatch) ? '' : 'none';
     });
 
-    // setelah filter, reset pagination ke halaman 1
+    // reset ke halaman 1 setelah filter
     currentPage = 1;
     changePage(1);
 }
 
-// render awal
+// init
 document.addEventListener('DOMContentLoaded', () => {
+    // awalnya tampilkan semua dengan pagination
+    document.querySelectorAll('.question-item').forEach(q => q.style.display = '');
     changePage(1);
+
+    document.getElementById('filterType').addEventListener('change', filterQuestions);
+    document.getElementById('filterCategory').addEventListener('change', filterQuestions);
 });
-
-
-
-let elapsed = 0;
-const elapsedDisplay = document.getElementById('elapsedTime');
-
-const elapsedInterval = setInterval(() => {
-    const hours = Math.floor(elapsed / 3600);
-    const minutes = Math.floor((elapsed % 3600) / 60);
-    const seconds = elapsed % 60;
-
-    elapsedDisplay.textContent =
-        `${hours.toString().padStart(2,'0')}:${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
-
-    elapsed++;
-}, 1000);
-
-
-function filterQuestions() {
-    const typeFilter = document.getElementById('filterType').value;
-    const categoryFilter = document.getElementById('filterCategory').value;
-    const questions = document.querySelectorAll('.question-item');
-
-    questions.forEach(q => {
-        const typeMatch = (typeFilter === 'all' || q.dataset.type === typeFilter);
-        const categoryMatch = (categoryFilter === '0' || q.dataset.category === categoryFilter);
-
-        q.style.display = (typeMatch && categoryMatch) ? '' : 'none';
-    });
-}
-
-
-// Pastikan kedua dropdown memicu filter
-document.getElementById('filterType').addEventListener('change', filterQuestions);
-document.getElementById('filterCategory').addEventListener('change', filterQuestions);
 </script>
 
 @endsection
