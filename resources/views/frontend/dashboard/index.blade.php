@@ -20,7 +20,7 @@
             {{-- Nama dan info --}}
             <div class="d-flex align-items-center" style="padding-left: 20px;">
                 <h3 class="mb-2 fw-semibold" style="color: #1a3c34; font-size: 1.6rem;">
-                    {{ $profileData->name }}
+                   Selamat datang, {{ $profileData->name }}!
                 </h3>
             </div>
         </div>
@@ -47,7 +47,7 @@
             <div class="col-md-4">
                 <div class="card border-0 shadow-sm" style="border-radius: 12px;">
                     <div class="card-body text-center">
-                        <h3 class="fw-bold mb-0" style="color:#0d6efd;">{{ $totalSelesai }}</h3>
+                        <h3 class="fw-bold mb-0" style="color:#0d6efd;">{{ $totalSelesai }} / {{ $totalTryout }}</h3>
                         <p class="text-muted mb-0">Sudah Dikerjakan</p>
                     </div>
                 </div>
@@ -62,21 +62,6 @@
                 </div>
             </div>
         </div>
-
-        {{-- Level Progress --}}
-        <div class="mb-3 mt-2">
-            <div class="d-flex justify-content-between small mb-2">
-                <span class="fw-semibold text-dark">Level Progress</span>
-                <span class="text-muted">{{ $progress ?? '53%' }}</span>
-            </div>
-            <div class="progress" style="height: 10px; border-radius: 12px; background-color: #e6e6e6;">
-                <div class="progress-bar bg-primary" role="progressbar"
-                    style="width: {{ $progress ?? '53%' }}; border-radius: 12px;">
-                </div>
-            </div>
-        </div>
-
-        <p class="mt-2 text-muted small mb-0">Level 5 - Expert Quiz Master</p>
     </div>
 
     <div class="row mt-4" ;>
@@ -107,15 +92,15 @@
                 <h6 class="fw-semibold mb-3" style="font-size: 0.9rem;">Keterangan</h6>
                 <div class="d-flex justify-content-center flex-wrap" style="gap: 8px; margin-top: 6px;">
                     <div class="d-flex align-items-center" style="margin: 2px 6px;">
-                        <div class="rounded-circle me-2" style="width: 12px; height: 12px; background-color: #dc3545;"></div>
+                        <div class="rounded-circle mr-1" style="width: 12px; height: 12px; background-color: #dc3545;"></div>
                         <small>Perlu pendalaman tinggi</small>
                     </div>
                     <div class="d-flex align-items-center" style="margin: 2px 6px;">
-                        <div class="rounded-circle me-2" style="width: 12px; height: 12px; background-color: #fd7e14;"></div>
+                        <div class="rounded-circle mr-1" style="width: 12px; height: 12px; background-color: #fd7e14;"></div>
                         <small>Cukup perlu</small>
                     </div>
                     <div class="d-flex align-items-center" style="margin: 2px 6px;">
-                        <div class="rounded-circle me-2" style="width: 12px; height: 12px; background-color: #28a745;"></div>
+                        <div class="rounded-circle mr-1" style="width: 12px; height: 12px; background-color: #28a745;"></div>
                         <small>Sudah baik</small>
                     </div>
                 </div>
@@ -125,6 +110,24 @@
     </div>
 
     </div>
+    <div class="card shadow-sm p-3 mt-4" style="
+    border-radius: 14px;
+    background: #eef7ff;
+    border-left: 5px solid #3b82f6;">
+    <div class="d-flex align-items-center">
+        <div class="me-3">
+            <i class="la la-bullseye text-primary" style="font-size: 32px;"></i>
+        </div>
+        <div>
+            <h6 class="fw-bold text-primary mb-1">Rekomendasi Belajar</h6>
+            <p class="mb-0 text-dark" style="font-size: 14px;">
+                Bidang <strong>Ginjal</strong> masih bisa diperkuat.  
+                Yuk fokus latihan soal Ginjal minggu ini!
+            </p>
+        </div>
+    </div>
+</div>
+
 </div>
 
 
@@ -175,13 +178,24 @@ document.addEventListener('DOMContentLoaded', function() {
     const estimationCards = document.getElementById('estimationCards');
     estimationCards.innerHTML = '';
 
-    chartLabels.forEach((label, index) => {
-        const value = chartData[index];
+    // 1. Gabungkan label + data
+    let combined = chartLabels.map((label, index) => {
+        return {
+            label: label,
+            value: chartData[index]
+        };
+    });
+
+    // 2. Urutkan dari nilai TERKECIL → TERBESAR
+    combined.sort((a, b) => a.value - b.value);
+
+    // 3. Generate card setelah diurutkan
+    combined.forEach(item => {
         let color = '';
 
-        if (value < 60) {
+        if (item.value < 60) {
             color = '#dc3545'; // merah
-        } else if (value < 80) {
+        } else if (item.value < 80) {
             color = '#fd7e14'; // oranye
         } else {
             color = '#28a745'; // hijau
@@ -196,21 +210,19 @@ document.addEventListener('DOMContentLoaded', function() {
                         border-radius: 10px; 
                         max-width: 320px; 
                         margin: 0 auto; 
-                        min-height: 55px; /* ✨ samakan tinggi semua card */
+                        min-height: 55px; 
                         display: flex; 
                         align-items: center;
                     ">
                     <div class="card-body py-2 px-3 d-flex justify-content-between align-items-center w-100">
-                        <h6 class="fw-normal mb-0 text-dark" style="font-size: 13px;">${label}</h6>
-                        <h6 class="fw-normal mb-0" style="font-size: 14px; color: ${color};">${value}%</h6>
+                        <h6 class="fw-normal mb-0 text-dark" style="font-size: 13px;">${item.label}</h6>
+                        <h6 class="fw-normal mb-0" style="font-size: 14px; color: ${color};">${item.value}%</h6>
                     </div>
                 </div>
             </div>
         `;
     });
 });
-
-
 
 </script>
 

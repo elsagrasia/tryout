@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Tryout;
-use App\Models\userBadge;
+use App\Models\UserBadge;
 use App\Models\Badge;
 use App\Models\userTryout;
 use App\Models\category;
@@ -110,7 +110,9 @@ class IndexController extends Controller
 
     public function userLeaderboard()
     {
+      
         $leaderboard = User::where('role', 'student')
+            ->with('badges') // <= eager load
             ->orderByDesc('total_points')
             ->select('id', 'name', 'total_points', 'photo')
             ->take(50)

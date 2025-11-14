@@ -10,7 +10,7 @@
                 <div class="d-flex flex-wrap justify-content-center gap-2">
                     @foreach ($tryout->questions as $index => $question)
                         <div class="d-flex justify-content-center" style="width:50px; margin-bottom:8px;">
-                            <button type="button" 
+                            <button type="button"
                                     class="btn btn-secondary btn-sm question-btn"
                                     data-index="{{ $index }}"
                                     data-question="{{ $question->id }}"
@@ -109,7 +109,7 @@
                             </div>
 
                             <!-- NAVIGASI -->
-                           <div class="d-flex justify-content-between mt-4">
+                            <div class="d-flex justify-content-between mt-4">
                                 @if ($index > 0)
                                     <button type="button" class="btn btn-outline-secondary prev-btn">← Sebelumnya</button>
                                 @else
@@ -126,8 +126,6 @@
 
                                 @endif
                             </div>
-
-
                         </div>
                     @endforeach
                 </form>
@@ -139,47 +137,50 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    const tryoutId = {{ $tryout->id }};
-    const questionCards = Array.from(document.querySelectorAll('.question-card'));
-    const questionButtons = Array.from(document.querySelectorAll('.question-btn'));
-    const timerDisplay = document.getElementById('timer');
-    const confirmButton = document.getElementById('confirmButton');
 
-    const totalDuration = Number({{ $tryout->duration ?? 0 }}) * 60; // detik
+    const totalDuration = {{ $tryout->duration * 60 }};
+
+    const questionCards    = Array.from(document.querySelectorAll('.question-card'));
+    const questionButtons  = Array.from(document.querySelectorAll('.question-btn'));
+    const timerDisplay     = document.getElementById('timer');
+    const form             = document.getElementById('tryoutForm');
+    const confirmButton    = document.getElementById('confirmButton');
+    const doubtTextEl      = document.getElementById('doubt-text');
+
+    if (questionCards.length === 0) return;
+
     let answers = {};
-    let doubts = {};
-    let currentIndex = 0;
-    let remainingTime = totalDuration;
-    let timer;
+    let doubts  = {};
+    try {
+        answers = JSON.parse(localStorage.getItem('tryout_answers') || '{}');
+    } catch {}
+    try {
+        doubts = JSON.parse(localStorage.getItem('tryout_doubts') || '{}');
+    } catch {}
 
-    // ===== Load progress dari localStorage =====
-    const savedAnswers = localStorage.getItem(`tryout_${tryoutId}_answers`);
-    if (savedAnswers) {
-        answers = JSON.parse(savedAnswers);
-        for (const qid in answers) {
-            const radio = document.querySelector(`input[name="answers[${qid}]"][value="${answers[qid]}"]`);
-            if (radio) radio.checked = true;
-        }
+    let currentIndex = parseInt(localStorage.getItem('tryout_index') || '0', 10);
+    if (isNaN(currentIndex) || currentIndex < 0 || currentIndex >= questionCards.length) {
+        currentIndex = 0;
     }
 
-    const savedDoubts = localStorage.getItem(`tryout_${tryoutId}_doubts`);
-    if (savedDoubts) {
-        doubts = JSON.parse(savedDoubts);
-        for (const qid in doubts) {
-            const cb = document.getElementById(`doubt-${qid}`);
-            if (cb) cb.checked = doubts[qid];
-        }
+    let remainingTime;
+    let elapsed;
+
+    if (localStorage.getItem('tryout_remaining_time')) {
+        remainingTime = parseInt(localStorage.getItem('tryout_remaining_time'), 10);
+        if (isNaN(remainingTime) || remainingTime < 0) remainingTime = totalDuration;
+    } else {
+        remainingTime = totalDuration;
     }
 
-    const savedRemaining = localStorage.getItem(`tryout_${tryoutId}_remaining`);
-    remainingTime = savedRemaining ? parseInt(savedRemaining) : totalDuration;
+    if (localStorage.getItem('tryout_elapsed_time')) {
+        elapsed = parseInt(localStorage.getItem('tryout_elapsed_time'), 10);
+        if (isNaN(elapsed) || elapsed < 0) elapsed = 0;
+    } else {
+        elapsed = 0;
+    }
 
-    updateTimerDisplay();
-    highlightButtons();
-    updateGlobalStatusForActive();
-    startTimer();
 
-    // ===== Timer =====
     function updateTimerDisplay() {
         const h = Math.floor(remainingTime / 3600);
         const m = Math.floor((remainingTime % 3600) / 60);
@@ -187,103 +188,149 @@ document.addEventListener('DOMContentLoaded', function () {
         timerDisplay.textContent = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
     }
 
-    function startTimer() {
-        timer = setInterval(() => {
-            remainingTime--;
-            updateTimerDisplay();
+    const timerInterval = setInterval(() => {
+        remainingTime--;
+        elapsed++;
 
-            // 🆕 Tambahkan baris ini biar waktu tersimpan tiap detik
-            localStorage.setItem(`tryout_${tryoutId}_remaining`, remainingTime);
+        updateTimerDisplay();
 
-            if (remainingTime <= 0) {
-                clearInterval(timer);
-                alert('Waktu habis, jawaban akan dikirim otomatis!');
-                submitTryout();
-            }
-        }, 1000);
-    }
+        // Simpan periodik ke localStorage biar bisa resume
+        if (remainingTime % 5 === 0) {
+            localStorage.setItem('tryout_remaining_time', remainingTime);
+            localStorage.setItem('tryout_elapsed_time', elapsed);
+            localStorage.setItem('tryout_answers', JSON.stringify(answers));
+            localStorage.setItem('tryout_doubts', JSON.stringify(doubts));
+            localStorage.setItem('tryout_index', currentIndex);
+        }
 
+        if (remainingTime < 0) {
+            clearInterval(timerInterval);
+            form.submit();
+        }
+    }, 1000);
 
-    // ===== Soal & tombol =====
+    // ====== WARNA TOMBOL ======
+
     function highlightButtons() {
         questionButtons.forEach((btn, idx) => {
             const qid = btn.dataset.question;
+
             let colorClass = 'btn-secondary';
             if (answers[qid]) colorClass = 'btn-success';
-            if (doubts[qid]) colorClass = 'btn-warning';
+            if (doubts[qid])  colorClass = 'btn-warning';
             if (idx === currentIndex) colorClass = 'btn-primary';
+
             btn.classList.remove('btn-secondary','btn-success','btn-primary','btn-warning');
             btn.classList.add(colorClass);
         });
     }
 
+
     function updateGlobalStatusForActive() {
-        const qid = questionCards[currentIndex].dataset.question;
-        const doubtTextEl = document.getElementById('doubt-text');
         if (!doubtTextEl) return;
+        const qid = questionCards[currentIndex].dataset.question;
         doubtTextEl.style.display = doubts[qid] ? 'block' : 'none';
     }
 
+    // ====== TAMPILKAN SOAL SESUAI INDEX ======
     function showQuestion(index) {
         if (index < 0) index = 0;
         if (index >= questionCards.length) index = questionCards.length - 1;
+
         questionCards.forEach((card, i) => {
             card.style.display = (i === index) ? 'block' : 'none';
         });
-        currentIndex = index;
+
+        // Set jawaban radio berdasarkan data 'answers'
+        const activeCard = questionCards[currentIndex];
+        const qid        = activeCard.dataset.question;
+
+        if (answers[qid]) {
+            const selected = activeCard.querySelector(
+                `input.answer-radio[data-question="${qid}"][value="${answers[qid]}"]`
+            );
+            if (selected) selected.checked = true;
+        } else {
+            // kalau belum ada jawaban, clear centang
+            const radios = activeCard.querySelectorAll(`input.answer-radio[data-question="${qid}"]`);
+            radios.forEach(r => r.checked = false);
+        }
+
+        // Set checkbox ragu dari data 'doubts'
+        const doubtCheckbox = activeCard.querySelector(`.mark-doubt-checkbox[data-question="${qid}"]`);
+        if (doubtCheckbox) {
+            doubtCheckbox.checked = !!doubts[qid];
+        }
+
         updateGlobalStatusForActive();
         highlightButtons();
-        window.scrollTo({ top: questionCards[currentIndex].offsetTop - 20, behavior:'smooth' });
+
+        // Simpan index aktif
+        localStorage.setItem('tryout_index', currentIndex);
+
+        window.scrollTo({
+            top: questionCards[currentIndex].offsetTop - 20,
+            behavior: 'smooth'
+        });
     }
 
+
+    // Pertama kali load halaman → tampilkan soal terakhir yang dikerjakan
     showQuestion(currentIndex);
 
-    // Pilih jawaban
+    // ====== EVENT PILIHAN JAWABAN ======
+
     document.querySelectorAll('.answer-radio').forEach(radio => {
         radio.addEventListener('change', function () {
-            answers[this.dataset.question] = this.value;
+            const qid = this.dataset.question;
+            answers[qid] = this.value;
             highlightButtons();
             saveProgress();
         });
     });
 
-    // Tandai ragu-ragu
+
     document.querySelectorAll('.mark-doubt-checkbox').forEach(cb => {
         cb.addEventListener('change', function () {
-            doubts[this.dataset.question] = this.checked;
+            const qid = this.dataset.question;
+            doubts[qid] = this.checked;
             updateGlobalStatusForActive();
             highlightButtons();
             saveProgress();
         });
     });
 
-    // Navigasi tombol soal
+
     questionButtons.forEach(btn => {
-        btn.addEventListener('click', () => showQuestion(parseInt(btn.dataset.index)));
-    });
-
-    document.querySelectorAll('.next-btn').forEach(btn => btn.addEventListener('click', () => showQuestion(currentIndex + 1)));
-    document.querySelectorAll('.prev-btn').forEach(btn => btn.addEventListener('click', () => showQuestion(currentIndex - 1)));
-
-    // ===== Submit Tryout / Redirect ke Confirm =====
-    confirmButton.addEventListener('click', function() {
-        // Simpan jawaban & waktu di localStorage
-        localStorage.setItem('tryout_answers', JSON.stringify(answers));
-        localStorage.setItem('tryout_elapsed_time', totalDuration - remainingTime);
-
-        // Pindah ke halaman konfirmasi
-        window.location.href = '{{ route('tryout.confirm', $tryout->id) }}';
+        btn.addEventListener('click', () => {
+            const idx = parseInt(btn.dataset.index, 10);
+            showQuestion(idx);
+        });
     });
 
 
-    // ===== Simpan progress sebelum refresh / keluar =====
-    function saveProgress() {
-        localStorage.setItem(`tryout_${tryoutId}_answers`, JSON.stringify(answers));
-        localStorage.setItem(`tryout_${tryoutId}_doubts`, JSON.stringify(doubts));
-        localStorage.setItem(`tryout_${tryoutId}_remaining`, remainingTime);
+    document.querySelectorAll('.next-btn').forEach(btn => {
+        btn.addEventListener('click', () => showQuestion(currentIndex + 1));
+    });
+
+    document.querySelectorAll('.prev-btn').forEach(btn => {
+        btn.addEventListener('click', () => showQuestion(currentIndex - 1));
+    });
+
+    // ====== KONFIRMASI ======
+    if (confirmButton) {
+        confirmButton.addEventListener('click', function () {
+            // Simpan terakhir kali sebelum pindah ke halaman konfirmasi
+            localStorage.setItem('tryout_answers', JSON.stringify(answers));
+            localStorage.setItem('tryout_doubts', JSON.stringify(doubts));
+            localStorage.setItem('tryout_index', currentIndex);
+            localStorage.setItem('tryout_remaining_time', remainingTime);
+            localStorage.setItem('tryout_elapsed_time', elapsed);
+
+            window.location.href = "{{ route('tryout.confirm', $tryout->id) }}";
+        });
     }
 
-    window.addEventListener('beforeunload', saveProgress);
 });
 </script>
 

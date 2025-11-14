@@ -197,6 +197,48 @@ function joinTryout(tryoutId) {
 </script> --}}
 
 
+<script>
+// ===== CUTE & FUN =====
+function cuteTryoutDone({name, score, correct, total}) {
+  Swal.fire({
+    title: `🎉 Yeaay, ${name}!`,
+    html: `<div style="font-size:16px">
+      Kamu selesaiin tryout!<br>
+      <b>Skor:</b> ${score} ⭐<br>
+      <b>Benar:</b> ${correct}/${total} 🔥<br>
+      Keep it up! 🤩
+    </div>`,
+    confirmButtonText: 'Lanjut!',
+    backdrop: true,
+    timer: 3500,
+    iconHtml: '🥳',
+    customClass: {
+      popup: 'swal2-border-radius'
+    }
+  })
+}
+
+function cuteNewBadge({title, desc}) {
+  toastr.success(`🏅 ${title}<br>${desc} — kamu keren! ✨`, 'Badge Baru!', {
+    closeButton: true,
+    timeOut: 4500,
+    progressBar: true,
+    escapeHtml: false
+  });
+}
+
+function cuteRankUp({rank}) {
+  Swal.fire({
+    title: `🚀 Naik Kelas!`,
+    html: `<div style="font-size:16px">
+      Peringkatmu sekarang <b>#${rank}</b> 🎯<br>
+      Sedikit lagi puncak! ⛰️
+    </div>`,
+    confirmButtonText: 'Gaskeun!',
+    iconHtml: '🚀'
+  })
+}
+</script>
 
 
 

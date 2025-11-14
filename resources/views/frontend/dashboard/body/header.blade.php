@@ -1,14 +1,18 @@
+
 <header class="header-menu-area">
     <div class="header-menu-content  pr-30px pl-30px bg-white shadow-sm">
         <div class="container-fluid">
             <div class="main-menu-content">
                 <div class="row align-items-center">
                     <div class="col-lg-12">
-                        
-                        <div class="logo-box px-4">
-                            <a href="{{ route('index') }}" class="logo"><img src="{{ asset('upload/logo/logo.jpg') }}" alt="logo" style="height: 40px; width: auto;"></a>
-                        </div>
-                
+
+
+                        <div class="logo-box logo--box">
+                            <a href="index.html" class="logo"><img src="{{ asset('frontend/images/logo.png') }}" alt="logo"></a>
+                            <div class="user-btn-action">
+                               
+                            </div>  
+                        </div><!-- end logo-box -->
 
                         <div class="menu-wrapper">                      
                             <div class="nav-right-button d-flex align-items-center">
@@ -16,11 +20,11 @@
                                     $id = Auth::user()->id;
                                     $profileData = App\Models\User::find($id);
                                 @endphp 
-                                    <div class="user-points d-flex align-items-center mr-3 border rounded px-3 py-1 bg-light "data-toggle="tooltip"  title="total poin" style="gap:3px;">
-                                        <i class="la la-gem text-warning fs-23"></i>
-                                        <span class="fw-bold text-dark" style="font-size: 15px;">
-                                            {{ Auth::user()->total_points ?? 0 }}
-                                        </span>
+                                    <div class="user-points d-flex align-items-center mr-3 border rounded px-3 py-1 bg-light pr-4" style="gap:6px;">
+                                    <i class="la la-coins text-warning fs-18"></i>
+                                    <span class="fw-bold text-dark" style="font-size: 15px;">
+                                        {{ Auth::user()->total_points ?? 0 }}
+                                    </span>
                                     </div>
                                     <div class="shop-cart user-profile-cart">
                                         <ul>

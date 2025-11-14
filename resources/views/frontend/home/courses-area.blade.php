@@ -70,10 +70,12 @@
                     <div class="tab-pane fade" id="cat{{ $category->id }}" role="tabpanel" aria-labelledby="cat{{ $category->id }}-tab">
                         <div class="row gx-4 gy-5">
                             @php
-                                $catTryouts = App\Models\TryoutPackage::where('status','published')
-                                    ->where('category_id', $category->id)
-                                    ->orderBy('id','DESC')
-                                    ->get();
+                                $catTryouts = App\Models\TryoutPackage::where('status', 'published')
+                                ->whereHas('questions', function($q) use ($category) {
+                                    $q->where('category_id', $category->id);
+                                })
+                                ->orderBy('id', 'DESC')
+                                ->get();
                             @endphp
 
                             @forelse ($catTryouts as $package)

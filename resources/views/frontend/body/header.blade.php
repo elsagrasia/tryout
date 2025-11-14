@@ -33,7 +33,7 @@
 
                     <!-- Navigation -->
                     <div class="col-lg-10">
-                        <div class="menu-wrapper">
+                        <div class="menu-wrapper pt-20px pb-20px ">
                             <nav class="main-menu">
                                 <ul>
                                     <li><a href="#tryout">Tryout </a></li>
