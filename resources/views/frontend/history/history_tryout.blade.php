@@ -1,12 +1,12 @@
 @extends('frontend.dashboard.user_dashboard')
 @section('userdashboard')
 
-<div class="container-fluid mt-4 mb-5">
+<div class="dashboard-container container-fluid mt-4 mb-5">
     <div class="row justify-content-center">
         <div class="col-lg-10">
 
             {{-- Card besar agar rapi dan sejajar sidebar --}}
-            <div class="card border-0 shadow-sm rounded-4 p-4" style="background-color: #f8fcff;">
+            <div class="card border-0 shadow-sm rounded-4 p-4" style="background-color: #e8f2ff;">
                 
                 {{-- Judul --}}
                 <div class="dashboard-heading mb-4">
@@ -33,7 +33,7 @@
                                         : 'text-danger'));
                             @endphp
 
-                            <div class="list-group-item mb-2 d-flex justify-content-between align-items-center border rounded shadow-sm">
+                            <div class="list-group-item mb-3 d-flex justify-content-between align-items-center border rounded shadow-sm">
                                 
                                 {{-- Kiri --}}
                                 <div class="d-flex align-items-center">
@@ -64,7 +64,7 @@
                                     </div>
 
                                     <a href="{{ route('tryout.explanation', $tryout->id) }}" 
-                                        class="btn btn-sm btn-outline-primary rounded-pill px-3">
+                                        class="btn btn-outline-primary px-5"> 
                                         Lihat Hasil <i class="la la-arrow-right ms-1"></i>
                                     </a>
                                 </div>
