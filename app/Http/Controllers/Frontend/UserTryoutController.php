@@ -47,8 +47,21 @@ class UserTryoutController extends Controller
             ->get()
             ->keyBy('tryout_package_id');
 
-        return view('frontend.mytryout.my_all_tryout', compact('myTryouts', 'results'));
+        // ---- Tambahan untuk tab "Contest" (group per bidang) ----
+        // GANTI 'bidang_name' sesuai field di model TryoutPackage kamu
+        $tryoutsByBidang = $myTryouts->groupBy(function ($item) {
+            return $item->tryoutPackage->category_name ?? 'Lainnya';
+            // contoh lain:
+            // return $item->tryoutPackage->category->name ?? 'Lainnya';
+        });
+        // ----------------------------------------------------------
+
+        return view(
+            'frontend.mytryout.my_all_tryout',
+            compact('myTryouts', 'results', 'tryoutsByBidang')
+        );
     }
+
 
     public function AddToTryout(Request $request, $tryoutPackage_id)
     {

@@ -6,9 +6,14 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\BlogCategory;
 use App\Models\BlogPost;
+
+use App\Models\Point;
+use App\Models\UserPoint;
+use Illuminate\Support\Facades\Auth;
+
 use Intervention\Image\Facades\Image;
 use Carbon\Carbon;
-
+use Illuminate\Support\Str;
 
 class BlogController extends Controller
 {
@@ -96,9 +101,10 @@ class BlogController extends Controller
     BlogPost::insert([
         'blogcat_id' => $request->blogcat_id,
         'post_title' => $request->post_title,
-        'post_slug' => strtolower(str_replace(' ','-',$request->post_title)),
+        'post_slug' => Str::slug($request->post_title),
+
         'long_descp' => $request->long_descp,
-        'post_tags' => $request->post_tags,
+        
         'post_image' => $save_url,  
         'created_at' => Carbon::now(),      
 
@@ -135,9 +141,8 @@ class BlogController extends Controller
         BlogPost::find($post_id)->update([
             'blogcat_id' => $request->blogcat_id,
             'post_title' => $request->post_title,
-            'post_slug' => strtolower(str_replace(' ','-',$request->post_title)),
-            'long_descp' => $request->long_descp,
-            'post_tags' => $request->post_tags,
+            'post_slug' => Str::slug($request->post_title),
+            'long_descp' => $request->long_descp,           
             'post_image' => $save_url,  
             'created_at' => Carbon::now(),      
     
@@ -154,9 +159,8 @@ class BlogController extends Controller
         BlogPost::find($post_id)->update([
             'blogcat_id' => $request->blogcat_id,
             'post_title' => $request->post_title,
-            'post_slug' => strtolower(str_replace(' ','-',$request->post_title)),
-            'long_descp' => $request->long_descp,
-            'post_tags' => $request->post_tags, 
+            'post_slug' => Str::slug($request->post_title),
+            'long_descp' => $request->long_descp, 
             'created_at' => Carbon::now(),      
     
         ]);
@@ -187,16 +191,16 @@ class BlogController extends Controller
 
     }// End Method     
 
-    public function blogDetails($slug){
+public function blogDetails($slug)
+{
+    $blog = BlogPost::where('post_slug', $slug)->firstOrFail();
 
-        $blog = BlogPost::where('post_slug',$slug)->first();
-                
-        $tags = $blog->post_tags;
-        $tags_all = explode(',',$tags);
-        $bcategory = BlogCategory::latest()->get();
-        $post = BlogPost::latest()->limit(3)->get();
-        return view('frontend.blog.blog_details',compact('blog','tags_all','bcategory','post'));
-    }// End Method 
+    $bcategory = BlogCategory::latest()->get();
+    $post = BlogPost::latest()->limit(3)->get();
+
+    return view('frontend.blog.blog_details', compact('blog', 'bcategory', 'post'));
+}
+
 
     public function blogCatList($id){
 
@@ -218,5 +222,62 @@ class BlogController extends Controller
 
     }// End Method 
 
+public function markBlogRead($id)
+{
+    if (!Auth::check()) {
+        return response()->json(['success' => false, 'message' => 'Unauthenticated'], 401);
+    }
+
+    $blog = BlogPost::findOrFail($id);
+    $user = Auth::user();
+    $userId = $user->id;
+
+    // Ambil list user yang sudah baca dari kolom JSON
+    $readUsers = $blog->read_users
+        ? json_decode($blog->read_users, true)
+        : [];
+
+    if (!is_array($readUsers)) {
+        $readUsers = [];
+    }
+
+    // Jika user sudah pernah tercatat membaca artikel ini → jangan tambah poin lagi
+    if (in_array($userId, $readUsers)) {
+        return response()->json(['success' => true, 'message' => 'Already counted']);
+    }
+
+    // Cari rule poin "Membaca 1 Artikel"
+    $rule = Point::where('activity', 'Membaca 1 Artikel')
+        ->where('status', 'active')
+        ->first();
+
+    $pointsAdded = 0;
+
+    if ($rule) {
+        // Catat ke user_points
+        UserPoint::create([
+            'user_id'       => $userId,
+            'point_rule_id' => $rule->id,
+            'activity'      => $rule->activity,
+            'points'        => $rule->points,
+        ]);
+
+        // Tambah ke total_points user
+        $user->increment('total_points', $rule->points);
+
+        $pointsAdded = $rule->points;
+    }
+
+    // Tandai user ini sudah membaca artikel ini
+    $readUsers[] = $userId;
+    $blog->read_users = json_encode($readUsers);
+    $blog->save();
+
+    return response()->json([
+        'success'      => true,
+        'message'      => 'Points added',
+        'points_added' => $pointsAdded,
+    ]);
+}
 
 }

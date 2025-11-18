@@ -7,12 +7,7 @@
                     <div class="col-lg-12">
 
 
-                        <div class="logo-box logo--box">
-                            <a href="index.html" class="logo"><img src="{{ asset('frontend/images/logo.png') }}" alt="logo"></a>
-                            <div class="user-btn-action">
-                               
-                            </div>  
-                        </div><!-- end logo-box -->
+                    
 
                         <div class="menu-wrapper">                      
                             <div class="nav-right-button d-flex align-items-center">
@@ -20,7 +15,7 @@
                                     $id = Auth::user()->id;
                                     $profileData = App\Models\User::find($id);
                                 @endphp 
-                                    <div class="user-points d-flex align-items-center mr-3 border rounded px-3 py-1 bg-light pr-4" style="gap:6px;">
+                                    <div class="user-points d-flex align-items-center mr-3 border rounded px-3 py-1 bg-light pr-4" title="Total Poin" style="gap:6px;">
                                     <i class="la la-coins text-warning fs-18"></i>
                                     <span class="fw-bold text-dark" style="font-size: 15px;">
                                         {{ Auth::user()->total_points ?? 0 }}

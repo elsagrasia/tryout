@@ -146,16 +146,23 @@
         @forelse ($results as $index => $result)
 
             @php
-                $type = 'unanswered';
-                if (!empty($result['user_answer'])) {
-                    if (!empty($result['is_doubt'])) {
-                        $type = 'doubt';
-                    } elseif ($result['is_correct'] === 1) {
-                        $type = 'correct';
-                    } else {
-                        $type = 'wrong';
-                    }
+                // Tentukan type utama
+                if (empty($result['user_answer'])) {
+                    $type = 'unanswered';
+                } elseif ($result['is_correct'] == 1) {
+                    // Benar → selalu correct meskipun ragu
+                    $type = 'correct';
+                } elseif (!empty($result['is_doubt'])) {
+                    // Salah + ragu
+                    $type = 'doubt';
+                } else {
+                    // Salah saja
+                    $type = 'wrong';
                 }
+
+                // Flag ragu untuk filter doubt
+                $doubtFlag = !empty($result['is_doubt']) ? '1' : '0';
+
             @endphp
 
 
@@ -163,7 +170,9 @@
                 class="quiz-ans-wrap pt-30px pb-30px question-item"
                 data-type="{{ $type }}"
                 data-category="{{ $result['category_id'] ?? 0 }}"
+                data-doubt="{{ $doubtFlag }}"
             >
+
                 <div class="container">
                     <div class="quiz-ans-content">
                         <div class="d-flex align-items-center mb-3">
@@ -272,89 +281,122 @@
 const itemsPerPage = 10;
 let currentPage = 1;
 
-function changePage(page) {
-    const questions = document.querySelectorAll('.question-item');
-    const visibleQuestions = Array.from(questions).filter(q => q.style.display !== 'none');
-    const totalPages = Math.ceil(visibleQuestions.length / itemsPerPage) || 1;
+function getFilteredQuestions() {
+    const type = document.getElementById('filterType').value;
+    const category = document.getElementById('filterCategory').value;
 
-    if (page < 1 || page > totalPages) return;
-    currentPage = page;
+    const allQuestions = Array.from(document.querySelectorAll('.question-item'));
 
-    // Sembunyikan semua dulu
-    questions.forEach(q => q.style.display = 'none');
+    return allQuestions.filter(q => {
 
-    // Tampilkan yang sesuai halaman
-    visibleQuestions.forEach((q, i) => {
-        if (i >= (page - 1) * itemsPerPage && i < page * itemsPerPage) {
-            q.style.display = '';
+        const qType = q.dataset.type;
+        const qCategory = q.dataset.category;
+        const isDoubt = q.dataset.doubt === "1"; // ragu (benar maupun salah)
+
+        let typeMatch = false;
+
+        if (type === 'correct') {
+            // Benar + Ragu → tetap masuk
+            typeMatch = (qType === 'correct');
         }
-    });
 
-    renderPagination();
+        else if (type === 'wrong') {
+            typeMatch = (qType === 'wrong');
+        }
+
+        else if (type === 'doubt') {
+            // Semua yang ragu: benar atau salah
+            typeMatch = isDoubt;
+        }
+
+        else if (type === 'unanswered') {
+            typeMatch = (qType === 'unanswered');
+        }
+
+        else {
+            typeMatch = true;
+        }
+
+        const categoryMatch = (category === "0" || qCategory === category);
+
+        return typeMatch && categoryMatch;
+    });
 }
 
-function renderPagination() {
-    const questions = document.querySelectorAll('.question-item');
-    const visibleQuestions = Array.from(questions).filter(q => q.style.display !== 'none');
-    const totalPages = Math.ceil(visibleQuestions.length / itemsPerPage) || 1;
-    const paginationContainer = document.getElementById('paginationContainer');
 
-    paginationContainer.innerHTML = '';
+function renderPage() {
+    const filtered = getFilteredQuestions();
+    const all = document.querySelectorAll('.question-item');
+
+    const totalPages = Math.ceil(filtered.length / itemsPerPage) || 1;
+
+    // Reset display
+    all.forEach(q => q.style.display = 'none');
+
+    // Tampilan halaman aktif
+    let start = (currentPage - 1) * itemsPerPage;
+    let end   = start + itemsPerPage;
+
+    filtered.slice(start, end).forEach(q => {
+        q.style.display = '';
+    });
+
+    renderPagination(totalPages);
+}
+
+function renderPagination(totalPages) {
+    const pagination = document.getElementById('paginationContainer');
+    pagination.innerHTML = '';
 
     // Prev
-    const prev = document.createElement('li');
-    prev.className = `page-item ${currentPage === 1 ? 'disabled' : ''}`;
-    prev.innerHTML = `
-        <a class="page-link" href="#" aria-label="Previous">
-            <span aria-hidden="true"><i class="la la-arrow-left"></i></span>
-        </a>`;
-    prev.onclick = (e) => { e.preventDefault(); if (currentPage > 1) changePage(currentPage - 1); };
-    paginationContainer.appendChild(prev);
+    const prev = `
+        <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+            <a class="page-link" href="#" onclick="goPage(${currentPage - 1}); return false;">
+                <i class="la la-arrow-left"></i>
+            </a>
+        </li>`;
+    pagination.insertAdjacentHTML('beforeend', prev);
 
-    // Pages
+    // Page numbers
     for (let i = 1; i <= totalPages; i++) {
-        const page = document.createElement('li');
-        page.className = `page-item ${i === currentPage ? 'active' : ''}`;
-        page.innerHTML = `<a class="page-link" href="#">${i}</a>`;
-        page.onclick = (e) => { e.preventDefault(); changePage(i); };
-        paginationContainer.appendChild(page);
+        pagination.insertAdjacentHTML('beforeend', `
+            <li class="page-item ${i === currentPage ? 'active' : ''}">
+                <a class="page-link" href="#" onclick="goPage(${i}); return false;">${i}</a>
+            </li>
+        `);
     }
 
     // Next
-    const next = document.createElement('li');
-    next.className = `page-item ${currentPage === totalPages ? 'disabled' : ''}`;
-    next.innerHTML = `
-        <a class="page-link" href="#" aria-label="Next">
-            <span aria-hidden="true"><i class="la la-arrow-right"></i></span>
-        </a>`;
-    next.onclick = (e) => { e.preventDefault(); if (currentPage < totalPages) changePage(currentPage + 1); };
-    paginationContainer.appendChild(next);
+    const next = `
+        <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+            <a class="page-link" href="#" onclick="goPage(${currentPage + 1}); return false;">
+                <i class="la la-arrow-right"></i>
+            </a>
+        </li>`;
+    pagination.insertAdjacentHTML('beforeend', next);
 }
 
-function filterQuestions() {
-    const typeFilter = document.getElementById('filterType').value;
-    const categoryFilter = document.getElementById('filterCategory').value;
-    const questions = document.querySelectorAll('.question-item');
+function goPage(page) {
+    const filtered = getFilteredQuestions();
+    const totalPages = Math.ceil(filtered.length / itemsPerPage) || 1;
 
-    questions.forEach(q => {
-        const typeMatch = (typeFilter === 'all' || q.dataset.type === typeFilter);
-        const categoryMatch = (categoryFilter === '0' || q.dataset.category === categoryFilter);
-        q.style.display = (typeMatch && categoryMatch) ? '' : 'none';
-    });
+    if (page < 1 || page > totalPages) return;
 
-    // reset ke halaman 1 setelah filter
+    currentPage = page;
+    renderPage();
+}
+
+function applyFilters() {
     currentPage = 1;
-    changePage(1);
+    renderPage();
 }
 
-// init
+// Init
 document.addEventListener('DOMContentLoaded', () => {
-    // awalnya tampilkan semua dengan pagination
-    document.querySelectorAll('.question-item').forEach(q => q.style.display = '');
-    changePage(1);
+    renderPage();
 
-    document.getElementById('filterType').addEventListener('change', filterQuestions);
-    document.getElementById('filterCategory').addEventListener('change', filterQuestions);
+    document.getElementById('filterType').addEventListener('change', applyFilters);
+    document.getElementById('filterCategory').addEventListener('change', applyFilters);
 });
 </script>
 

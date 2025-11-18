@@ -251,7 +251,10 @@ Route::get('/instructor/details/{id}', [IndexController::class, 'instructorDetai
 Route::get('/blog/details/{slug}', [BlogController::class, 'blogDetails']);
 Route::get('/blog/cat/list/{id}', [BlogController::class, 'blogCatList']);
 Route::get('/blog', [BlogController::class, 'blogList'])->name('blog');
-
+Route::post('/blog/read/{id}', [BlogController::class, 'markBlogRead'])
+    ->name('blog.markRead')
+    ->middleware('auth'); 
+    
 Route::get('/my-badges', [IndexController::class, 'myBadges'])->name('user.badges');
 Route::get('user/leaderboard',[IndexController::class, 'userLeaderboard'])->name('user.leaderboard');
 Route::get('/dashboard',[IndexController::class, 'userDashboard'])->name('user.dashboard');

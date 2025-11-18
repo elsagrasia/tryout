@@ -4,10 +4,19 @@
             <div class="container">
                 <div class="hero-content">
                     <div class="section-heading">
-                        <h2 class="section__title text-white fs-65 lh-80 pb-3">Persiapkan <br> Uji Kompetensi Dokter</h2>
-                    </div><!-- end section-heading -->
-                </div><!-- end hero-content -->
-            </div><!-- end container -->
-        </div><!-- end hero-slider-item -->
-    </div><!-- end hero-slide -->
-</section><!-- end hero-area -->
+                        @guest
+                            <h2 class="section__title text-white fs-65 lh-70">
+                                Persiapkan <br> Uji Kompetensi Dokter
+                            </h2>
+                        @else
+                            <h2 class="section__title text-white fs-65 lh-70">
+                                Halo, {{ Auth::user()->name }}! <br>
+                                <span class="fs-45">Yuk mulai kerjakan tryout</span>
+                            </h2>
+                        @endguest
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
