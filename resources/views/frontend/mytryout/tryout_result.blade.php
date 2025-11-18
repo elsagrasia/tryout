@@ -35,7 +35,7 @@
     $chosen = $message[array_rand($message)];
 @endphp
 
-<div class="">
+<div class="dashboard-container">
     <div class="breadcrumb-btn-box mb-4">
         <a href="{{ route('user.dashboard') }}" class="btn theme-btn theme-btn-sm-2">
             <i class="la la-arrow-left mr-2"></i>Kembali ke Dashboard
@@ -45,7 +45,7 @@
     {{-- =======================
          HEADER HASIL TRYOUT (STYLE BARU)
     ======================== --}}
-    <div class="card border-0 shadow-sm  mb-4 ">
+    <div class="card border-0 shadow-sm rounded-4 mb-4 ">
         <div class="card-body text-center ">
 
             {{-- Avatar + nama --}}
@@ -124,7 +124,7 @@
             {{-- Tombol lihat hasil --}}
             <div class="mt-4">
                 <a href="{{ route('tryout.explanation', $result->tryout_package_id) }}"
-                   class="btn theme-btn theme-btn-sm theme-btn-white border px-5 py-1">
+                   class="btn btn-outline-primary px-5 ">
                     <i class="la la-file-text-o mr-1"></i> Lihat Hasil
                 </a>
             </div>

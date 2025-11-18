@@ -3652,6 +3652,34 @@ div.datedropper .picker .pick-lg-b li {
   width: 32px !important;
   height: 32px !important; }
 
+
+
+/* Semua card di dashboard auto radius 12px */
+.dashboard-container {
+    border-radius: 15px !important;   /* radius untuk container */
+}
+
+.dashboard-container .card {
+    border-radius: 12px !important;
+}
+
+.list-group-item {
+    border-radius: 12px !important;
+    margin-bottom: 8px; /* biar rapi */
+}
+
+/* warna peringkat 1 */
+.my-rank-row {
+    background-color: #e9f9ff !important;   /* biru lembut */
+    color: #0d527a !important;
+}
+.my-rank-row:hover {
+    background-color: #d9f2ff !important;   /* hover */
+}
+
+
+
+
 /*===== dot-bg =====*/
 .dot-bg {
   position: relative;
