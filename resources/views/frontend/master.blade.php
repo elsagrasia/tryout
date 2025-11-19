@@ -31,6 +31,7 @@
     <link rel="stylesheet" href="{{ asset('frontend/css/style.css') }}">
     <!-- end inject -->
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" >
+
 </head>
 <body>
 
@@ -86,7 +87,7 @@
 <script src="{{ asset('frontend/js/jquery.lazy.min.js')}}"></script>
 <script src="{{ asset('frontend/js/main.js')}}"></script>
 
-<script>stye
+<script>
     var player = new Plyr('#player');
 </script>
 
@@ -117,6 +118,8 @@
 
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+
 
 @include('frontend.body.script')
 
