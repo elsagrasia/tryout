@@ -1,89 +1,68 @@
 @extends('frontend.dashboard.user_dashboard')
 @section('userdashboard')
 
-<div class="dashboard-container container-fluid mt-4 mb-5">
-    <div class="row justify-content-center">
-        <div class="col-lg-10">
+<div class="containe-fluid">
+    <div class="card border-0 shadow-sm p-4" style="background-color: #f8fcff;">
+    <h4 class="fw-bold mb-4">Badges Kamu</h4>
+        <div class="row">
+            
+            @foreach ($badges as $badge)
+                @if ($badge->status === 'active')
+                    @php
+                        $owned = in_array($badge->id, $ownedBadges);
+                    @endphp
 
-            <!-- LAPIS 1 -->
-            <div class="card border-0 rounded-4 p-4" style="background-color:#e8f2ff; ">
-                <h4 class="fw-bold mb-4">Badges Kamu</h4>
+                    <div class="col-md-4 mb-4">
+                        <div class="card text-center border-0 shadow-sm 
+                            {{ $owned ? 'badge-owned' : 'badge-locked' }}"
+                            style="border-radius: 15px;">
+                            
+                            <div class="card-body">
 
-                <!-- LAPIS 2 -->
-                <div class="card border-0 rounded-4 p-4" 
-                     style="background:rgba(255,255,255,0.85); box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+                                {{-- Icon --}}
+                                <img src="{{ asset($badge->icon ?? 'upload/badges/default.png') }}"
+                                    alt="{{ $badge->name }}"
+                                    class="img-fluid mb-3"
+                                    style="width: 80px; height: 80px;
+                                            filter: {{ $owned ? 'none' : 'grayscale(100%) brightness(0.4)' }};">
 
-                    <div class="row g-4 justify-content-center">
+                                {{-- Nama --}}
+                                <h6 class="fw-bold mb-2 {{ $owned ? 'text-dark' : 'text-muted' }}">
+                                    {{ $badge->name }}
+                                </h6>
 
-                        @foreach ($badges as $badge)
-                            @if ($badge->status === 'active')
-                                @php $owned = in_array($badge->id, $ownedBadges); @endphp
+                                {{-- Deskripsi --}}
+                                <p class="small text-secondary text-center mb-0" style="line-height:1.3;">
+                                    {{ $badge->description ?? '-' }}
+                                </p>
 
-                                <!-- PENTING: ganti card-body menjadi col-auto -->
-                                <div class="col-auto d-flex justify-content-center">
-
-                                    <!-- LAPIS 3 (card badge) -->
-                                    <div class="card text-center border-0 shadow-sm 
-                                        {{ $owned ? 'badge-owned' : 'badge-locked' }}"
-                                        style="border-radius:15px; width:210px; padding:20px;">
-
-                                        <img src="{{ asset($badge->icon ?? 'upload/badges/default.png') }}"
-                                        alt="{{ $badge->name }}"
-                                        class="badge-icon"
-                                        style="
-                                            width: 80px;
-                                            height: 80px;
-                                            display: block;
-                                            margin: 0 auto 12px;
-                                            /* object-fit: contain; */
-                                            filter: {{ $owned ? 'none' : 'grayscale(100%) brightness(0.4)' }};
-                                        ">
-
-
-                                        <h6 class="fw-bold mb-2 {{ $owned ? 'text-dark' : 'text-muted' }}">
-                                            {{ $badge->name }}
-                                        </h6>
-
-                                        <p class="small text-secondary mb-0">
-                                            {{ $badge->description ?? '-' }}
-                                        </p>
-
-                                    </div>
-
-                                </div>
-
-                            @endif
-                        @endforeach
-
+                            </div>
+                        </div>
                     </div>
-
-
-                </div>
-                <!-- END LAPIS 2 -->
-
-            </div>
-            <!-- END LAPIS 1 -->
+                @endif
+            @endforeach
 
         </div>
     </div>
 </div>
 
-
 <style>
+/* Badge dimiliki: outline biru muda sangat tipis */
 .badge-owned {
-    background:#f0f7ff;
-    border:2px solid #cde6ff !important;
-    border-radius:15px;
+background: #cbe7f5;
+background: radial-gradient(circle, rgba(203, 231, 245, 1) 0%, rgba(245, 251, 255, 1) 100%);
+    border: 1px solid #b3dfffff !important;  /* biru pastel lembut */
+    border-radius: 15px;
+    transition: 0.2s;
 }
 
+
+
+/* Badge belum dimiliki */
 .badge-locked {
-    background:#f3f4f6; 
-    border:1px solid #e1e1e1;
-    border-radius:15px;
-    box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+    opacity: 50;
+    border-radius: 15px;
 }
 </style>
-
-
 
 @endsection

@@ -8,7 +8,7 @@
 
 <div class="container py-4" style="max-width: 1100px; margin-top: -20px;">
     {{-- Profile Header --}}
-    <div class="card border-0 shadow-sm p-4 rounded-4" style="background-color: #e8f2ff; border-radius: 25px;">
+    <div class="card border-0 shadow-sm p-4 rounded-4" style="background-color: rgba(53, 143, 227, 0.040); border-radius: 25px;">
         <div class="d-flex align-items-center mb-4">
             {{-- Foto Profil --}}
             <img src="{{ (!empty($profileData->photo)) ? url('upload/user_images/'.$profileData->photo) : url('upload/no_image.jpg') }}"
@@ -67,7 +67,7 @@
     <div class="row mt-4" ;>
     {{-- Card kiri: Chart --}}
         <div class="col-md-7" >
-            <div class="card border-0 shadow-sm p-4 rounded-4 h-100" style="background-color: #e8f2ff; border-radius: 25px;">
+            <div class="card border-0 shadow-sm p-4 rounded-4 h-100" style="background-color: rgba(53, 143, 227, 0.04); border-radius: 25px;">
                 <h6 class="fw-bold mb-3">Rata-rata Nilai per Bidang</h6>
                 <div style="height: 350px;">
                     <canvas id="subjectChart"></canvas>
@@ -78,7 +78,7 @@
     {{-- Card kanan: Estimasi --}}
     <div class="col-md-5">
         <div class="card border-0 shadow-sm p-4 rounded-4 h-100"
-            style="background-color: #e8f2ff; border-radius: 25px;">
+            style="background-color: rgba(53, 143, 227, 0.04); border-radius: 25px;">
             
             <h6 class="fw-bold mb-3 text-center" style="font-size: 1rem;">Estimasi Pendalaman per Bidang</h6>
 

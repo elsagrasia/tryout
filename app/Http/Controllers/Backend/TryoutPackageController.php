@@ -208,7 +208,24 @@ class TryoutPackageController extends Controller
     public function allPackageResult()
     {
         $id = Auth::user()->id;
-        $tryoutPackages = TryoutPackage::where('instructor_id',$id)->orderBy('id','desc')->get();        
+        $tryoutPackages = TryoutPackage::where('instructor_id',$id)->orderBy('id','desc')->get();    
+        
+        $tryoutPackages = $tryoutPackages->map(function ($package) {
+        // Menghitung jumlah peserta yang unik (user_id)
+        $participantsCount = ResultTryout::where('tryout_package_id', $package->id)           
+            ->distinct('user_id') // Menghitung user_id yang berbeda
+            ->count('user_id');
+        
+        // Menghitung rata-rata nilai
+        $averageScore = ResultTryout::where('tryout_package_id', $package->id)
+            ->avg('score');  // Asumsi kolom 'score' berisi nilai tiap peserta
+
+        // Menambahkan nilai-nilai yang dihitung ke dalam package
+        $package->participants_count = $participantsCount;
+        $package->average_score = round($averageScore, 2);  // Membulatkan rata-rata nilai ke 2 angka desimal
+
+        return $package;
+        });
         return view('instructor.result.all_result', compact('tryoutPackages'));
     }
     

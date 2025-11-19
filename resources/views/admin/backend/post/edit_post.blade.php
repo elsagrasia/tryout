@@ -49,13 +49,7 @@
                     <textarea name="long_descp" class="form-control" id="myeditorinstance">{!! $post->long_descp !!}</textarea>
                 </div>
 
-                <div class="form-group col-md-6">
-                    <label for="input1" class="form-label">Post Tags</label>
-                    <input type="text" name="post_tags" class="form-control" data-role="tagsinput" value="{{ $post->post_tags }}">
-                </div>
-
-                <div class="col-md-6">
-                </div>
+               
 
                 <div class="form-group col-md-6">
                     <label for="input2" class="form-label">Post Image </label>

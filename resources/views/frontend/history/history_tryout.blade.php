@@ -1,15 +1,16 @@
 @extends('frontend.dashboard.user_dashboard')
 @section('userdashboard')
 
-<div class="dashboard-container container-fluid mt-4 mb-5">
+<div class="container-fluid">
     <div class="row justify-content-center">
-        <div class="col-lg-10">
+        <!-- Menggunakan col-12 untuk membuat card luar penuh lebar -->
+        <div class="col-12">
 
             {{-- Card besar agar rapi dan sejajar sidebar --}}
-            <div class="card border-0 shadow-sm rounded-4 p-4" style="background-color: #e8f2ff;">
+            <div class="card border-0 shadow-sm p-4" style="background-color: #f8fcff;">
                 
                 {{-- Judul --}}
-                <div class="dashboard-heading mb-4">
+                <div class="mb-4">
                     <h3 class="fs-22 fw-semibold">Riwayat Tryout</h3>
                 </div>
 
@@ -18,7 +19,6 @@
                         <i class="la la-folder-open fs-40 mb-3 d-block"></i>
                         <p>Belum ada riwayat tryout.</p>
                     </div>
-
                 @else
                     <div class="list-group">
                         @foreach ($histories as $history)
@@ -33,12 +33,12 @@
                                         : 'text-danger'));
                             @endphp
 
-                            <div class="list-group-item mb-3 d-flex justify-content-between align-items-center border rounded shadow-sm">
-                                
+                            <div class="list-group-item mb-2 d-flex justify-content-between align-items-center border rounded shadow-sm">
+                                    
                                 {{-- Kiri --}}
                                 <div class="d-flex align-items-center">
                                     <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center"
-                                        style="width:45px; height:45px;">
+                                         style="width:45px; height:45px;">
                                         <i class="la la-file-alt fs-5"></i>
                                     </div>
 
@@ -64,7 +64,7 @@
                                     </div>
 
                                     <a href="{{ route('tryout.explanation', $tryout->id) }}" 
-                                        class="btn btn-outline-primary px-5"> 
+                                        class="btn btn-sm btn-outline-primary rounded-pill px-3">
                                         Lihat Hasil <i class="la la-arrow-right ms-1"></i>
                                     </a>
                                 </div>

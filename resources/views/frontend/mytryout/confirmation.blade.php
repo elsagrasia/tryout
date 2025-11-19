@@ -2,7 +2,7 @@
 @section('content')
 
 <div class="container my-4">
-  <div class="card border-0 shadow-lg rounded-4">
+  <div class="card border-0 shadow-lg ">
       <div class="card-body text-center pb-5"> {{-- Tambah padding-bottom --}}
 
           {{-- HEADER --}}
@@ -15,7 +15,7 @@
           </div>
 
           {{-- RINGKASAN --}}
-          <div class="pt-60px pb-60px mb-4 rounded-4" style="background-color: #e8f3ff">
+          <div class="pt-60px pb-60px mb-4 " style="background-color: #e8f3ff">
             <div class="row">
 
               <div class="col-md-3 text-center mb-3 mb-md-0">

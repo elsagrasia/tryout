@@ -401,13 +401,9 @@ body {
   background-color: #3E5B99 !important; }
 
 .bg-gradient {
-  /*background: #00d2ff;  !* fallback for old browsers *!
-  background: -webkit-linear-gradient(to right, #928DAB, #00d2ff);  !* Chrome 10-25, Safari 5.1-6 *!
-  background: linear-gradient(to right, #928DAB, #00d2ff); !* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ *!*/
-  background: -moz-linear-gradient(-45deg, #008cff 0%, #f58585 100%);
-  background: -webkit-linear-gradient(-45deg, #008cff 0%, #f58585 100%);
-  background: linear-gradient(135deg, #008cff 0%, #f58585 100%); }
-
+ background: #bbdefa;
+background: radial-gradient(circle, rgba(187, 222, 250, 1) 0%, rgba(228, 231, 242, 1) 100%);
+}
 .bg-radial-gradient-gray {
   background: #f6f6f6 !important;
   background: radial-gradient(circle, #f6f6f6 0%, white 88%) !important; }
@@ -5326,7 +5322,9 @@ div.datedropper .picker .pick-lg-b li {
   -moz-transition: all 0.5s;
   -ms-transition: all 0.5s;
   -o-transition: all 0.5s;
-  transition: all 0.5s; }
+  transition: all 0.5s; 
+    padding-top: 6px !important;
+    padding-bottom: 6px !important;}
   @media (max-width: 1440px) {
     .header-menu-content {
       padding-left: 0 !important;
@@ -5396,23 +5394,29 @@ div.datedropper .picker .pick-lg-b li {
 /*====== logo-box =======*/
 /* Logo box */
 .logo-box {
+  display: -webkit-flex;
+  display: -ms-flex;
   display: flex;
+  -ms-flex-align: center;
   align-items: center;
-  justify-content: flex-start; /* rapatkan ke kiri */
-}
-
-.menu-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 15px; /* jarak antar elemen kanan */
+  position: relative; 
 }
 
 /* Kalau pakai media query sebelumnya, ganti di sini juga */
 @media (max-width: 1199px) {
   .logo-box {
-    justify-content: flex-start; /* jangan space-between */
-  }
-}
+          -ms-flex-pack: justify;
+      justify-content: space-between; } }
+  .logo-box .logo {
+    display: inline-block; }
+
+
+  @media (max-width: 1199px) {
+    .logo--box {
+      display: -webkit-flex;
+      display: -ms-flex;
+      display: flex; } }
+
 
 
 
@@ -6366,8 +6370,16 @@ div.datedropper .picker .pick-lg-b li {
       right: 0; } }
 
 /*-=========== hero-bg ==========-*/
+
 .hero-bg-1 {
-  background-image: url("../images/slider-img1.jpg"); }
+    background: url('/upload/img.jpg') no-repeat right bottom/contain,
+                linear-gradient(135deg, #0d3d6f, #0b568f);
+    background-size: contain;
+    background-position: right bottom;
+}
+
+
+
 
 .hero-bg-2 {
   background-image: url("../images/slider-img2.jpg"); }
@@ -7902,6 +7914,128 @@ html {
   scroll-behavior: smooth;
 }
 
+    .point-toast {
+        position: fixed;
+        right: 20px;
+        bottom: 20px;
+        max-width: 320px;
+        background: #ffffff;
+        border-radius: 14px;
+        box-shadow: 0 12px 30px rgba(15, 23, 42, 0.2);
+        padding: 12px 16px;
+        display: flex;
+        align-items: flex-start;
+        z-index: 9999;
+        border-left: 4px solid #f59e0b;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.25s ease, transform 0.25s ease;
+        font-size: 14px;
+    }
+
+    .point-toast.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .point-toast-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 999px;
+        background: rgba(245, 158, 11, 0.12);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 10px;
+        flex-shrink: 0;
+    }
+
+    .point-toast-icon i {
+        font-size: 20px;
+        color: #f59e0b;
+    }
+
+    .point-toast-body {
+        flex: 1;
+    }
+
+    .point-toast-title {
+        font-weight: 700;
+        font-size: 14px;
+        margin-bottom: 2px;
+        color: #111827;
+    }
+
+    .point-toast-text {
+        font-size: 13px;
+        color: #4b5563;
+        line-height: 1.4;
+    }
+
+    .point-toast-text span {
+        font-weight: 700;
+        color: #f59e0b;
+    }
+
+    .point-toast-close {
+        background: transparent;
+        border: none;
+        color: #9ca3af;
+        font-size: 16px;
+        line-height: 1;
+        margin-left: 6px;
+        cursor: pointer;
+        padding: 0;
+    }
+
+    .point-toast-close:hover {
+        color: #4b5563;
+    }
+
+    /* Sembunyikan elemennya ketika d-none */
+    .point-toast.d-none {
+        display: none;
+    }
+
+/* SPARKLE AREA — tidak mempengaruhi ukuran toast */
+.sparkle-container {
+    position: absolute;
+    inset: 0;
+    overflow: visible;
+    pointer-events: none;
+}
+
+/* Titik kecil emas */
+.sparkle {
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    background: #fbbf24;
+    border-radius: 50%;
+    opacity: 0;
+    transform: scale(0);
+    animation: sparkle-pop 1.2s ease-out forwards;
+}
+
+/* Animasi sparkle */
+@keyframes sparkle-pop {
+    0% {
+        opacity: 0;
+        transform: scale(0) translateY(0);
+    }
+    30% {
+        opacity: 1;
+        transform: scale(1) translateY(-6px);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.3) translateY(-20px);
+    }
+}
+
+#tryout {
+    scroll-margin-top: 120px; /* Sesuaikan tinggi header */
+}
 
 
   

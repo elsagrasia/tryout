@@ -56,7 +56,7 @@
                             </td>
                             <td>
        <a href="{{ route('badges.edit',$item->id) }}" class="btn btn-info" title="Edit"><i class="lni lni-eraser"></i></a>   
-       <a href="{{ route('points.rules.delete',$item->id) }}" class="btn btn-danger delete-btn" title="Delete"><i class="lni lni-trash"></i></a>                    
+       <a href="{{ route('badges.delete',$item->id) }}" class="btn btn-danger delete-btn" title="Delete"><i class="lni lni-trash"></i></a>                    
                             </td>
                         </tr>
                         @endforeach
