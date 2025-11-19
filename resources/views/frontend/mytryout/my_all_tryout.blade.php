@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-12">
 
-            <div class="card border-0 shadow-sm  p-4" style="background-color: #f8fcff;">
+            <div class="card border-0 shadow-sm  p-4 tryout-container" style="background-color: #e8f2ff;">
                 
                 <div class="dashboard-heading mb-4">
                     <h3 class="fs-22 fw-semibold">Tryout</h3>

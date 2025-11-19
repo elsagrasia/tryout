@@ -1,13 +1,9 @@
-
 <header class="header-menu-area">
     <div class="header-menu-content  pr-30px pl-30px bg-white shadow-sm">
         <div class="container-fluid">
             <div class="main-menu-content">
                 <div class="row align-items-center">
                     <div class="col-lg-12">
-
-
-                    
 
                         <div class="menu-wrapper">                      
                             <div class="nav-right-button d-flex align-items-center">
