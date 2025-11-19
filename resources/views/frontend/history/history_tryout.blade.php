@@ -1,12 +1,13 @@
 @extends('frontend.dashboard.user_dashboard')
 @section('userdashboard')
 
-<div class="container-fluid mt-4 mb-5">
+<div class="container-fluid">
     <div class="row justify-content-center">
-        <div class="col-lg-10">
+        <!-- Menggunakan col-12 untuk membuat card luar penuh lebar -->
+        <div class="col-12">
 
             {{-- Card besar agar rapi dan sejajar sidebar --}}
-            <div class="card border-0 shadow-sm rounded-4 p-4" style="background-color: #f8fcff;">
+            <div class="card border-0 shadow-sm p-4" style="background-color: #f8fcff;">
                 
                 {{-- Judul --}}
                 <div class="mb-4">
@@ -18,7 +19,6 @@
                         <i class="la la-folder-open fs-40 mb-3 d-block"></i>
                         <p>Belum ada riwayat tryout.</p>
                     </div>
-
                 @else
                     <div class="list-group">
                         @foreach ($histories as $history)
@@ -34,7 +34,7 @@
                             @endphp
 
                             <div class="list-group-item mb-2 d-flex justify-content-between align-items-center border rounded shadow-sm">
-                                
+                                    
                                 {{-- Kiri --}}
                                 <div class="d-flex align-items-center">
                                     <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center"

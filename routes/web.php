@@ -110,7 +110,7 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
         Route::patch('/admin/badge/{id}/toggle', 'toggleBadge')->name('badge.toggle');
         Route::get('/badges/edit/{id}', 'editBadge')->name('badges.edit');
         Route::post('/badges/update', 'updateBadge')->name('badges.update');
-        // Route::get('/badges/delete/{id}', 'deleteBadge')->name('badges.delete');
+        Route::get('/badges/delete/{id}', 'deleteBadge')->name('badges.delete');
 
         
         // Route::get('/user/points', 'userPoints')->name('user.points');

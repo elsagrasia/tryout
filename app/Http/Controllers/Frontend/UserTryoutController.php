@@ -186,146 +186,163 @@ public function saveProgress(Request $request, $id)
     return view('frontend.mytryout.confirmation', compact('tryout'));
 }
 
-    public function SubmitTryout(Request $request, $id)
-    {
-        $user_id = Auth::id();
-        $tryout_package_id = $request->tryout_package_id ?? $id;
-        $answers = $request->answers ?? [];
+public function SubmitTryout(Request $request, $id)
+{
+    $user_id = Auth::id();
+    $tryout_package_id = $request->tryout_package_id ?? $id;
+    $answers = $request->answers ?? [];
 
-        if (is_string($answers)) {
-            $decoded = json_decode($answers, true);
-            $answers = is_array($decoded) ? $decoded : [];
-        }
-
-        // 🔹 Tambahan: doubts
-        $doubts = $request->doubts ?? [];
-        if (is_string($doubts)) {
-            $decodedDoubts = json_decode($doubts, true);
-            $doubts = is_array($decodedDoubts) ? $decodedDoubts : [];
-        }
-
-
-
-        $package   = TryoutPackage::with('questions')->findOrFail($tryout_package_id);
-        $questions = $package->questions;
-
-        $correct = 0; $wrong = 0; $unanswered = 0; $doubtCount = 0;
-
-foreach ($questions as $q) {
-    $qid = $q->id;
-
-    // cek apakah soal ini ditandai ragu
-    $is_doubt = !empty($doubts[$qid]); // true/false
-
-    if (!array_key_exists($qid, $answers) || $answers[$qid] === null || $answers[$qid] === '') {
-        $unanswered++;
-        $selected_option = null;
-        $is_correct = false;
-    } else {
-        $selected_option = strtoupper($answers[$qid]);
-        $is_correct = $selected_option === strtoupper($q->correct_option);
-        $is_correct ? $correct++ : $wrong++;
+    if (is_string($answers)) {
+        $decoded = json_decode($answers, true);
+        $answers = is_array($decoded) ? $decoded : [];
     }
 
-    // kalau soal ini punya jawaban & ditandai ragu → naikkan doubtCount
-    if ($selected_option !== null && $is_doubt) {
-        $doubtCount++;
+    // 🔹 Tambahan: doubts
+    $doubts = $request->doubts ?? [];
+    if (is_string($doubts)) {
+        $decodedDoubts = json_decode($doubts, true);
+        $doubts = is_array($decodedDoubts) ? $decodedDoubts : [];
     }
 
-    UserAnswer::updateOrCreate(
-        [
-            'user_id'           => $user_id,
-            'tryout_package_id' => $tryout_package_id,
-            'question_id'       => $qid,
-        ],
-        [
-            'selected_option' => $selected_option,
-            'is_correct'      => $is_correct,
-            'is_doubt'        => $is_doubt,   // 🔹 simpan ke DB
-        ]
-    );
-}
+    $package = TryoutPackage::with('questions')->findOrFail($tryout_package_id);
+    $questions = $package->questions;
+    
+    $correct = 0; 
+    $wrong = 0; 
+    $unanswered = 0; 
+    $doubtCount = 0;
 
+    foreach ($questions as $q) {
+        $qid = $q->id;
 
+        // cek apakah soal ini ditandai ragu
+        $is_doubt = !empty($doubts[$qid]); // true/false
 
-        $total_questions = $questions->count();
-        $score = $total_questions > 0 ? round(($correct / $total_questions) * 100, 2) : 0;
-        $elapsed_time = (int) $request->input('elapsed_time', 0);
+        if (!array_key_exists($qid, $answers) || $answers[$qid] === null || $answers[$qid] === '') {
+            $unanswered++;
+            $selected_option = null;
+            $is_correct = false;
+        } else {
+            $selected_option = strtoupper($answers[$qid]);
+            $is_correct = $selected_option === strtoupper($q->correct_option);
+            $is_correct ? $correct++ : $wrong++;
+        }
 
-        // Simpan/Update hasil
-        $result = ResultTryout::firstOrNew([
-            'user_id' => $user_id,
-            'tryout_package_id' => $tryout_package_id,
+        // Menyimpan jawaban ke database
+        UserAnswer::updateOrCreate(
+            ['user_id' => $user_id, 'tryout_package_id' => $tryout_package_id, 'question_id' => $qid],
+            ['selected_option' => $selected_option, 'is_correct' => $is_correct, 'is_doubt' => $is_doubt]
+        );
+
+        // Jika soal ini ditandai ragu, tambah jumlah jawaban ragu
+        if ($is_doubt) {
+            $doubtCount++;
+        }
+    }
+
+    $total_questions = $questions->count();
+    $score = $total_questions > 0 ? round(($correct / $total_questions) * 100, 2) : 0;
+    $elapsed_time = (int) $request->input('elapsed_time', 0);
+
+    // Simpan/Update hasil
+    $result = ResultTryout::firstOrNew([
+        'user_id' => $user_id,
+        'tryout_package_id' => $tryout_package_id,
+    ]);
+    $result->total_questions = $total_questions;
+    $result->correct_answers = $correct;
+    $result->wrong_answers = $wrong;
+    $result->unanswered = $unanswered;
+    $result->doubt_answers = $doubtCount;
+    $result->score = $score;
+    $result->elapsed_time = $elapsed_time;
+    $result->finished_at = now();
+    $result->save();
+
+    // ====== POIN (opsional, contoh singkat) ======
+    $rule = Point::where('activity', 'Menyelesaikan 1 Tryout')->where('status', 'active')->first();
+    if ($rule) {
+        UserPoint::create([
+            'user_id' => $user_id, 'point_rule_id' => $rule->id, 'activity' => $rule->activity, 'points' => $rule->points,
         ]);
-        $result->total_questions = $total_questions;
-        $result->correct_answers = $correct;
-        $result->wrong_answers   = $wrong;
-        $result->unanswered      = $unanswered;
-        $result->doubt_answers   = $doubtCount;
-        $result->score           = $score;
-        $result->elapsed_time    = $elapsed_time;
-        $result->finished_at     = now();
-        $result->save();
+        Auth::user()->increment('total_points', $rule->points);
+    }
 
-        // ====== POIN (opsional, contoh singkat) ======
-        $rule = Point::where('activity','Menyelesaikan 1 Tryout')->where('status','active')->first();
-        if ($rule) {
-            UserPoint::create([
-                'user_id'=>$user_id,'point_rule_id'=>$rule->id,'activity'=>$rule->activity,'points'=>$rule->points,
-            ]);
-            Auth::user()->increment('total_points', $rule->points);
-        }
-        // Bonus per jawaban benar (konfigurasi via config/points.php -> per_correct)
-        $perCorrect   = config('points.per_correct', 5);
-        $bonusPoints  = $correct * $perCorrect;
-        if ($bonusPoints > 0) {
-            UserPoint::create([
-                'user_id'=>$user_id,'point_rule_id'=>null,'activity'=>'Bonus Jawaban Benar','points'=>$bonusPoints,
-            ]);
-            Auth::user()->increment('total_points', $bonusPoints);
-        }
+    // Bonus per jawaban benar
+    $perCorrect = config('points.per_correct', 5);
+    $bonusPoints = $correct * $perCorrect;
+    if ($bonusPoints > 0) {
+        UserPoint::create([
+            'user_id' => $user_id, 'point_rule_id' => null, 'activity' => 'Bonus Jawaban Benar', 'points' => $bonusPoints,
+        ]);
+        Auth::user()->increment('total_points', $bonusPoints);
+    }
 
-        $completedTryouts = ResultTryout::where('user_id', $user_id)->count();
-        $badges = Badge::where('type', 'tryout')->where('status', 'active')->orderBy('threshold')->get();
+    // --- Cek Konsisten Unggul (Pemberian Badge) ---
+    $completedTryouts = ResultTryout::where('user_id', $user_id)->count();
+    $badges = Badge::where('type', 'tryout')->where('status', 'active')->orderBy('threshold')->get();
+    $newlyEarned = [];
 
-        $newlyEarned = [];
+    // Pengecekan untuk badge Konsisten Unggul jika sudah menyelesaikan 5 tryout
+    if ($completedTryouts >= 5) {
+        // Hitung rata-rata nilai
+        $averageScore = ResultTryout::where('user_id', $user_id)->avg('score');
 
-        foreach ($badges as $badge) {
-            $already = UserBadge::where('user_id', $user_id)
-                ->where('badge_id', $badge->id)
-                ->exists();
-
-            if (!$already && $completedTryouts >= (int) $badge->threshold) {
-
+        // Cek jika rata-rata >= 85 untuk badge "Konsisten Unggul"
+        if ($averageScore >= 85) {
+            $badge = Badge::where('name', 'Konsisten Unggul')->first();
+            if ($badge) {
+                $newlyEarned[] = [
+                    'id' => $badge->id,
+                    'name' => $badge->name,
+                    'description' => $badge->description ?? 'Konsisten dalam tryout dengan rata-rata nilai lebih dari 85.',
+                    'icon' => $badge->icon
+                ];
                 UserBadge::create([
-                    'user_id'   => $user_id,
-                    'badge_id'  => $badge->id,
+                    'user_id' => $user_id,
+                    'badge_id' => $badge->id,
                     'earned_at' => now(),
                 ]);
-
-                // ICON SELALU LOKAL → LANGSUNG ASSET()
-                $newlyEarned[] = [
-                    'id'          => $badge->id,
-                    'name'        => $badge->name,
-                    'description' => $badge->description ?? '',
-                    'icon'        => $badge->icon,
-                ];
             }
         }
+    }
 
-        // reset sesi urutan soal
-        session()->forget('question_order_' . $tryout_package_id);
+    // Pemberian badge berdasarkan threshold lainnya (seperti Bronze, Silver, etc.)
+    foreach ($badges as $badge) {
+        $already = UserBadge::where('user_id', $user_id)
+            ->where('badge_id', $badge->id)
+            ->exists();
 
-        // Kirim data badge baru ke halaman hasil
-        return redirect()
-            ->route('user.tryout.result', $tryout_package_id)
-            ->with([
-                'message' => 'Tryout selesai! Nilai & poin berhasil ditambahkan.',
-                'alert-type' => 'success',
-                'earned_badges' => $newlyEarned,
+        if (!$already && $completedTryouts >= (int) $badge->threshold) {
+            UserBadge::create([
+                'user_id' => $user_id,
+                'badge_id' => $badge->id,
+                'earned_at' => now(),
             ]);
 
+            // ICON SELALU LOKAL → LANGSUNG ASSET()
+            $newlyEarned[] = [
+                'id' => $badge->id,
+                'name' => $badge->name,
+                'description' => $badge->description ?? '',
+                'icon' => $badge->icon,
+            ];
+        }
     }
+
+    // reset sesi urutan soal
+    session()->forget('question_order_' . $tryout_package_id);
+
+    // Kirim data badge baru ke halaman hasil
+    return redirect()
+        ->route('user.tryout.result', $tryout_package_id)
+        ->with([
+            'message' => 'Tryout selesai! Nilai & poin berhasil ditambahkan.',
+            'alert-type' => 'success',
+            'earned_badges' => $newlyEarned,
+        ]);
+}
+
 
     public function ResultTryout($id)
     {
