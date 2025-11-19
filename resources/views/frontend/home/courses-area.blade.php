@@ -87,11 +87,11 @@
                                                 <span class="me-3"><i class="bi bi-clock"></i> {{ $package->duration }} min</span>
                                                 <span><i class="bi bi-question-circle"></i> {{ $package->questions()->count() }} soal</span>
                                             </div>
-                                            <div class="mt-auto d-flex justify-content-between align-items-center">
+                                            {{-- <div class="mt-auto d-flex justify-content-between align-items-center">
                                                 <a href="#" class="btn theme-btn theme-btn-white w-100">Detail</a>
                                                 &nbsp;
                                                 <a href="{{ route('user.join.tryout', $package->id) }}" class="btn theme-btn w-100">Ikuti Tryout <i class="la la-arrow-right icon ml-1"></i></a>
-                                            </div>
+                                            </div> --}}
                                         </div>
                                     </div>
                                 </div>
@@ -110,9 +110,3 @@
         </div>
     </div>
 </section>
-
-
-
-
-
-
