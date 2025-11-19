@@ -48,7 +48,8 @@
     </div>
 
     {{-- CURRENT USER --}}
-    <div class="alert alert-info text-center shadow-sm mt-4">
+    <div class="alert alert-info text-center shadow-sm mt-4" 
+        style="border-radius: 15px !important;">
         <strong>Posisi Kamu:</strong> #{{ $currentRank }} dengan {{ $currentUser->total_points }} poin
     </div>
 
