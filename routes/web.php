@@ -69,10 +69,7 @@ Route::middleware('auth')->group(function () {
 
     });
 
-
     Route::get('/mytryout/history', [TryoutHistoryController::class, 'index'])->middleware('auth')->name('tryout.history');
-    
-
 
 });
 

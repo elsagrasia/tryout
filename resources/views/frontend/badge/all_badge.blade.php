@@ -1,8 +1,8 @@
 @extends('frontend.dashboard.user_dashboard')
 @section('userdashboard')
 
-<div class="containe-fluid">
-    <div class="card border-0 shadow-sm p-4" style="background-color: #f8fcff;">
+<div class="container-fluid">
+    <div class="card border-0 shadow-sm p-4 tryout-container" style="background-color: #e8f2ff;">
     <h4 class="fw-bold mb-4">Badges Kamu</h4>
         <div class="row">
             
@@ -46,23 +46,6 @@
     </div>
 </div>
 
-<style>
-/* Badge dimiliki: outline biru muda sangat tipis */
-.badge-owned {
-background: #cbe7f5;
-background: radial-gradient(circle, rgba(203, 231, 245, 1) 0%, rgba(245, 251, 255, 1) 100%);
-    border: 1px solid #b3dfffff !important;  /* biru pastel lembut */
-    border-radius: 15px;
-    transition: 0.2s;
-}
 
-
-
-/* Badge belum dimiliki */
-.badge-locked {
-    opacity: 50;
-    border-radius: 15px;
-}
-</style>
 
 @endsection

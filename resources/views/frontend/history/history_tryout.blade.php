@@ -7,7 +7,7 @@
         <div class="col-12">
 
             {{-- Card besar agar rapi dan sejajar sidebar --}}
-            <div class="card border-0 shadow-sm p-4" style="background-color: #f8fcff;">
+            <div class="card border-0 shadow-sm p-4 tryout-container" style="background-color: #e8f2ff;">
                 
                 {{-- Judul --}}
                 <div class="mb-4">

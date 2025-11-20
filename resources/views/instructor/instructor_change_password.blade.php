@@ -18,12 +18,12 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="d-flex flex-column align-items-center text-center">
-    <img src="{{ (!empty($profileData->photo)) ? url('upload/instructor_images/'.$profileData->photo) : url('upload/no_image.jpg') }}" alt="Instructor" class="rounded-circle p-1 bg-primary" width="110"> 
-    <div class="mt-3">
-        <h4>{{ $profileData->name }}</h4>
-        <p class="text-secondary mb-1">{{ $profileData->username }}</p>
-        <p class="text-muted font-size-sm">{{ $profileData->email }}</p>       
-    </div>
+                                <img src="{{ (!empty($profileData->photo)) ? url('upload/instructor_images/'.$profileData->photo) : url('upload/no_image.jpg') }}" alt="Instructor" class="rounded-circle p-1 bg-primary" width="110"> 
+                                <div class="mt-3">
+                                    <h4>{{ $profileData->name }}</h4>
+                                    <p class="text-secondary mb-1">{{ $profileData->username }}</p>
+                                    <p class="text-muted font-size-sm">{{ $profileData->email }}</p>                      
+                                </div>
                             </div>
                           
                         </div>

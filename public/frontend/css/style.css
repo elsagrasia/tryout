@@ -3677,8 +3677,55 @@ div.datedropper .picker .pick-lg-b li {
     background-color: #d9f2ff !important;   /* hover */
 }
 
+.tryout-container {
+    border-radius: 25px !important;
+}
+
+/* tabel leaderboard */
+.table-responsive {
+  border-radius: 25px !important;
+  border: 1px solid #94b7fe !important; 
+}
+
+.generic-table thead th {
+    background-color: #e7e7e7 !important;   /* biru muda */
+    color: #003a75;                          /* teks biru gelap biar jelas */
+    border-bottom: 2px solid #c7dafc !important;
+    padding: 12px;
+}
+
+/* Warna latar putih untuk setiap baris */
+.generic-table tbody tr {
+    background-color: #ffffff !important;
+    border: 1px solid #e5e7eb !important;
+    border-radius: 10px;
+}
+
+/* Menghapus border default Bootstrap */
+.generic-table tbody tr td {
+    border-top: none !important;
+}
+
+.summary-wrapper {
+    border-bottom: 2px solid #7aabdf;   /* garis bawah tipis */
+    margin-bottom: 20px;                /* jarak ke bawah */
+}
 
 
+/* Badge dimiliki: outline biru muda sangat tipis */
+.badge-owned {
+background: #cbe7f5;
+background: radial-gradient(circle, rgba(203, 231, 245, 1) 0%, rgba(245, 251, 255, 1) 100%);
+    border: 1px solid #b3dfffff !important;  /* biru pastel lembut */
+    border-radius: 15px;
+    transition: 0.2s;
+}
+
+/* Badge belum dimiliki */
+.badge-locked {
+    opacity: 50;
+    border-radius: 15px;
+}
 
 /*===== dot-bg =====*/
 .dot-bg {
