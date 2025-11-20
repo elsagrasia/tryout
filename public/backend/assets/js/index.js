@@ -1,7 +1,6 @@
 $(function() {
     "use strict";
 
-	
 // chart 1 (instructor dashboard)
 
   var ctx = document.getElementById("chart1").getContext('2d');

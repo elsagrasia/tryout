@@ -59,19 +59,20 @@ class TryoutPackageController extends Controller
             'tryout_name' => 'required',
         ]);
 
-        $id = Auth::user()->id;
+        // Cari category berdasarkan nama tryout
+        $category = Category::whereRaw(
+            'LOWER(category_name) LIKE ?', 
+            ['%' . strtolower($request->tryout_name) . '%']
+        )->first();
 
-        // Cek apakah ada kategori dengan nama mirip dengan nama tryout
-        $category = Category::whereRaw('LOWER(category_name) LIKE ?', ['%' . strtolower($request->tryout_name) . '%'])->first();
-
-        // Kalau ada, ambil id, kalau tidak biarkan null
         $categoryId = $category ? $category->id : null;
 
         TryoutPackage::insert([
             'tryout_name' => $request->tryout_name,
             'description' => $request->description,
             'instructor_id' => Auth::user()->id,
-            'duration' => $request->duration,          
+            'duration' => $request->duration,
+            'category_id' => $categoryId,    // ⬅ WAJIB TAMBAH INI
             'total_questions' => 0,
             'status' => 'draft',
             'created_at' => Carbon::now(),
@@ -84,6 +85,7 @@ class TryoutPackageController extends Controller
 
         return redirect()->route('all.tryout.packages')->with($notification);
     }
+
 
 
     public function editTryoutPackage($id) {
