@@ -10,6 +10,8 @@ use App\Models\UserTryout;
 use App\Models\TryoutPackage;
 use App\Models\Question;
 use App\Models\ResultTryout;
+use App\Models\Category;
+use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
 class InstructorController extends Controller
@@ -18,35 +20,90 @@ class InstructorController extends Controller
     {
         $instructorId = Auth::id();
 
-        // Total Peserta yang mengikuti Tryout instruktur ini
-        $totalPeserta = UserTryout::whereIn('tryout_package_id', function($query) use ($instructorId) {
-            $query->select('id')
-                ->from('tryout_packages')
-                ->where('instructor_id', $instructorId);
-        })->distinct('user_id')->count('user_id');
+        // =========================
+        // 1. STATISTIK UMUM
+        // =========================
 
-        // Total Tryout yang dibuat oleh instruktur
+        // Total Peserta yang mengikuti tryout milik instruktur
+        $totalPeserta = UserTryout::whereIn('tryout_package_id', function($query) use ($instructorId) {
+                $query->select('id')
+                    ->from('tryout_packages')
+                    ->where('instructor_id', $instructorId);
+            })
+            ->distinct('user_id')
+            ->count('user_id');
+
+        // Total Tryout yang dibuat instruktur
         $totalTryout = TryoutPackage::where('instructor_id', $instructorId)->count();
 
-        // Total Soal dari semua Tryout milik instruktur
-        $totalSoal = \DB::table('questions')
+        // Total Soal di semua paket tryout instruktur
+        $totalSoal = DB::table('questions')
             ->leftJoin('package_question', 'questions.id', '=', 'package_question.question_id')
             ->leftJoin('tryout_packages', 'package_question.tryout_package_id', '=', 'tryout_packages.id')
             ->where('tryout_packages.instructor_id', $instructorId)
-            ->orWhereNull('tryout_packages.instructor_id') // biar soal tanpa paket ikut
+            ->orWhereNull('tryout_packages.instructor_id')
             ->distinct('questions.id')
             ->count('questions.id');
 
-        // Hitung rata-rata nilai peserta di tryout instruktur
+        // Rata-rata nilai peserta (semua peserta & semua paket instruktur)
         $rataRataNilai = ResultTryout::whereIn('tryout_package_id', function($query) use ($instructorId) {
-            $query->select('id')
-                ->from('tryout_packages')
-                ->where('instructor_id', $instructorId);
-        })->avg('score') ?? 0;
+                $query->select('id')
+                    ->from('tryout_packages')
+                    ->where('instructor_id', $instructorId);
+            })
+            ->avg('score') ?? 0;
 
         $rataRataNilai = round($rataRataNilai, 2);
 
-        return view('instructor.index', compact('totalTryout', 'totalSoal', 'totalPeserta', 'rataRataNilai'));
+        // =========================
+        // 2. RATA-RATA PER BIDANG
+        // =========================
+
+        // Ambil kategori yang memang dipakai di soal-soal paket instruktur
+        $categoryIds = Question::join('package_question', 'questions.id', '=', 'package_question.question_id')
+            ->join('tryout_packages', 'package_question.tryout_package_id', '=', 'tryout_packages.id')
+            ->where('tryout_packages.instructor_id', $instructorId)
+            ->select('questions.category_id')
+            ->distinct()
+            ->pluck('questions.category_id');
+
+        $categoryScores = [];
+
+        foreach ($categoryIds as $categoryId) {
+
+            // Nama kategori
+            $categoryName = Category::where('id', $categoryId)->value('category_name') ?? 'Tanpa Kategori';
+
+            // Rata-rata skor untuk kategori tersebut
+            $avgScore = ResultTryout::whereIn('tryout_package_id', function($query) use ($instructorId) {
+                    $query->select('id')
+                        ->from('tryout_packages')
+                        ->where('instructor_id', $instructorId);
+                })
+                ->whereHas('tryoutPackage.questions', function ($q) use ($categoryId) {
+                    $q->where('category_id', $categoryId);
+                })
+                ->avg('score') ?? 0;
+
+            $categoryScores[$categoryName] = round($avgScore, 2);
+        }
+
+        // Data untuk ChartJS
+        $chartLabels = array_keys($categoryScores);   // nama bidang
+        $chartData   = array_values($categoryScores); // rata-rata persen
+
+        // =========================
+        // 3. KIRIM KE VIEW
+        // =========================
+
+        return view('instructor.index', compact(
+            'totalTryout',
+            'totalSoal',
+            'totalPeserta',
+            'rataRataNilai',
+            'chartLabels',
+            'chartData'
+        ));
     }
 
 
@@ -58,7 +115,7 @@ class InstructorController extends Controller
         $request->session()->regenerateToken();
 
         $notification = array(
-            'message' => 'Logout Successfully',
+            'message' => 'Logout Berhasil',
             'alert-type' => 'info'
         );
 
@@ -97,7 +154,7 @@ class InstructorController extends Controller
         $profileData->save();
 
         $notification = array(
-            'message' => 'Instructor Profile Updated Successfully',
+            'message' => 'Profil Instruktur Berhasil Diperbarui',
             'alert-type' => 'success'
         );
         return back()->with($notification);
@@ -128,7 +185,7 @@ class InstructorController extends Controller
             'password' => Hash::make($request->new_password)
         ]);
         $notification = array(
-            'message' => 'Password Change Successfully',
+            'message' => 'Password Instruktur Berhasil Diubah',
             'alert-type' => 'success'
         );
         return redirect()->back()->with($notification);

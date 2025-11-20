@@ -40,7 +40,7 @@ class UserController extends Controller
         }
         $data->save();
         $notification = array(
-            'message' => 'User Profile Updated Successfully',
+            'message' => 'Profil Pengguna Berhasil Diperbarui',
             'alert-type' => 'success'
         );
         return redirect()->back()->with($notification);
@@ -54,7 +54,7 @@ class UserController extends Controller
         $request->session()->regenerateToken();
 
         $notification = array(
-            'message' => 'Logout Successfully',
+            'message' => 'Logout Berhasil',
             'alert-type' => 'info'
         );
 
@@ -88,7 +88,7 @@ class UserController extends Controller
             'password' => Hash::make($request->new_password)
         ]);
         $notification = array(
-            'message' => 'Password Change Successfully',
+            'message' => 'Password Berhasil Diubah',
             'alert-type' => 'success'
         );
         return redirect()->back()->with($notification);

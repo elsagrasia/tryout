@@ -6,7 +6,7 @@
                         <img class="rounded-full" src="{{ (!empty($profileData->photo)) ? url('upload/user_images/'.$profileData->photo) : url('upload/no_image.jpg') }}" alt="Student thumbnail image">
                     </div>
                     <div class="media-body">
-                        <h2 class="section__title fs-30">Hello, {{ $profileData->name }}</h2>
+                        <h2 class="section__title fs-30">Halo, {{ $profileData->name }}</h2>
                        
                     </div><!-- end media-body -->
                 </div><!-- end media -->
@@ -25,22 +25,22 @@
                             <div class="media-body">
                                 <div class="file-upload-wrap file-upload-wrap-2">
                                     <input type="file" name="photo" class="multi file-upload-input with-preview" multiple>
-                                    <span class="file-upload-text"><i class="la la-photo mr-2"></i>Upload a Photo</span>
+                                    <span class="file-upload-text"><i class="la la-photo mr-2"></i>Unggah Foto</span>
                                 </div><!-- file-upload-wrap -->
-                                <p class="fs-14">Max file size is 5MB, Minimum dimension: 200x200 And Suitable files are .jpg & .png</p>
+                                <p class="fs-14">Ukuran file maksimum adalah 5MB, dimensi minimum: 200x200 dan file yang sesuai adalah .jpg & .png</p>
                                 
                             </div>
                         </div><!-- end media -->
                        
                             <div class="input-box col-lg-6">
-                                <label class="label-text">Name</label>
+                                <label class="label-text">Nama</label>
                                 <div class="form-group">
                                     <input class="form-control form--control" type="text" name="name" value="{{ $profileData->name }}">
                                     <span class="la la-user input-icon"></span>
                                 </div>
                             </div><!-- end input-box -->
                             <div class="input-box col-lg-6">
-                                <label class="label-text">User Name</label>
+                                <label class="label-text">Nama Pengguna</label>
                                 <div class="form-group">
                                     <input class="form-control form--control" type="text" name="username" value="{{ $profileData->username }}">
                                     <span class="la la-user input-icon"></span>
@@ -56,7 +56,7 @@
      
                           
                             <div class="input-box col-lg-6">
-                                <label class="label-text">Phone</label>
+                                <label class="label-text">No. Telepon</label>
                                 <div class="form-group">
                                     <input class="form-control form--control" type="text" name="phone" value="{{ $profileData->phone }}">
                                     <span class="la la-user input-icon"></span>
@@ -65,7 +65,7 @@
      
                                                       
                             <div class="input-box col-lg-6">
-                                <label class="label-text">Address</label>
+                                <label class="label-text">Alamat</label>
                                 <div class="form-group">
                                     <input class="form-control form--control" type="text" name="address" value="{{ $profileData->address }}">
                                     <span class="la la-user input-icon"></span>
@@ -74,7 +74,7 @@
      
                            
                             <div class="input-box col-lg-12 py-2">
-                                <button class="btn theme-btn">Save Changes</button>
+                                <button class="btn theme-btn">Simpan</button>
                             </div><!-- end input-box -->
                         </form>
                     </div><!-- end setting-body -->

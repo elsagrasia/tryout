@@ -20,7 +20,7 @@
                     <div class="col-lg-2">
                         <div class="logo-box">
                             <a href="{{ url('/') }}" class="logo">
-                                <img src="{{ asset('upload/logo/logo.jpg') }}" alt="logo" style="height: 40px; width: auto;">
+                                <img src="{{ asset('upload/logo/logo.png') }}" alt="logo" style="height: 40px; width: auto;">
                             </a>
                             <div class="user-btn-action">
                                 <div class="off-canvas-menu-toggle main-menu-toggle icon-element icon-element-sm shadow-sm"
@@ -37,8 +37,7 @@
                             <nav class="main-menu">
                                 <ul>
                                     <li><a href="#tryout">Tryout </a></li>
-                                    <li><a href="#blog">Blog </a></li>
-                                    <li><a href="#">Kontak </a></li>
+                                    <li><a href="#blog">Blog </a></li>                                 
                                 </ul><!-- end ul -->
                             </nav><!-- end main-menu -->
 

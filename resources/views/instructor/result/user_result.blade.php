@@ -3,24 +3,13 @@
 @section('instructor')
 <div class="page-content">
     <!--breadcrumb-->
-    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-        <div class="ps-3">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mb-0 p-0">
-                    <li class="breadcrumb-item">
-                        <a href="javascript:;"><i class="bx bx-home-alt"></i></a>
-                    </li>
-                    <li class="breadcrumb-item">
-                        <a href="javascript:;">Hasil Tryout</a>
-                    </li>                    
-                    <li class="breadcrumb-item">
-                        <a href="">Peserta</a>
-                    </li>                    
-					<li class="breadcrumb-item active" aria-current="page">Detail</li>
-                </ol>
-            </nav>
-        </div>		
-    </div>
+<div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+    <div class="ps-3">
+        </div>
+   
+        <a href="{{ route('packages.view.results', ['package' => $result->first()->tryout_package_id]) }}" class="btn btn-outline-primary px-3">Kembali</a>
+ 
+</div>
     <!--end breadcrumb-->
 				
     <div class="card">

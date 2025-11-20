@@ -32,7 +32,7 @@ class BlogController extends Controller
     ]);
 
     $notification = array(
-        'message' => 'BlogCategory Inserted Successfully',
+        'message' => 'Kategori Blog Berhasil Ditambahkan',   
         'alert-type' => 'success'
     );
     return redirect()->back()->with($notification);
@@ -56,7 +56,7 @@ class BlogController extends Controller
     ]);
 
     $notification = array(
-        'message' => 'BlogCategory Updated Successfully',
+        'message' => 'Kategori Blog Berhasil Diperbarui',
         'alert-type' => 'success'
     );
     return redirect()->back()->with($notification);
@@ -69,7 +69,7 @@ class BlogController extends Controller
     BlogCategory::find($id)->delete();
 
     $notification = array(
-        'message' => 'BlogCategory Deleted Successfully',
+        'message' => 'Kategori Blog Berhasil Dihapus',
         'alert-type' => 'success'
     );
     return redirect()->back()->with($notification);
@@ -111,7 +111,7 @@ class BlogController extends Controller
     ]);
 
     $notification = array(
-        'message' => 'Blog Post Inserted Successfully',
+        'message' => 'Blog Post Berhasil Ditambahkan',
         'alert-type' => 'success'
     );
     return redirect()->route('blog.post')->with($notification);  
@@ -149,7 +149,7 @@ class BlogController extends Controller
         ]);
     
         $notification = array(
-            'message' => 'Blog Post Updated Successfully',
+            'message' => 'Blog Post Berhasil Diperbarui',
             'alert-type' => 'success'
         );
         return redirect()->route('blog.post')->with($notification);  
@@ -166,7 +166,7 @@ class BlogController extends Controller
         ]);
     
         $notification = array(
-            'message' => 'Blog Post Updated Successfully',
+            'message' => 'Blog Post Berhasil Diperbarui',
             'alert-type' => 'success'
         );
         return redirect()->route('blog.post')->with($notification);  
@@ -184,7 +184,7 @@ class BlogController extends Controller
         BlogPost::find($id)->delete();
 
             $notification = array(
-                'message' => 'Blog Post Deleted Successfully',
+                'message' => 'Blog Post Berhasil Dihapus',
                 'alert-type' => 'success'
             );
             return redirect()->back()->with($notification);

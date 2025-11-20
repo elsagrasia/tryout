@@ -15,8 +15,7 @@ Register Page | Easy Learning
                 <h2 class="section__title text-white">Sign Up</h2>
             </div>
             <ul class="generic-list-item generic-list-item-white generic-list-item-arrow d-flex flex-wrap align-items-center">
-                <li><a href="index.html">Home</a></li>
-                <li>Pages</li>
+                <li><a href="{{ route('index') }}">Home</a></li>                
                 <li>Sign Up</li>
             </ul>
         </div><!-- end breadcrumb-content -->

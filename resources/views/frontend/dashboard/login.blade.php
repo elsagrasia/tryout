@@ -15,8 +15,7 @@ Login Page | Easy Learning
                 <h2 class="section__title text-white">Login</h2>
             </div>
             <ul class="generic-list-item generic-list-item-white generic-list-item-arrow d-flex flex-wrap align-items-center">
-                <li><a href="index.html">Home</a></li>
-                <li>Pages</li>
+                <li><a href="{{ route('index') }}">Home</a></li>                
                 <li>Login</li>
             </ul>
         </div><!-- end breadcrumb-content -->
@@ -48,7 +47,7 @@ Login Page | Easy Learning
             <div class="input-box">
                 <label class="label-text">Email</label>
                 <div class="form-group">
-                    <input class="form-control form--control" id="email" type="email" name="email" placeholder="Email or Username">
+                    <input class="form-control form--control" id="email" type="email" name="email" placeholder="Email">
                     <span class="la la-user input-icon"></span>
                 </div>
             </div><!-- end input-box -->
@@ -66,14 +65,8 @@ Login Page | Easy Learning
                 </div>
             </div><!-- end input-box -->
             <div class="btn-box">
-                <div class="d-flex align-items-center justify-content-between pb-4">
-                    <div class="custom-control custom-checkbox fs-15">
-                        <input type="checkbox" class="custom-control-input" id="rememberMeCheckbox" required>
-                        <label class="custom-control-label custom--control-label" for="rememberMeCheckbox">Remember Me</label>
-                    </div><!-- end custom-control -->
-                    <a href="recover.html" class="btn-text">Lupa password?</a>
-                </div>
-                <button class="btn theme-btn" type="submit">Login Account <i class="la la-arrow-right icon ml-1"></i></button>                
+                
+                <button class="btn theme-btn" type="submit">Login <i class="la la-arrow-right icon ml-1"></i></button>                
             </div><!-- end btn-box -->
         </form>
                     </div><!-- end card-body -->

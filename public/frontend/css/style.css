@@ -401,8 +401,8 @@ body {
   background-color: #3E5B99 !important; }
 
 .bg-gradient {
- background: #bbdefa;
-background: radial-gradient(circle, rgba(187, 222, 250, 1) 0%, rgba(228, 231, 242, 1) 100%);
+background: #ddeaf0;
+background: radial-gradient(circle, rgba(221, 234, 240, 1) 0%, rgba(245, 251, 255, 1) 100%);
 }
 .bg-radial-gradient-gray {
   background: #f6f6f6 !important;
@@ -7914,88 +7914,100 @@ html {
   scroll-behavior: smooth;
 }
 
-    .point-toast {
-        position: fixed;
-        right: 20px;
-        bottom: 20px;
-        max-width: 320px;
-        background: #ffffff;
-        border-radius: 14px;
-        box-shadow: 0 12px 30px rgba(15, 23, 42, 0.2);
-        padding: 12px 16px;
-        display: flex;
-        align-items: flex-start;
-        z-index: 9999;
-        border-left: 4px solid #f59e0b;
-        opacity: 0;
-        transform: translateY(20px);
-        transition: opacity 0.25s ease, transform 0.25s ease;
-        font-size: 14px;
-    }
+.point-toast {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    /* --- PERUBAHAN DI SINI --- */
+    max-width: 380px; /* Diperbesar dari 320px menjadi 380px */
+    padding: 16px 20px; /* Menambah padding agar konten punya lebih banyak ruang */
+    /* --- AKHIR PERUBAHAN --- */
+    background: #ffffff;
+    border-radius: 14px;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.2);
+    display: flex;
+    align-items: flex-start;
+    z-index: 9999;
+    border-left: 4px solid #f59e0b;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    /* font-size ini akan di-override oleh child elements, jadi tidak terlalu berpengaruh di sini */
+    font-size: 14px; 
+}
 
-    .point-toast.show {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.point-toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
 
-    .point-toast-icon {
-        width: 36px;
-        height: 36px;
-        border-radius: 999px;
-        background: rgba(245, 158, 11, 0.12);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-right: 10px;
-        flex-shrink: 0;
-    }
+.point-toast-icon {
+    /* --- PERUBAHAN DI SINI --- */
+    width: 44px; /* Ikon lebih besar */
+    height: 44px; /* Ikon lebih besar */
+    margin-right: 12px; /* Menambah jarak sedikit dari teks */
+    /* --- AKHIR PERUBAHAN --- */
+    border-radius: 999px;
+    background: rgba(245, 158, 11, 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
 
-    .point-toast-icon i {
-        font-size: 20px;
-        color: #f59e0b;
-    }
+.point-toast-icon i {
+    /* --- PERUBAHAN DI SINI --- */
+    font-size: 24px; /* Ukuran ikon di dalamnya diperbesar */
+    /* --- AKHIR PERUBAHAN --- */
+    color: #f59e0b;
+}
 
-    .point-toast-body {
-        flex: 1;
-    }
+.point-toast-body {
+    flex: 1;
+}
 
-    .point-toast-title {
-        font-weight: 700;
-        font-size: 14px;
-        margin-bottom: 2px;
-        color: #111827;
-    }
+.point-toast-title {
+    font-weight: 700;
+    /* --- PERUBAHAN DI SINI --- */
+    font-size: 16px; /* Judul lebih besar */
+    margin-bottom: 4px; /* Menambah jarak dari teks body */
+    /* --- AKHIR PERUBAHAN --- */
+    color: #111827;
+}
 
-    .point-toast-text {
-        font-size: 13px;
-        color: #4b5563;
-        line-height: 1.4;
-    }
+.point-toast-text {
+    /* --- PERUBAHAN DI SINI --- */
+    font-size: 14px; /* Teks body lebih besar */
+    /* --- AKHIR PERUBAHAN --- */
+    color: #4b5563;
+    line-height: 1.4;
+}
 
-    .point-toast-text span {
-        font-weight: 700;
-        color: #f59e0b;
-    }
+.point-toast-text span {
+    font-weight: 700;
+    color: #f59e0b;
+}
 
-    .point-toast-close {
-        background: transparent;
-        border: none;
-        color: #9ca3af;
-        font-size: 16px;
-        line-height: 1;
-        margin-left: 6px;
-        cursor: pointer;
-        padding: 0;
-    }
+.point-toast-close {
+    background: transparent;
+    border: none;
+    color: #9ca3af;
+    /* --- PERUBAHAN DI SINI --- */
+    font-size: 18px; /* Tombol close lebih besar */
+    margin-left: 8px; /* Menambah jarak dari teks */
+    /* --- AKHIR PERUBAHAN --- */
+    line-height: 1;
+    cursor: pointer;
+    padding: 0;
+}
 
-    .point-toast-close:hover {
-        color: #4b5563;
-    }
+.point-toast-close:hover {
+    color: #4b5563;
+}
 
-    /* Sembunyikan elemennya ketika d-none */
-    .point-toast.d-none {
-        display: none;
-    }
+.point-toast.d-none {
+    display: none;
+}
 
 /* SPARKLE AREA — tidak mempengaruhi ukuran toast */
 .sparkle-container {

@@ -9,6 +9,12 @@
             <img src="{{ !empty($topThree[1]->photo) ? url('upload/user_images/' . $topThree[1]->photo) : url('upload/no_image.jpg') }}"
                  class="rounded-circle" width="80" height="80" alt="{{ $topThree[1]->name }}">
             <h3 class="info__title theme-font-2 font-weight-bold fs-20 lh-28">{{ $topThree[1]->name }}</h3>
+               @foreach($topThree[1]->badges as $badge)
+                    <img src="{{ asset($badge->icon ?? 'upload/badges/default.png') }}"
+                        alt="{{ $badge->name }}"
+                        title="{{ $badge->name }}"
+                        style="width: 30px; height: 30px;">
+                @endforeach              
             <p class="info__text">Peringkat #{{ $topThree[1]->rank }}</p>
             <p class="info__text text-primary font-weight-bold">{{ $topThree[1]->total_points }} Poin</p>
         </div>
@@ -22,6 +28,12 @@
             <img src="{{ !empty($topThree[0]->photo) ? url('upload/user_images/' . $topThree[0]->photo) : url('upload/no_image.jpg') }}"
                  class="rounded-circle" width="90" height="90" alt="{{ $topThree[0]->name }}">
             <h3 class="info__title theme-font-2 font-weight-bold fs-22 lh-28">{{ $topThree[0]->name }}</h3>
+                            @foreach($topThree[0]->badges as $badge)
+                                <img src="{{ asset($badge->icon ?? 'upload/badges/default.png') }}"
+                                    alt="{{ $badge->name }}"
+                                    title="{{ $badge->name }}"
+                                    style="width: 30px; height: 30px;">
+                            @endforeach
             <p class="info__text">Peringkat #{{ $topThree[0]->rank }}</p>
             <p class="info__text text-primary font-weight-bold">{{ $topThree[0]->total_points }} Poin</p>
         </div>
@@ -35,6 +47,12 @@
             <img src="{{ !empty($topThree[2]->photo) ? url('upload/user_images/' . $topThree[2]->photo) : url('upload/no_image.jpg') }}"
                  class="rounded-circle" width="80" height="80" alt="{{ $topThree[2]->name }}">
             <h3 class="info__title theme-font-2 font-weight-bold fs-20 lh-28">{{ $topThree[2]->name }}</h3>
+                            @foreach($topThree[2]->badges as $badge)
+                                <img src="{{ asset($badge->icon ?? 'upload/badges/default.png') }}"
+                                    alt="{{ $badge->name }}"
+                                    title="{{ $badge->name }}"
+                                    style="width: 30px; height: 30px;">
+                            @endforeach
             <p class="info__text">Peringkat #{{ $topThree[2]->rank }}</p>
             <p class="info__text text-primary font-weight-bold">{{ $topThree[2]->total_points }} Poin</p>
         </div>

@@ -30,7 +30,7 @@
         {{-- Tryout Performance --}}
         <h5 class="d-flex align-items-center mb-4" style="color:#000; font-weight:600;">
             <i class="bi bi-bar-chart-line me-2" style="color:#1f8b4c; font-size:20px;"></i>
-            Tryout Performance
+            Performa Tryout
         </h5>
 
 

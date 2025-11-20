@@ -50,7 +50,7 @@
 									</div>
 									<div class="text-center mb-4">
 										<h5 class="">Instructor Login</h5>
-										<p class="mb-0">Please log in to your account</p>
+										<p class="mb-0">Silakan Login Akun Anda</p>
 									</div>
 									<div class="form-body">
        
@@ -67,26 +67,21 @@
             <div class="col-12">
                 <label for="inputChoosePassword" class="form-label">Password</label>
                 <div class="input-group" id="show_hide_password">
-                    <input type="password" id="password" name="password" class="form-control border-end-0 @error('password') is-invalid @enderror" placeholder="Enter Password"> <a href="javascript:;" class="input-group-text bg-transparent"><i class="bx bx-hide"></i></a>
+                    <input type="password" id="password" name="password" class="form-control border-end-0 @error('password') is-invalid @enderror" placeholder="Password"> <a href="javascript:;" class="input-group-text bg-transparent"><i class="bx bx-hide"></i></a>
                     @error('password')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
             </div>
-
-       
-            <div class="col-md-6 nav-right-button d-flex align-items-center">
-				
-				<a href="authentication-forgot-password.html">Forgot Password ?</a>
-            </div>
+          
             <div class="col-12">
                 <div class="d-grid">
-                    <button type="submit" class="btn btn-primary">Sign in</button>
+                    <button type="submit" class="btn btn-primary">Masuk</button>
                 </div>
             </div>
             <div class="col-12">
                 <div class="text-center ">
-                    <p class="mb-0">Don't have an account yet? <a href="authentication-signup.html">Sign up here</a>
+                    <p class="mb-0">Belum punya akun? <a href="authentication-signup.html">Daftar di sini</a>
                     </p>
                 </div>
             </div>

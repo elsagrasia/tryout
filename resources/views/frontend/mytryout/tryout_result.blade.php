@@ -11,23 +11,20 @@
 
     if ($score >= 80) {
         $message = [
-            "Keren banget! Pertahankan!",
-            "Mantul. Gas terus!",
+            "Keren banget! Pertahankan!",           
             "Good job. Keep going."
         ];
         $color = '#28a745';
     } elseif ($score >= 60) {
         $message = [
-            "Cukup bagus, tetap semangat!",
-            "Lumayan oke, masih bisa lebih baik.",
+            "Cukup bagus, tetap semangat!",           
             "Yuk bisa yuk, tingkatkan lagi."
         ];
         $color = '#fd7e14';
     } else {
         $message = [
             "Gapapa, ini bagian dari proses.",
-            "Tetap semangat ya!",
-            "Belajar lebih lagi oke?"
+            "Tetap semangat ya!",           
         ];
         $color = '#dc3545';
     }
@@ -201,7 +198,7 @@
         color: '#1f2937',
         background: '#fff url("{{ asset('upload/gif/background.jpg') }}") center center / cover no-repeat',
         backdrop: `
-          linear-gradient(rgba(0,0,0,.35), rgba(0,0,0,.35)),
+          linear-gradient(rgba(0,0,0,.6), rgba(0,0,0,.6)),
           url("{{ asset('upload/gif/confetti-left.gif') }}") left top / 40% auto no-repeat,
           url("{{ asset('upload/gif/confetti-right.gif') }}") right bottom / 40% auto no-repeat
         `,

@@ -34,7 +34,7 @@ class AdminController extends Controller
         $request->session()->regenerateToken();
 
         $notification = array(
-            'message' => 'Logout Successfully',
+            'message' => 'Logout Berhasil',
             'alert-type' => 'info'
         );
  
@@ -73,7 +73,7 @@ class AdminController extends Controller
         $profileData->save();
 
         $notification = array(
-            'message' => 'Admin Profile Updated Successfully',
+            'message' => 'Profil Admin Berhasil Diperbarui',
             'alert-type' => 'success'
         );
         return back()->with($notification);
@@ -104,7 +104,7 @@ class AdminController extends Controller
             'password' => Hash::make($request->new_password)
         ]);
         $notification = array(
-            'message' => 'Admin Password Change Successfully',
+            'message' => 'Password Admin Berhasil Diubah',
             'alert-type' => 'success'
         );
         return redirect()->back()->with($notification);
@@ -132,7 +132,7 @@ class AdminController extends Controller
         ]);
 
         $notification = array(
-            'message' => 'Instructor Registered Successfully',
+            'message' => 'Instruktur Berhasil Terdaftar',
             'alert-type' => 'success'
         );
         return redirect()->route('instructor.login')->with($notification);
@@ -153,36 +153,10 @@ class AdminController extends Controller
             $user->save();
         }
 
-        return response()->json(['message' => 'User Status updated successfully.']);
+        return response()->json(['message' => 'Status Pengguna berhasil diperbarui.']);
     } //end method
 
-    public function adminAllCourse(){
-                $course = Course::latest()->get();
-        return view('admin.backend.courses.all_course',compact('course'));
-
-    }// End Method
-    
-    public function updateCourseStatus(Request $request){
-
-        $courseId = $request->input('course_id');
-        $isChecked = $request->input('is_checked',0);
-
-        $course = Course::find($courseId);
-        if ($course) {
-            $course->status = $isChecked;
-            $course->save();
-        }
-
-        return response()->json(['message' => 'Course Status Updated Successfully']);
-
-    }// End Method
-
-    public function adminCourseDetails($id){
-
-        $course = Course::find($id);
-        return view('admin.backend.courses.course_details',compact('course'));
-
-    }// End Method
+ 
 
   /// Admin User All Method ////////////
 
@@ -221,7 +195,7 @@ class AdminController extends Controller
         }
 
         $notification = array(
-            'message' => 'New Admin Inserted Successfully',
+            'message' => 'Admin Baru Berhasil Ditambahkan',
             'alert-type' => 'success'
         );
         return redirect()->route('all.admin')->with($notification); 
@@ -256,7 +230,7 @@ class AdminController extends Controller
         }
 
         $notification = array(
-            'message' => 'Admin Updated Successfully',
+            'message' => 'Admin Berhasil Diperbarui',
             'alert-type' => 'success'
         );
         return redirect()->route('all.admin')->with($notification); 
@@ -272,7 +246,7 @@ class AdminController extends Controller
         }
 
         $notification = array(
-            'message' => 'Admin Deleted Successfully',
+            'message' => 'Admin Berhasil Dihapus',
             'alert-type' => 'success'
         );
         return redirect()->back()->with($notification); 

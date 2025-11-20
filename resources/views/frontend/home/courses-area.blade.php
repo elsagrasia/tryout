@@ -53,9 +53,7 @@
                                             <span class="mr-1"><i class="las la-clock"></i> {{ $package->duration }} min</span>
                                             <span><i class="las la-question-circle"></i> {{ $package->questions()->count() }} soal</span>
                                         </div>
-                                        <div class="mt-auto d-flex justify-content-between align-items-center">
-                                            <a href="#" class="btn theme-btn theme-btn-white w-100">Detail</a>
-                                            &nbsp;
+                                        <div class="mt-auto d-flex justify-content-between align-items-center">                                    
                                             <a href="{{ route('user.join.tryout', $package->id) }}" class="btn theme-btn w-100">Ikuti Tryout <i class="la la-arrow-right icon ml-1"></i></a>
                                         </div>
                                     </div>

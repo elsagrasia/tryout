@@ -86,7 +86,7 @@
 <script src="{{ asset('frontend/js/jquery.lazy.min.js')}}"></script>
 <script src="{{ asset('frontend/js/main.js')}}"></script>
 
-<script>stye
+<script>
     var player = new Plyr('#player');
 </script>
 
