@@ -115,7 +115,7 @@ class InstructorController extends Controller
         $request->session()->regenerateToken();
 
         $notification = array(
-            'message' => 'Logout Berhasil',
+            'message' => 'Anda berhasil keluar.',
             'alert-type' => 'info'
         );
 
@@ -185,7 +185,7 @@ class InstructorController extends Controller
             'password' => Hash::make($request->new_password)
         ]);
         $notification = array(
-            'message' => 'Password Instruktur Berhasil Diubah',
+            'message' => 'Kata Sandi Berhasil Diubah',
             'alert-type' => 'success'
         );
         return redirect()->back()->with($notification);

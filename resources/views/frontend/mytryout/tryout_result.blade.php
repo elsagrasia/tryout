@@ -163,6 +163,23 @@
     </table>
 </div>
 
+{{-- TOAST NOTIFIKASI POIN TRYOUT --}}
+<div id="point-toast" class="point-toast d-none">
+    <div class="sparkle-container"></div>
+
+    <div class="point-toast-icon">
+        <i class="la la-coins"></i>
+    </div>
+    <div class="point-toast-body">
+        <div class="point-toast-title">Tryout Selesai!</div>
+        <div class="point-toast-text">
+            Selamat kamu mendapatkan <span id="point-toast-amount">+0</span> poin dari tryout ini 🎉
+        </div>
+    </div>
+
+    <button type="button" class="point-toast-close">&times;</button>
+</div>
+
 {{-- BADGE POPUP --}}
 @if (session()->has('earned_badges'))
 <script>
@@ -210,6 +227,100 @@
       });
     }
   })();
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    // Ambil poin dari session (dari redirect controller)
+    const pointsEarned = @json(session('points_earned'));
+
+    // Kalau tidak ada poin, tidak perlu tampilkan toast
+    if (!pointsEarned || pointsEarned <= 0) {
+        return;
+    }
+
+    // ========== SPARKLE (sama seperti di blog) ==========
+    function spawnSparkles() {
+        const container = document.querySelector('.sparkle-container');
+        if (!container) return;
+
+        for (let i = 0; i < 4; i++) {
+            const s = document.createElement('div');
+            s.classList.add('sparkle');
+
+            s.style.left = (10 + Math.random() * 200) + 'px';
+            s.style.top  = (5 + Math.random() * 40) + 'px';
+            s.style.animationDelay = (Math.random() * 0.3) + 's';
+
+            container.appendChild(s);
+            setTimeout(() => s.remove(), 1500);
+        }
+    }
+
+    let sparkleInterval = null;
+
+    function startSparkleLoop() {
+        if (sparkleInterval) return;
+        sparkleInterval = setInterval(() => {
+            const toast = document.getElementById('point-toast');
+            if (!toast || toast.classList.contains('d-none')) {
+                clearInterval(sparkleInterval);
+                sparkleInterval = null;
+                return;
+            }
+            spawnSparkles();
+        }, 1200);
+    }
+
+    function stopSparkleLoop() {
+        if (sparkleInterval) {
+            clearInterval(sparkleInterval);
+            sparkleInterval = null;
+        }
+    }
+
+    // ========== TOAST ==========
+    function showPointToast(points) {
+        const toast      = document.getElementById('point-toast');
+        const amountSpan = document.getElementById('point-toast-amount');
+        const closeBtn   = toast.querySelector('.point-toast-close');
+
+        if (!toast || !amountSpan) return;
+
+        amountSpan.textContent = `+${points}`;
+
+        toast.classList.remove('d-none');
+        requestAnimationFrame(() => {
+            toast.classList.add('show');
+        });
+
+        spawnSparkles();
+        startSparkleLoop();
+
+        const hideTimer = setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => {
+                toast.classList.add('d-none');
+                stopSparkleLoop();
+            }, 250);
+        }, 8000);
+
+        if (closeBtn) {
+            closeBtn.onclick = function () {
+                clearTimeout(hideTimer);
+                toast.classList.remove('show');
+                setTimeout(() => {
+                    toast.classList.add('d-none');
+                    stopSparkleLoop();
+                }, 250);
+            };
+        }
+    }
+
+    // Langsung tampilkan toast setelah halaman result dimuat
+    showPointToast(pointsEarned);
+});
+
+
 </script>
 @endif
 

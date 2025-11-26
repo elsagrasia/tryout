@@ -1,36 +1,36 @@
 @extends('frontend.master')
 @section('home')
 @section('title')
-{{ $blog->post_title  }} | Easy Learning
+{{ $blog->post_title  }} | ukom.aja
 @endsection
 
 <!-- ================================
-    START BREADCRUMB AREA
+    AREA JEJAK HALAMAN (BREADCRUMB)
 ================================= -->
 <section class="breadcrumb-area pt-80px pb-80px pattern-bg">
     <div class="container">
         <div class="breadcrumb-content">
             <div class="section-heading pb-3">
-                <h2 class="section__title"> {{ $blog->post_title  }}</h2>
+                <h2 class="section__title">{{ $blog->post_title }}</h2>
             </div>
             <ul class="generic-list-item generic-list-item-arrow d-flex flex-wrap align-items-center">
-                <li><a href="{{ route('index') }}">Home</a></li>
-                <li><a href="{{route('blog')}}">Blog</a></li>
-                <li>{{ $blog->post_title  }}</li>
+                <li><a href="{{ route('index') }}">Beranda</a></li>
+                <li><a href="{{ route('blog') }}">Blog</a></li>
+                <li>{{ $blog->post_title }}</li>
             </ul>
             <ul class="generic-list-item generic-list-item-bullet generic-list-item--bullet d-flex align-items-center flex-wrap fs-14 pt-2">
-                <li class="d-flex align-items-center">ByAdmin</a></li>
-                <li class="d-flex align-items-center"> {{ $blog->created_at->format('M d Y') }} </li>
+                <li class="d-flex align-items-center">Oleh Admin</li>
+                <li class="d-flex align-items-center">{{ $blog->created_at->format('d M Y') }}</li>
             </ul>
         </div><!-- end breadcrumb-content -->
     </div><!-- end container -->
 </section><!-- end breadcrumb-area -->
 <!-- ================================
-    END BREADCRUMB AREA
+    AKHIR AREA JEJAK HALAMAN
 ================================= -->
 
 <!-- ================================
-       START BLOG AREA
+       AREA BLOG
 ================================= -->
 <section class="blog-area pt-100px pb-100px">
     <div class="container">
@@ -38,71 +38,69 @@
             <div class="col-lg-8 mb-5">
                 <div class="card card-item">
                     <div class="card-body">
-                        <p class="card-text pb-3"> {!! $blog->long_descp !!} </p>
-                       
-                     
-
-                      
+                        <img src="{{ asset($blog->post_image) }}" alt="Gambar artikel blog" class="img-fluid w-90">
+                        <p class="card-text pb-3">{!! $blog->long_descp !!}</p>
                     </div><!-- end card-body -->
                 </div><!-- end card -->
-             
             </div><!-- end col-lg-8 -->
+
             <div class="col-lg-4">
                 <div class="sidebar">
 
-
                     <div class="card card-item">
                         <div class="card-body">
-                            <h3 class="card-title fs-18 pb-2">Blog Category</h3>
+                            <h3 class="card-title fs-18 pb-2">Kategori Blog</h3>
                             <div class="divider"><span></span></div>
                             <ul class="generic-list-item">
                                 @foreach ($bcategory as $cat)
-                                <li><a href="{{ url('blog/cat/list/'.$cat->id) }}">{{ $cat->category_name }}</a></li>                                
-                                   
+                                    <li><a href="{{ url('blog/cat/list/'.$cat->id) }}">{{ $cat->category_name }}</a></li>
                                 @endforeach
-                                
                             </ul>
                         </div>
                     </div><!-- end card -->
+
                     <div class="card card-item">
                         <div class="card-body">
-                            <h3 class="card-title fs-18 pb-2">Recent Posts</h3>
+                            <h3 class="card-title fs-18 pb-2">Artikel Terbaru</h3>
                             <div class="divider"><span></span></div>
-                           
-                           @foreach ($post as $dpost)                            
-                            <div class="media media-card border-bottom border-bottom-gray pb-4 mb-4">
-                                <a href="{{ url('blog/details/'.$dpost->post_slug) }}" class="media-img">
-                                    <img class="mr-3" src="{{ asset($dpost->post_image) }}" alt="Related course image">
-                                </a>
-                                <div class="media-body">
-                                    <h5 class="fs-15"><a href="{{ url('blog/details/'.$dpost->post_slug) }}">{{ $dpost->post_title }}</a></h5>
-                                    <span class="d-block lh-18 py-1 fs-14">Admin </span> 
-                                </div>
-                            </div><!-- end media --> 
-                               
+
+                            @foreach ($post as $dpost)
+                                <div class="media media-card border-bottom border-bottom-gray pb-4 mb-4">
+                                    <a href="{{ url('blog/details/'.$dpost->post_slug) }}" class="media-img">
+                                        <img class="mr-3" src="{{ asset($dpost->post_image) }}" alt="Gambar artikel terkait">
+                                    </a>
+                                    <div class="media-body">
+                                        <h5 class="fs-15">
+                                            <a href="{{ url('blog/details/'.$dpost->post_slug) }}">
+                                                {{ $dpost->post_title }}
+                                            </a>
+                                        </h5>
+                                        <span class="d-block lh-18 py-1 fs-14">Admin</span>
+                                    </div>
+                                </div><!-- end media -->
                             @endforeach
 
                             <div class="view-all-course-btn-box">
-                                <a href="{{ route('blog')}}" class="btn theme-btn w-100">View All Posts <i class="la la-arrow-right icon ml-1"></i></a>
+                                <a href="{{ route('blog') }}" class="btn theme-btn w-100">
+                                    Lihat Semua Artikel<i class="la la-arrow-right icon ml-1"></i>
+                                </a>
                             </div>
                         </div>
                     </div><!-- end card -->
-             
 
-                    
                 </div><!-- end sidebar -->
             </div><!-- end col-lg-4 -->
         </div><!-- end row -->
     </div><!-- end container -->
 </section><!-- end blog-area -->
 <!-- ================================
-       START BLOG AREA
+       AKHIR AREA BLOG
 ================================= -->
 
 {{-- TOAST NOTIFIKASI POIN --}}
 <div id="point-toast" class="point-toast d-none">
-    <div class="sparkle-container"></div> <!-- SPARKS ONLY -->
-    
+    <div class="sparkle-container"></div>
+
     <div class="point-toast-icon">
         <i class="la la-coins"></i>
     </div>
@@ -116,17 +114,18 @@
     <button type="button" class="point-toast-close">&times;</button>
 </div>
 
-
-
 <script>
 document.addEventListener('DOMContentLoaded', function () {
+    // ⭐️ GANTI ID INI jika elemen HTML total poin Anda berbeda
+    const TOTAL_POINTS_ELEMENT_ID = 'user-total-points-display'; 
+    
     // Kalau user belum login, tidak usah kirim apa-apa
     @if(!Auth::check())
         return;
     @endif
 
     const blogId   = {{ $blog->id }};
-    const delayMs  = 10000; // 10 detik
+    const delayMs  = 9000; // 9 detik
     let hasSent    = false;
 
     // ========== SPARKLE ==========
@@ -144,14 +143,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
             container.appendChild(s);
 
-            setTimeout(() => s.remove(), 1500); // sampai animasi selesai
+            setTimeout(() => s.remove(), 1500);
         }
     }
 
     let sparkleInterval = null;
 
     function startSparkleLoop() {
-        if (sparkleInterval) return; // biar tidak duplikat
+        if (sparkleInterval) return;
         sparkleInterval = setInterval(() => {
             const toast = document.getElementById('point-toast');
             if (!toast || toast.classList.contains('d-none')) {
@@ -160,7 +159,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
             spawnSparkles();
-        }, 1200); // jeda antar sparkle (1.2 detik)
+        }, 1200);
     }
 
     function stopSparkleLoop() {
@@ -178,22 +177,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (!toast || !amountSpan) return;
 
-        // set angka poin
         amountSpan.textContent = `+${points}`;
 
-        // tampilkan toast
         toast.classList.remove('d-none');
 
-        // pakai requestAnimationFrame supaya transition kepicu
         requestAnimationFrame(() => {
             toast.classList.add('show');
         });
 
-        // mulai sparkles
         spawnSparkles();
         startSparkleLoop();
 
-        // auto hide setelah 5 detik
         const hideTimer = setTimeout(() => {
             toast.classList.remove('show');
             setTimeout(() => {
@@ -202,7 +196,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }, 250);
         }, 8000);
 
-        // kalau user klik tombol close
         if (closeBtn) {
             closeBtn.onclick = function () {
                 clearTimeout(hideTimer);
@@ -233,11 +226,21 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .then(res => res.json())
         .then(data => {
-            // Kalau backend mengembalikan points_added > 0, tampilkan toast
-            if (data && data.success && data.points_added && data.points_added > 0) {
-                showPointToast(data.points_added);
+            if (data && data.success) {
+                
+                // ⭐️ LOGIKA BARU UNTUK MEMPERBARUI POIN DI HEADER
+                if (data.total_points) {
+                    const totalPointsDisplay = document.getElementById(TOTAL_POINTS_ELEMENT_ID);
+                    if (totalPointsDisplay) {
+                        // Memperbarui nilai poin di header/dashboard
+                        totalPointsDisplay.textContent = data.total_points;
+                    }
+                }
+                
+                if (data.points_added && data.points_added > 0) {
+                    showPointToast(data.points_added);
+                }
             }
-            // kalau "Already counted", ya diam saja
         })
         .catch(err => {
             console.error(err);
@@ -248,7 +251,5 @@ document.addEventListener('DOMContentLoaded', function () {
     setTimeout(sendReadPing, delayMs);
 });
 </script>
-
-
 
 @endsection

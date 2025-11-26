@@ -71,6 +71,7 @@ class TryoutPackageController extends Controller
             'tryout_name' => $request->tryout_name,
             'description' => $request->description,
             'instructor_id' => Auth::user()->id,
+            'category_id' => $categoryId,
             'duration' => $request->duration,          
             'total_questions' => 0,
             'status' => 'draft',

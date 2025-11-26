@@ -10,10 +10,10 @@
                       
                        
                             <div class="input-box col-lg-12">
-                                <label class="label-text">Password Lama</label>
+                                <label class="label-text">Kata Sandi Lama</label>
                                 <div class="form-group">
                                     <input class="form-control form--control form-control @error('old_password') is-invalid @enderror" type="password" name="old_password" id=
-                                    "old_password" placeholder="Old Password">
+                                    "old_password" placeholder="Kata Sandi Lama">
                                     @error('old_password')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -22,10 +22,10 @@
                             </div><!-- end input-box -->
 
                             <div class="input-box col-lg-12">
-                                <label class="label-text">Password Baru</label>
+                                <label class="label-text">Kata Sandi Baru</label>
                                 <div class="form-group">
                                     <input class="form-control form--control form-control @error('new_password') is-invalid @enderror" type="password" name="new_password" id=
-                                    "new_password" placeholder="New Password">
+                                    "new_password" placeholder="Kata Sandi Baru">
                                     @error('new_password')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -34,10 +34,10 @@
                             </div><!-- end input-box -->
 
                             <div class="input-box col-lg-12">
-                                <label class="label-text">Konfirmasi Password Baru</label>
+                                <label class="label-text">Konfirmasi Kata Sandi Baru</label>
                                 <div class="form-group">
                                     <input class="form-control form--control form-control" type="password" name="new_password_confirmation" id="
-                                    new_password_confirmation" placeholder="Konfirmasi Password Baru">
+                                    new_password_confirmation" placeholder="Konfirmasi Kata Sandi Baru">
                                     <span class="la la-user input-icon"></span>
                                 </div>
                             </div><!-- end input-box -->

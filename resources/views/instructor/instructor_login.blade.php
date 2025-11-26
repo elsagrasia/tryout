@@ -21,7 +21,7 @@
 	<link href="{{ asset('backend/assets/css/app.css') }}" rel="stylesheet">
 	<link href="{{ asset('backend/assets/css/icons.css') }}" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" >
-	<title>Instructor Login</title>
+	<title>Instructor</title>
 </head>
 
 <body class="">
@@ -45,12 +45,10 @@
 						<div class="card rounded-0 m-3 shadow-none bg-transparent mb-0">
 							<div class="card-body p-sm-5">
 								<div class="">
-									<div class="mb-3 text-center">
-										<img src="{{ asset('backend/assets/images/logo-icon.png') }}" width="60" alt="">
-									</div>
+								
 									<div class="text-center mb-4">
-										<h5 class="">Instructor Login</h5>
-										<p class="mb-0">Silakan Login Akun Anda</p>
+										<h5 class="">Instructor</h5>
+										<p class="mb-0">Silakan Masuk Akun Anda</p>
 									</div>
 									<div class="form-body">
        
@@ -65,9 +63,9 @@
                 @enderror
             </div>
             <div class="col-12">
-                <label for="inputChoosePassword" class="form-label">Password</label>
+                <label for="inputChoosePassword" class="form-label">Kata Sandi</label>
                 <div class="input-group" id="show_hide_password">
-                    <input type="password" id="password" name="password" class="form-control border-end-0 @error('password') is-invalid @enderror" placeholder="Password"> <a href="javascript:;" class="input-group-text bg-transparent"><i class="bx bx-hide"></i></a>
+                    <input type="password" id="password" name="password" class="form-control border-end-0 @error('password') is-invalid @enderror" placeholder="Kata Sandi"> <a href="javascript:;" class="input-group-text bg-transparent"><i class="bx bx-hide"></i></a>
                     @error('password')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror

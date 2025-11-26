@@ -25,38 +25,31 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
+        
         $request->authenticate();
         
         $request->session()->regenerate();
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]
-        ,
-        [
-            'email.required' => 'Please Enter Your Email',
-            'email.email' => 'Please Enter Valid Email',
-            'password.required' => 'Please Enter Your Password',
-        ]);
         
-       $notification = array(
-            'message' => 'Login Berhasil!',
+        $notification = array(
+            'message' => 'Anda berhasil masuk.',
             'alert-type' => 'success'
         );
         
+        // ... (Logika Redirect berdasarkan role) ...
         $url = '';
         if ($request->user()->role === 'admin') {
             $url = 'admin/dashboard';
         } elseif ($request->user()->role === 'instructor') {
             $url = 'instructor/dashboard';
         } elseif ($request->user()->role === 'student') {
-            $url = 'dashboard';
+            // Asumsi 'index' adalah named route yang benar, misalnya untuk homepage ('/')
+            $url = route('index'); 
         }
 
-        return redirect()->intended($url)->with($notification);
-        dd($request->user()->role);
-    }
 
+
+        return redirect()->intended($url)->with($notification);
+    }
     /**
      * Destroy an authenticated session.
      */

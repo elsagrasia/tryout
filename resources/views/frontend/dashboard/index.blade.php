@@ -110,23 +110,7 @@
     </div>
 
     </div>
-    <div class="card shadow-sm p-3 mt-4" style="
-    border-radius: 14px;
-    background: #eef7ff;
-    border-left: 5px solid #3b82f6;">
-    <div class="d-flex align-items-center">
-        <div class="me-3">
-            <i class="la la-bullseye text-primary" style="font-size: 32px;"></i>
-        </div>
-        <div>
-            <h6 class="fw-bold text-primary mb-1">Rekomendasi Belajar</h6>
-            <p class="mb-0 text-dark" style="font-size: 14px;">
-                Bidang <strong>Ginjal</strong> masih bisa diperkuat.  
-                Yuk fokus latihan soal Ginjal minggu ini!
-            </p>
-        </div>
-    </div>
-</div>
+
 
 </div>
 

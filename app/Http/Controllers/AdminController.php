@@ -34,7 +34,7 @@ class AdminController extends Controller
         $request->session()->regenerateToken();
 
         $notification = array(
-            'message' => 'Logout Berhasil',
+            'message' => 'Anda berhasil keluar.',
             'alert-type' => 'info'
         );
  

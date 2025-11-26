@@ -26,6 +26,7 @@ Author Email:   contact@techydevs.com
         var testimonialCarouselThree = $('.testimonial-carousel-3');
         var clientLogoCarousel = $('.client-logo-carousel');
         var blogPostCarousel = $('.blog-post-carousel');
+        var tryoutCarousel = $('.tryout-carousel');
         var selectContainerSelect = $('.select-container-select');
         var cardPreview = $('.card-preview');
         var userTextEditor = $('.user-text-editor');
@@ -380,6 +381,20 @@ Author Email:   contact@techydevs.com
                         items: 5
                     }
                 }
+            });
+        }
+        /*==== Tryout carousel =====*/
+        if ($(tryoutCarousel).length) {
+            $(tryoutCarousel).owlCarousel({
+                items: 1,
+                loop: true,
+                margin: 20,
+                nav: true,
+                dots: false,
+                autoplay: false,                
+                smartSpeed: 500,
+                navText: ["<i class='la la-arrow-left'></i>", "<i class='la la-arrow-right'></i>"],
+                
             });
         }
         /*==== blog-post-carousel =====*/
@@ -791,3 +806,4 @@ Author Email:   contact@techydevs.com
 
     });
 })(jQuery);
+

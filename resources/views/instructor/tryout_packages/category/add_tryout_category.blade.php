@@ -3,7 +3,11 @@
 
 <div class="page-content">
   <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+
     <div >
+          <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">        
+        <a href="{{ route('all.tryout.packages') }}" class="btn btn-outline-primary px-3">Kembali</a>
+    </div>
       <h5 class="mb-1">Kelola Paket — {{ $package->tryout_name ?? 'Tryout' }}</h5>
       <div class="text-muted">
         Durasi: {{ $package->duration ?? '-' }} menit • Status: {{ isset($package->status) ? ucfirst($package->status) : '-' }}
@@ -74,7 +78,7 @@
       @csrf
       <div class="modal-header">
         <h5 class="modal-title">Tambah Pertanyaan</h5>
-        <button class="btn-close" data-bs-dismiss="modal"></button>
+        
       </div>
 
       <div class="modal-body">

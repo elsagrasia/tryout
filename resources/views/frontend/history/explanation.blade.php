@@ -211,7 +211,7 @@
                                 @endif
 
                                 {{-- Teks pertanyaan --}}
-                                <p class="pt-2 font-weight-semi-bold">
+                                <p class="pt-2">
                                     {!! nl2br(e($result['question'] ?? '-')) !!}
                                 </p>
 
@@ -239,7 +239,7 @@
                                                         <i class="la la-times"></i>
                                                     </span>
                                                 @else
-                                                    <span class="icon-element icon-element-xs mr-2 border border-gray text-dark">
+                                                    <span class="icon-element icon-element-xs mr-2 border border-gray text-black">
                                                         {{ strtoupper($opt) }}
                                                     </span>
                                                 @endif
@@ -254,9 +254,9 @@
 
                                 {{-- Jawaban Benar --}}
                                 @if(strtolower($result['user_answer']) !== strtolower($result['correct_option']))
-                                    <p class="pt-2 mb-4">
+                                    <p class="pt-2 mb-4 text-black">
                                         Jawaban Benar:
-                                        <span class="text-black font-weight-bold">
+                                        <span class="text-black font-weight-black">
                                             {{ strtoupper($result['correct_option']) }}.
                                             {{ $result['options'][strtolower($result['correct_option'])] ?? '-' }}
                                         </span>
@@ -265,8 +265,8 @@
 
                                 {{-- Pembahasan --}}
                                 @if(!empty($result['explanation']))
-                                    <div class="text-black card mb-4 shadow-sm border-0 font-weight-bold p-3">
-                                        <p class="mb-2">Pembahasan:</p>
+                                    <div class="text-black card mb-4 shadow-sm border-0  p-3">
+                                        <p class="mb-2  font-weight-black">Pembahasan:</p>
                                         <p>{!! $result['explanation'] !!}</p>
                                     </div>
                                 @endif

@@ -36,8 +36,14 @@
                         <div class="menu-wrapper pt-20px pb-20px ">
                             <nav class="main-menu">
                                 <ul>
+                                    @auth
                                     <li><a href="#tryout">Tryout </a></li>
-                                    <li><a href="#blog">Blog </a></li>                                 
+                                    <li><a href="#blog">Blog </a></li>      
+                                    <li><a href="{{ route('user.dashboard') }}">Dashboard </a></li>     
+                                    @else
+                                    <li><a href="#tryout">Tryout </a></li>
+                                    <li><a href="#blog">Blog </a></li>      
+                                    @endauth                      
                                 </ul><!-- end ul -->
                             </nav><!-- end main-menu -->
 
@@ -53,7 +59,7 @@
                                  @if(Auth::check())
                                 <div class="user-points d-flex align-items-center mr-3 border rounded px-3 py-1 bg-light pr-4" style="gap:6px;">
                                     <i class="la la-coins text-warning fs-18"></i>
-                                    <span class="fw-bold text-dark" style="font-size: 15px;">
+                                    <span id="user-total-points-display" class="fw-bold text-dark" title="Total Poin" style="font-size: 15px;">
                                         {{ Auth::user()->total_points ?? 0 }}
                                     </span>
                                 </div>
@@ -91,13 +97,7 @@
                                                 </li>
 
                                                 <li>
-                                                    <ul class="generic-list-item">
-                                                        <li>
-                                                            <a href="{{ route('user.dashboard') }}">
-                                                                <i class="la la-sign-in mr-1"></i> Dashboard
-                                                            </a>
-                                                        </li>
-                                                        <li><div class="section-block"></div></li>
+                                                    <ul class="generic-list-item">                                                       
                                                         <li>
                                                             <a href="{{ route('user.profile') }}">
                                                                 <i class="la la-user mr-1"></i> Profil Saya
@@ -105,13 +105,13 @@
                                                         </li>
                                                         <li>
                                                             <a href="{{ route('user.change.password') }}">
-                                                                <i class="la la-edit mr-1"></i> Ubah Password
+                                                                <i class="la la-edit mr-1"></i> Ubah Kata Sandi
                                                             </a>
                                                         </li>
                                                         <li><div class="section-block"></div></li>
                                                         <li>
                                                             <a href="{{ route('user.logout') }}">
-                                                                <i class="la la-power-off mr-1"></i> Logout
+                                                                <i class="la la-power-off mr-1"></i> Keluar
                                                             </a>
                                                         </li>
                                                     </ul>
@@ -126,12 +126,12 @@
                                     <ul class="generic-list-item">
                                         <li>
                                             <a href="{{ route('login') }}" class="btn theme-btn theme-btn-sm lh-26 theme-btn-transparent mr-2">
-                                                <i class="la la-sign-in mr-1"></i> Login
+                                                <i class="la la-sign-in mr-1"></i> Masuk
                                             </a>
                                         </li>
                                         <li>
                                             <a href="{{ route('register') }}" class="btn theme-btn theme-btn-sm lh-26 text-white">
-                                                <i class="la la-user-plus mr-1"></i> Register
+                                                <i class="la la-user-plus mr-1"></i> Daftar
                                             </a>
                                         </li>
                                     </ul>

@@ -6,7 +6,10 @@
 <div class="page-content">
     <!--breadcrumb-->
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-        <div class="breadcrumb-title pe-3">Profil</div>   
+        <div class="breadcrumb-title pe-3">Profil</div>  
+        <div class="ms-auto">
+           
+        </div>
     </div>
     <!--end breadcrumb-->
     <div class="container">
@@ -20,8 +23,10 @@
     <div class="mt-3">
         <h4>{{ $profileData->name }}</h4>
         <p class="text-secondary mb-1">{{ $profileData->username }}</p>
-        <p class="text-muted font-size-sm">{{ $profileData->email }}</p>       
-    </div>                           
+        <p class="text-muted font-size-sm">{{ $profileData->email }}</p>
+    </div>
+                            </div>
+                           
                         </div>
                     </div>
                 </div>
@@ -116,4 +121,4 @@
     });
 
 </script>
-@endsection            
+@endsection
