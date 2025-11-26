@@ -24,7 +24,7 @@ class CategoryController extends Controller
             // 'category_slug' => strtolower(str_replace(' ','-',$request->category_name)),
         ]);
         $notification = array(
-            'message' => 'Category Inserted Successfully',
+            'message' => 'Kategori Berhasil Ditambahkan',
             'alert-type' => 'success'
         );
         return redirect()->back()->with($notification);
@@ -43,7 +43,7 @@ class CategoryController extends Controller
             'category_slug' => strtolower(str_replace(' ','-',$request->category_name)),
         ]);
         $notification = array(
-            'message' => 'Category Updated Successfully',
+            'message' => 'Kategori Berhasil Diperbarui',
             'alert-type' => 'success'
         );
         return redirect()->back()->with($notification);
@@ -52,7 +52,7 @@ class CategoryController extends Controller
     public function deleteCategory($id){
         Category::findOrFail($id)->delete();
         $notification = array(
-            'message' => 'Category Deleted Successfully',
+            'message' => 'Kategori Berhasil Dihapus',
             'alert-type' => 'success'
         );
         return redirect()->back()->with($notification);

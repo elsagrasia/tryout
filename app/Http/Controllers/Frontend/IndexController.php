@@ -21,37 +21,7 @@ use App\Models\Question;
 class IndexController extends Controller
 {
     
-    // public function tryoutDetails($id)
-    // {
-    //     // Ambil tryout utama berdasarkan ID
-    //     $tryout = Tryout::findOrFail($id);
 
-    //     // Ambil instructor dari tryout ini
-    //     $instructor_id = $tryout->instructor_id;
-
-    //     // Ambil daftar tryout lain dari instructor yang sama (kecuali yang sedang dibuka)
-    //     $instructorTryouts = Tryout::where('instructor_id', $instructor_id)
-    //         ->where('id', '!=', $id)
-    //         ->orderBy('id', 'DESC')
-    //         ->get();
-
-    //     // Ambil semua kategori (kalau ingin ditampilkan di sidebar/tab)
-    //     $categories = Category::latest()->get();
-
-    //     // Ambil tryout lain dari kategori yang sama (related tryouts)
-    //     $relatedTryouts = Tryout::where('category_id', $tryout->category_id)
-    //         ->where('id', '!=', $id)
-    //         ->orderBy('id', 'DESC')
-    //         ->limit(3)
-    //         ->get();
-
-    //     return view('frontend.tryout.tryout_details', compact(
-    //         'tryout',
-    //         'instructorTryouts',
-    //         'categories',
-    //         'relatedTryouts'
-    //     ));
-    // }
 
     public function UserDashboard()
     {

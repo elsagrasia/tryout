@@ -40,7 +40,7 @@ class UserController extends Controller
         }
         $data->save();
         $notification = array(
-            'message' => 'User Profile Updated Successfully',
+            'message' => 'Profil Pengguna Berhasil Diperbarui',
             'alert-type' => 'success'
         );
         return redirect()->back()->with($notification);
@@ -54,7 +54,7 @@ class UserController extends Controller
         $request->session()->regenerateToken();
 
         $notification = array(
-            'message' => 'Logout Successfully',
+            'message' => 'Anda berhasil keluar.',
             'alert-type' => 'info'
         );
 
@@ -73,12 +73,12 @@ class UserController extends Controller
             'new_password' => 'required|confirmed',
         ],
         [
-            'old_password.required' => 'Please Enter Old Password',
-            'new_password.required' => 'Please Enter New Password',
+            'old_password.required' => 'Masukan Kata Sandi Lama',
+            'new_password.required' => 'Masukan Kata Sandi Baru',
         ]);
         if (!Hash::check($request->old_password, auth::user()->password)) {
             $notification = array(
-                'message' => 'Old Password Not Matched',
+                'message' => 'Kata Sandi Lama Tidak Cocok',
                 'alert-type' => 'error'
             );
             return back()->with($notification);
@@ -88,7 +88,7 @@ class UserController extends Controller
             'password' => Hash::make($request->new_password)
         ]);
         $notification = array(
-            'message' => 'Password Change Successfully',
+            'message' => 'Kata Sandi Berhasil Diubah',
             'alert-type' => 'success'
         );
         return redirect()->back()->with($notification);

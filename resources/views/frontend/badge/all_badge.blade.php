@@ -3,7 +3,7 @@
 
 <div class="container-fluid">
     <div class="card border-0 shadow-sm p-4 tryout-container" style="background-color: #e8f2ff;">
-    <h4 class="fw-bold mb-4">Badges Kamu</h4>
+    <h4 class="fw-bold mb-4">Lencana Kamu</h4>
         <div class="row">
             
             @foreach ($badges as $badge)

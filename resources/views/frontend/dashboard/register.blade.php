@@ -12,13 +12,12 @@ Register Page | Easy Learning
     <div class="container">
         <div class="breadcrumb-content d-flex flex-wrap align-items-center justify-content-between">
             <div class="section-heading">
-                <h2 class="section__title text-white">Sign Up</h2>
+                <h2 class="section__title text-white">Daftar</h2>
+                <ul class="generic-list-item generic-list-item-white generic-list-item-arrow d-flex flex-wrap align-items-center">
+                    <li><a href="{{ route('index') }}">Beranda</a></li>                
+                    <li>Daftar</li>
+                </ul>
             </div>
-            <ul class="generic-list-item generic-list-item-white generic-list-item-arrow d-flex flex-wrap align-items-center">
-                <li><a href="index.html">Home</a></li>
-                <li>Pages</li>
-                <li>Sign Up</li>
-            </ul>
         </div><!-- end breadcrumb-content -->
     </div><!-- end container -->
 </section><!-- end breadcrumb-area -->
@@ -42,7 +41,7 @@ Register Page | Easy Learning
             <div class="col-lg-7 mx-auto">
                 <div class="card card-item">
                     <div class="card-body">
-                        <h3 class="card-title text-center fs-24 lh-35 pb-4">Create an Account and <br> Start Learning!</h3>
+                        <h3 class="card-title text-center fs-24 lh-35 pb-4">Daftar Akun Anda dan<br> Mulai Tryout!</h3>
                         <div class="section-block"></div>
 @if ($errors->any())
     <div class="alert alert-danger">
@@ -58,9 +57,9 @@ Register Page | Easy Learning
             @csrf
             
                 <div class="input-box">
-                    <label class="label-text">Name</label>
+                    <label class="label-text">Nama</label>
                     <div class="form-group">
-                        <input class="form-control form--control" id="name" type="text" name="name" placeholder="First name">
+                        <input class="form-control form--control" id="name" type="text" name="name" placeholder="Nama">
                         <span class="la la-user input-icon"></span>
                     </div>
                 </div><!-- end input-box -->
@@ -68,38 +67,27 @@ Register Page | Easy Learning
                     <label class="label-text">Email</label>
                     <div class="form-group">
                         <input class="form-control form--control" id="email" type="email" name="email" placeholder="email">
-                        <span class="la la-user input-icon"></span>
-                    </div>
-                </div><!-- end input-box -->
-                <div class="input-box">
-                    <label class="label-text">Password</label>
-                    <div class="form-group">
-                        <input class="form-control form--control" id="password" type="password" name="password" placeholder="Password">
-                        <span class="la la-user input-icon"></span>
-                    </div>
-                </div><!-- end input-box -->
-                <div class="input-box">
-                    <label class="label-text">Confirm Password</label>
-                    <div class="form-group">
-                        <input class="form-control form--control" id="password_confirmation" type="password" name="password_confirmation" placeholder="Confirm Password">
                         <span class="la la-envelope input-icon"></span>
                     </div>
                 </div><!-- end input-box -->
+                <div class="input-box">
+                    <label class="label-text">Kata Sandi</label>
+                    <div class="form-group">
+                        <input class="form-control form--control" id="password" type="password" name="password" placeholder="Kata Sandi">
+                        <span class="la la-lock input-icon"></span>
+                    </div>
+                </div><!-- end input-box -->
+                <div class="input-box">
+                    <label class="label-text">Konfirmasi Kata Sandi</label>
+                    <div class="form-group">
+                        <input class="form-control form--control" id="password_confirmation" type="password" name="password_confirmation" placeholder="Konfirmasi Kata Sandi">
+                        <span class="la la-lock input-icon"></span>
+                    </div>
+                </div><!-- end input-box -->
                
-                <div class="btn-box">
-                    <div class="custom-control custom-checkbox mb-2 fs-15">
-                        <input type="checkbox" class="custom-control-input" id="receiveCheckbox" required>
-                        <label class="custom-control-label custom--control-label lh-20" for="receiveCheckbox">Yes! I want to get the most out of Aduca by receiving emails with exclusive deals, personal recommendations and learning tips!</label>
-                    </div><!-- end custom-control -->
-                    <div class="custom-control custom-checkbox mb-4 fs-15">
-                        <input type="checkbox" class="custom-control-input" id="agreeCheckbox" required>
-                        <label class="custom-control-label custom--control-label" for="agreeCheckbox">by signing i agree to the
-                            <a href="terms-and-conditions.html" class="text-color hover-underline">terms and conditions</a> and
-                            <a href="privacy-policy.html" class="text-color hover-underline">privacy policy</a>
-                        </label>
-                    </div><!-- end custom-control -->
-                    <button class="btn theme-btn" type="submit">Register Account <i class="la la-arrow-right icon ml-1"></i></button>
-                    <p class="fs-14 pt-2">Already have an account? <a href="{{ route('login') }}" class="text-color hover-underline">Log in</a></p>
+                <div class="btn-box">                    
+                    <button class="btn theme-btn" type="submit">Daftar <i class="la la-arrow-right icon ml-1"></i></button>
+                    <p class="fs-14 pt-2">Sudah punya akun? <a href="{{ route('login') }}" class="text-color hover-underline">Masuk</a></p>
                 </div><!-- end btn-box -->
             </form>
                     </div><!-- end card-body -->

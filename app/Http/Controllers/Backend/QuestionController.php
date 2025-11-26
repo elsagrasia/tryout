@@ -75,7 +75,7 @@ class QuestionController extends Controller
         ]);
        
         $notification = array(
-            'message' => 'Question Inserted Successfully',
+            'message' => 'Pertanyaan Berhasil Ditambahkan',
             'alert-type' => 'success'
         );
 
@@ -136,7 +136,7 @@ class QuestionController extends Controller
         ]);
 
         $notification = array(
-            'message' => 'Question Updated Successfully',
+            'message' => 'Pertanyaan Berhasil Diperbarui',
             'alert-type' => 'success'
         );
 
@@ -154,7 +154,7 @@ class QuestionController extends Controller
         $question->delete();
 
         $notification = array(
-            'message' => 'Question Deleted Successfully',
+            'message' => 'Pertanyaan Berhasil Dihapus',
             'alert-type' => 'success'
         );
 
@@ -171,7 +171,7 @@ class QuestionController extends Controller
         Excel::import(new QuestionImport, $request->file('import_file'));
 
         $notification = array(
-            'message' => 'Permission Imported Successfully',
+            'message' => 'Pertanyaan Berhasil Diimpor',
             'alert-type' => 'success'
         );
         return redirect()->route('all.question')->with($notification);

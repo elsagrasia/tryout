@@ -32,7 +32,7 @@ class BlogController extends Controller
     ]);
 
     $notification = array(
-        'message' => 'BlogCategory Inserted Successfully',
+        'message' => 'Kategori Blog Berhasil Ditambahkan',   
         'alert-type' => 'success'
     );
     return redirect()->back()->with($notification);
@@ -56,7 +56,7 @@ class BlogController extends Controller
     ]);
 
     $notification = array(
-        'message' => 'BlogCategory Updated Successfully',
+        'message' => 'Kategori Blog Berhasil Diperbarui',
         'alert-type' => 'success'
     );
     return redirect()->back()->with($notification);
@@ -69,7 +69,7 @@ class BlogController extends Controller
     BlogCategory::find($id)->delete();
 
     $notification = array(
-        'message' => 'BlogCategory Deleted Successfully',
+        'message' => 'Kategori Blog Berhasil Dihapus',
         'alert-type' => 'success'
     );
     return redirect()->back()->with($notification);
@@ -111,7 +111,7 @@ class BlogController extends Controller
     ]);
 
     $notification = array(
-        'message' => 'Blog Post Inserted Successfully',
+        'message' => 'Blog Post Berhasil Ditambahkan',
         'alert-type' => 'success'
     );
     return redirect()->route('blog.post')->with($notification);  
@@ -149,7 +149,7 @@ class BlogController extends Controller
         ]);
     
         $notification = array(
-            'message' => 'Blog Post Updated Successfully',
+            'message' => 'Blog Post Berhasil Diperbarui',
             'alert-type' => 'success'
         );
         return redirect()->route('blog.post')->with($notification);  
@@ -166,7 +166,7 @@ class BlogController extends Controller
         ]);
     
         $notification = array(
-            'message' => 'Blog Post Updated Successfully',
+            'message' => 'Blog Post Berhasil Diperbarui',
             'alert-type' => 'success'
         );
         return redirect()->route('blog.post')->with($notification);  
@@ -184,7 +184,7 @@ class BlogController extends Controller
         BlogPost::find($id)->delete();
 
             $notification = array(
-                'message' => 'Blog Post Deleted Successfully',
+                'message' => 'Blog Post Berhasil Dihapus',
                 'alert-type' => 'success'
             );
             return redirect()->back()->with($notification);
@@ -222,62 +222,73 @@ public function blogDetails($slug)
 
     }// End Method 
 
-public function markBlogRead($id)
-{
-    if (!Auth::check()) {
-        return response()->json(['success' => false, 'message' => 'Unauthenticated'], 401);
-    }
+    public function markBlogRead($id)
+    {
+        if (!Auth::check()) {
+            return response()->json(['success' => false, 'message' => 'Unauthenticated'], 401);
+        }
 
-    $blog = BlogPost::findOrFail($id);
-    $user = Auth::user();
-    $userId = $user->id;
+        $blog = BlogPost::findOrFail($id);
+        $user = Auth::user();
+        $userId = $user->id;
 
-    // Ambil list user yang sudah baca dari kolom JSON
-    $readUsers = $blog->read_users
-        ? json_decode($blog->read_users, true)
-        : [];
+        // Ambil list user yang sudah baca dari kolom JSON
+        $readUsers = $blog->read_users
+            ? json_decode($blog->read_users, true)
+            : [];
 
-    if (!is_array($readUsers)) {
-        $readUsers = [];
-    }
+        if (!is_array($readUsers)) {
+            $readUsers = [];
+        }
 
-    // Jika user sudah pernah tercatat membaca artikel ini → jangan tambah poin lagi
-    if (in_array($userId, $readUsers)) {
-        return response()->json(['success' => true, 'message' => 'Already counted']);
-    }
+        // Jika user sudah pernah tercatat membaca artikel ini → jangan tambah poin lagi
+        if (in_array($userId, $readUsers)) {
+            // Mengirim total poin saat ini agar tampilan bisa disinkronkan
+            return response()->json([
+                'success' => true, 
+                'message' => 'Already counted',
+                'total_points' => $user->total_points
+            ]);
+        }
 
-    // Cari rule poin "Membaca 1 Artikel"
-    $rule = Point::where('activity', 'Membaca 1 Artikel')
-        ->where('status', 'active')
-        ->first();
+        // Cari rule poin "Membaca 1 Artikel"
+        $rule = Point::where('activity', 'Membaca 1 Artikel')
+            ->where('status', 'active')
+            ->first();
 
-    $pointsAdded = 0;
+        $pointsAdded = 0;
 
-    if ($rule) {
-        // Catat ke user_points
-        UserPoint::create([
-            'user_id'       => $userId,
-            'point_rule_id' => $rule->id,
-            'activity'      => $rule->activity,
-            'points'        => $rule->points,
+        if ($rule) {
+            // ... (Catat ke user_points) ...
+            UserPoint::create([
+                'user_id'       => $userId,
+                'point_rule_id' => $rule->id,
+                'activity'      => $rule->activity,
+                'points'        => $rule->points,
+            ]);
+
+            // Tambah ke total_points user
+            $user->increment('total_points', $rule->points);
+
+            $pointsAdded = $rule->points;
+        }
+
+        // Tandai user ini sudah membaca artikel ini
+        $readUsers[] = $userId;
+        $blog->read_users = json_encode($readUsers);
+        $blog->save();
+
+        // ⭐️ Perubahan Penting ⭐️
+        // Ambil data user terbaru setelah increment (agar total_points sudah ter-update)
+        $user->refresh(); 
+        $latestTotalPoints = $user->total_points; 
+
+        return response()->json([
+            'success'       => true,
+            'message'       => 'Points added',
+            'points_added'  => $pointsAdded,
+            // Ini yang akan digunakan oleh JavaScript untuk pembaruan
+            'total_points'  => $latestTotalPoints, 
         ]);
-
-        // Tambah ke total_points user
-        $user->increment('total_points', $rule->points);
-
-        $pointsAdded = $rule->points;
     }
-
-    // Tandai user ini sudah membaca artikel ini
-    $readUsers[] = $userId;
-    $blog->read_users = json_encode($readUsers);
-    $blog->save();
-
-    return response()->json([
-        'success'      => true,
-        'message'      => 'Points added',
-        'points_added' => $pointsAdded,
-    ]);
-}
-
 }

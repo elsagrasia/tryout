@@ -2,7 +2,7 @@
 @section('home')
 
 @section('title')
-Easy Learning
+ukom.aja
 @endsection
 
 <!--================================

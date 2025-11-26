@@ -71,8 +71,8 @@ class TryoutPackageController extends Controller
             'tryout_name' => $request->tryout_name,
             'description' => $request->description,
             'instructor_id' => Auth::user()->id,
-            'duration' => $request->duration,
-            'category_id' => $categoryId,    // ⬅ WAJIB TAMBAH INI
+            'category_id' => $categoryId,
+            'duration' => $request->duration,          
             'total_questions' => 0,
             'status' => 'draft',
             'created_at' => Carbon::now(),

@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use App\Models\SmtpSetting;
+// use Illuminate\Support\Facades\URL;
 use Config;
 
 class AppServiceProvider extends ServiceProvider
@@ -22,7 +23,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         //
-       if (\Schema::hasTable('smtp_settings')) {
+        // URL::forceScheme('https');
+        if (\Schema::hasTable('smtp_settings')) {
            $smtpsetting = SmtpSetting::first();
 
            if ($smtpsetting) {

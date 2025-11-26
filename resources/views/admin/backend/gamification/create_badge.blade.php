@@ -61,7 +61,7 @@
                     </div>
 
                     <div class="col-md-12 mt-3">
-                        <button type="submit" class="btn btn-primary px-4">Simpan Badge</button>
+                        <button type="submit" class="btn btn-primary px-4">Simpan</button>
                         <a href="{{ route('badges') }}" class="btn btn-secondary px-4">Kembali</a>
                     </div>
 

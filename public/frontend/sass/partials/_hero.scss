@@ -146,6 +146,16 @@
     }
   }
 }
+.hero-area {
+    /* Atur tinggi hero area menjadi 60% dari tinggi viewport (layar) */
+    /* Pastikan konten di dalamnya yang meluber di-potong */
+    overflow: hidden; 
+}
+
+/* Jika Anda ingin konten di tengah (hero-content) tetap berada di tengah vertikal */
+.hero-area .hero-slider-item {
+    height: 100%; /* Memastikan item slider mengambil tinggi penuh dari hero-area (60vh) */
+}
 /*-=========== hero-area-2 ===========-*/
 .hero-area-2,
 .hero-area-3 {

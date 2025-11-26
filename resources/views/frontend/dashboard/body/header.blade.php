@@ -7,9 +7,11 @@
                     <!-- Logo -->
                     <div class="col-lg-2">
                         <div class="logo-box">
-                            <a href="{{ url('/') }}" class="logo">
-                                <img src="{{ asset('upload/logo/logo.jpg') }}" alt="logo" style="height: 40px; width: auto;">
-                            </a>
+    <a href="{{ route('index') }}" class="logo">
+        <img src="{{ asset('upload/logo/logo.png') }}" 
+             alt="logo" 
+             style="height: 40px; width: auto;">
+    </a>
                             <div class="user-btn-action">
                                 <div class="off-canvas-menu-toggle main-menu-toggle icon-element icon-element-sm shadow-sm"
                                     data-toggle="tooltip" data-placement="top" title="Main menu">
@@ -21,8 +23,7 @@
 
                     <!-- Navigation -->
                     <div class="col-lg-10">
-                        <div class="menu-wrapper pt-20px pb-20px ">
-
+                        <div class="menu-wrapper pt-20px pb-20px ">                          
 
                             {{-- ==========================================
                                 AUTH CHECK (LOGIN / GUEST)
@@ -34,9 +35,9 @@
                             @auth
                                 <!-- User Logged In -->
                                  @if(Auth::check())
-                                <div class="user-points d-flex align-items-center mr-3 border rounded px-3 py-1 bg-light pr-4" style="gap:6px;">
+                                <div class="user-points d-flex align-items-center mr-3 border rounded px-3 py-1 bg-light pr-4" title="Total Poin" style="gap:6px;">
                                     <i class="la la-coins text-warning fs-18"></i>
-                                    <span class="fw-bold text-dark" style="font-size: 15px;">
+                                    <span id="user-total-points-display" class="fw-bold text-dark"  style="font-size: 15px;">
                                         {{ Auth::user()->total_points ?? 0 }}
                                     </span>
                                 </div>
@@ -74,13 +75,7 @@
                                                 </li>
 
                                                 <li>
-                                                    <ul class="generic-list-item">
-                                                        <li>
-                                                            <a href="{{ route('user.dashboard') }}">
-                                                                <i class="la la-sign-in mr-1"></i> Dashboard
-                                                            </a>
-                                                        </li>
-                                                        <li><div class="section-block"></div></li>
+                                                    <ul class="generic-list-item">                                                       
                                                         <li>
                                                             <a href="{{ route('user.profile') }}">
                                                                 <i class="la la-user mr-1"></i> Profil Saya
@@ -88,13 +83,13 @@
                                                         </li>
                                                         <li>
                                                             <a href="{{ route('user.change.password') }}">
-                                                                <i class="la la-edit mr-1"></i> Ubah Password
+                                                                <i class="la la-edit mr-1"></i> Ubah Kata Sandi
                                                             </a>
                                                         </li>
                                                         <li><div class="section-block"></div></li>
                                                         <li>
                                                             <a href="{{ route('user.logout') }}">
-                                                                <i class="la la-power-off mr-1"></i> Logout
+                                                                <i class="la la-power-off mr-1"></i> Keluar
                                                             </a>
                                                         </li>
                                                     </ul>
@@ -109,12 +104,12 @@
                                     <ul class="generic-list-item">
                                         <li>
                                             <a href="{{ route('login') }}" class="btn theme-btn theme-btn-sm lh-26 theme-btn-transparent mr-2">
-                                                <i class="la la-sign-in mr-1"></i> Login
+                                                <i class="la la-sign-in mr-1"></i> Masuk
                                             </a>
                                         </li>
                                         <li>
                                             <a href="{{ route('register') }}" class="btn theme-btn theme-btn-sm lh-26 text-white">
-                                                <i class="la la-user-plus mr-1"></i> Register
+                                                <i class="la la-user-plus mr-1"></i> Daftar
                                             </a>
                                         </li>
                                     </ul>
