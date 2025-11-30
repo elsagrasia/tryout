@@ -9,13 +9,13 @@
                 <ol class="breadcrumb mb-0 p-0">
                     <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">All Blog Category</li>
+                    <li class="breadcrumb-item active" aria-current="page">Semua Blog Kategori</li>
                 </ol>
             </nav>
         </div>
         <div class="ms-auto">
             <div class="btn-group">
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Blog Category</button>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Tambah Blog Kategori</button>
             </div>
         </div>
     </div>
@@ -66,7 +66,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Blog Category</h5>
+              <h5 class="modal-title" id="exampleModalLabel">Blog Kategori</h5>
                   
                 </div>
                 <div class="modal-body"> 
@@ -74,13 +74,13 @@
             @csrf
 
             <div class="form-group col-md-12">
-                <label for="input1" class="form-label">Blog Category Name</label>
+                <label for="input1" class="form-label">Nama Blog Kategori</label>
                 <input type="text" name="category_name" class="form-control" id="input1"  >
             </div>
                     
                 </div>
                 <div class="modal-footer"> 
-                    <button type="submit" class="btn btn-primary">Save changes</button>
+                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
                 </div>
             </form>
             </div>
@@ -94,7 +94,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Edit Blog Category</h5>
+              <h5 class="modal-title" id="exampleModalLabel">Edit Blog Kategori</h5>
                   
                 </div>
                 <div class="modal-body"> 
@@ -104,13 +104,13 @@
             <input type="hidden" name="cat_id" id="cat_id">
 
             <div class="form-group col-md-12">
-                <label for="input1" class="form-label">Blog Category Name</label>
+                <label for="input1" class="form-label">Nama Blog Kategori</label>
                 <input type="text" name="category_name" class="form-control" id="cat"  >
             </div>
                     
                 </div>
                 <div class="modal-footer"> 
-                    <button type="submit" class="btn btn-primary">Save changes</button>
+                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
                 </div>
             </form>
             </div>
