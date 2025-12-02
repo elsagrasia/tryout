@@ -70,6 +70,7 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::get('/mytryout/history', [TryoutHistoryController::class, 'index'])->middleware('auth')->name('tryout.history');
+    Route::get('/tryout/{id}/download-pembahasan', [TryoutHistoryController::class, 'downloadPembahasan'])->name('tryout.downloadPembahasan'); //PDF
 
 });
 

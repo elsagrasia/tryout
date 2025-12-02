@@ -143,57 +143,56 @@ class UserTryoutController extends Controller
    
 
     // GET progress + answers
-public function getProgress($id)
-{
-    $userId = auth()->id();
+    public function getProgress($id)
+    {
+        $userId = auth()->id();
 
-    // Pastikan ada record dummy untuk timer
-    $timer = UserAnswer::firstOrCreate([
-        'user_id' => $userId,
-        'tryout_package_id' => $id,
-        'question_id' => 0
-    ], [
-        'selected_option' => null
-    ]);
+        // Pastikan ada record dummy untuk timer
+        $timer = UserAnswer::firstOrCreate([
+            'user_id' => $userId,
+            'tryout_package_id' => $id,
+            'question_id' => 0
+        ], [
+            'selected_option' => null
+        ]);
 
-    // Ambil jawaban yang sudah ada
-    $answers = UserAnswer::where('user_id', $userId)
-        ->where('tryout_package_id', $id)
-        ->where('question_id', '>', 0)
-        ->pluck('selected_option','question_id');
+        // Ambil jawaban yang sudah ada
+        $answers = UserAnswer::where('user_id', $userId)
+            ->where('tryout_package_id', $id)
+            ->where('question_id', '>', 0)
+            ->pluck('selected_option','question_id');
 
-    return response()->json([
-        'elapsed_seconds' => $timer->elapsed_time ?? 0,
-        'answers' => $answers
-    ]);
-}
-
-
-// POST save-progress
-public function saveProgress(Request $request, $id)
-{
-    $userId = auth()->id();
-
-    // Simpan timer
-    $timer = UserAnswer::firstOrCreate([
-        'user_id' => $userId,
-        'tryout_package_id' => $id,
-        'question_id' => 0
-    ]);
-    $timer->elapsed_time = $request->input('elapsed_seconds', 0);
-    $timer->save();
-
-    // Simpan jawaban
-    foreach($request->input('answers', []) as $qid => $val) {
-        UserAnswer::updateOrCreate(
-            ['user_id'=>$userId,'tryout_package_id'=>$id,'question_id'=>$qid],
-            ['selected_option'=>$val]
-        );
+        return response()->json([
+            'elapsed_seconds' => $timer->elapsed_time ?? 0,
+            'answers' => $answers
+        ]);
     }
 
-    return response()->json(['status'=>'success']);
-}
 
+    // POST save-progress
+    public function saveProgress(Request $request, $id)
+    {
+        $userId = auth()->id();
+
+        // Simpan timer
+        $timer = UserAnswer::firstOrCreate([
+            'user_id' => $userId,
+            'tryout_package_id' => $id,
+            'question_id' => 0
+        ]);
+        $timer->elapsed_time = $request->input('elapsed_seconds', 0);
+        $timer->save();
+
+        // Simpan jawaban
+        foreach($request->input('answers', []) as $qid => $val) {
+            UserAnswer::updateOrCreate(
+                ['user_id'=>$userId,'tryout_package_id'=>$id,'question_id'=>$qid],
+                ['selected_option'=>$val]
+            );
+        }
+
+        return response()->json(['status'=>'success']);
+    }
 
     public function DeleteTryout($id)
     {
@@ -203,25 +202,24 @@ public function saveProgress(Request $request, $id)
         return redirect()->back()->with('success', 'Tryout berhasil dihapus.');
     }
 
-public function confirm($id)
-{
-    $tryout = TryoutPackage::with('questions')->findOrFail($id);
+    public function confirm($id)
+    {
+        $tryout = TryoutPackage::with('questions')->findOrFail($id);
 
-    // pakai urutan random yang sama dengan StartTryout
-    $sessionKey = 'question_order_' . $id;
-    $questionOrder = session($sessionKey);
+        // pakai urutan random yang sama dengan StartTryout
+        $sessionKey = 'question_order_' . $id;
+        $questionOrder = session($sessionKey);
 
-    if ($questionOrder) {
-        $tryout->questions = $tryout->questions
-            ->sortBy(function ($q) use ($questionOrder) {
-                return array_search($q->id, $questionOrder);
-            })
-            ->values();
+        if ($questionOrder) {
+            $tryout->questions = $tryout->questions
+                ->sortBy(function ($q) use ($questionOrder) {
+                    return array_search($q->id, $questionOrder);
+                })
+                ->values();
+        }
+
+        return view('frontend.mytryout.confirmation', compact('tryout'));
     }
-
-    return view('frontend.mytryout.confirmation', compact('tryout'));
-}
-
 
     public function SubmitTryout(Request $request, $id)
     {
@@ -510,7 +508,6 @@ public function confirm($id)
         ]);
     }
 
-
     public function explanation($id)
     {
         $user_id = Auth::id();
@@ -546,6 +543,8 @@ public function confirm($id)
 
         // ✅ Ubah ke struktur hasil untuk blade
         $results = $userAnswers->map(function ($item) {
+            if (!$item->question) return null; // skip jika question null
+
             return [
                 'question_id'    => $item->question_id,
                 'category_id'    => $item->question->category_id ?? null,
@@ -553,11 +552,11 @@ public function confirm($id)
                 'vignette'       => $item->question->vignette,
                 'image'          => $item->question->image ?? null,
                 'options'        => [
-                    'a' => $item->question->option_a,
-                    'b' => $item->question->option_b,
-                    'c' => $item->question->option_c,
-                    'd' => $item->question->option_d,
-                    'e' => $item->question->option_e,
+                    'a' => $item->question->option_a ?? '-',
+                    'b' => $item->question->option_b ?? '-',
+                    'c' => $item->question->option_c ?? '-',
+                    'd' => $item->question->option_d ?? '-',
+                    'e' => $item->question->option_e ?? '-',
                 ],
                 'user_answer'    => strtolower($item->selected_option),
                 'correct_option' => strtolower($item->question->correct_option),
@@ -566,7 +565,7 @@ public function confirm($id)
                 'is_doubt'       => (bool) $item->is_doubt,
                 
             ];
-        });
+        })->filter(); // hapus null
 
         // ✅ Kirim ke blade
         return view('frontend.history.explanation', [
@@ -582,6 +581,7 @@ public function confirm($id)
             'id'              => $id,
             'allQuestionIds'  => $package->questions->pluck('id')->toArray(),
             'categories'      => $categories,
+            'tryout_package_id' => $id   // ← WAJIB TAMBAH INI
         ]);
     }
 

@@ -17,6 +17,10 @@
         <a href="{{ url()->previous() }}" class="btn theme-btn theme-btn-sm-2 "><i class="la la-arrow-left mr-2"></i>Kembali</a>
     </div>
 
+    <div class="breadcrumb-btn-box mb-4">
+        <a href="{{ route('tryout.downloadPembahasan',  $tryout_package_id) }}" class="btn btn-danger btn-sm mb-3" target="_blank"><i class="la la-file-pdf mr-1"></i> Download Pembahasan (PDF)</a>
+    </div>
+    
     <div class="card border-0 shadow-sm p-4 tryout-container" style="background-color: #f6faff;">
         <div class="summary-wrapper">
             <h4>{{ $tryoutName }}</h4>
@@ -169,7 +173,6 @@
                     $doubtFlag = !empty($result['is_doubt']) ? '1' : '0';
 
                 @endphp
-
 
                 <section
                     class="quiz-ans-wrap pt-30px pb-30px question-item"
