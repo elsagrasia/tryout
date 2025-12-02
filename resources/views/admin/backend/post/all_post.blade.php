@@ -9,13 +9,13 @@
                 <ol class="breadcrumb mb-0 p-0">
                     <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">All Blog Post</li>
+                    <li class="breadcrumb-item active" aria-current="page">Semua Postingan Blog</li>
                 </ol>
             </nav>
         </div>
         <div class="ms-auto">
             <div class="btn-group">
-           <a href="{{ route('add.blog.post') }}" class="btn btn-primary px-5">Add Blog Post </a>  
+           <a href="{{ route('add.blog.post') }}" class="btn btn-primary px-5">Tambah Postingan Blog</a>  
             </div>
         </div>
     </div>
@@ -44,8 +44,8 @@
                             <td> <img src="{{ asset($item->post_image) }}" alt="" style="width: 70px; height:40px;"> </td>
                             
                             <td>
-       <a href="{{ route('edit.post',$item->id) }}" class="btn btn-info" title="Ubah"><i class="lni lni-eraser"></i></a>   
-       <a href="{{ route('delete.post',$item->id) }}" class="btn btn-danger delete-btn" title="Hapus"><i class="lni lni-trash"></i></a>                    
+                                <a href="{{ route('edit.post',$item->id) }}" class="btn btn-info" title="Ubah"><i class="lni lni-eraser"></i></a>   
+                                <a href="{{ route('delete.post',$item->id) }}" class="btn btn-danger delete-btn" title="Hapus"><i class="lni lni-trash"></i></a>                    
                             </td>
                         </tr>
                         @endforeach
@@ -56,13 +56,6 @@
             </div>
         </div>
     </div>
-
-
-   
-   
 </div>
- 
-
-
 
 @endsection

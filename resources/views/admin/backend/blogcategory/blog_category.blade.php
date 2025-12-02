@@ -41,8 +41,8 @@
                             <td> {{ $item->category_name }}  </td>
                             <td>{{ $item->category_slug }}</td> 
                             <td>
-       <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#category" id="{{ $item->id }}" onclick="categoryEdit(this.id)" title="Ubah"><i class="lni lni-eraser"></i></button>
-       <a href="{{ route('delete.blog.category',$item->id) }}" class="btn btn-danger delete-btn" title="Hapus"><i class="lni lni-trash"></i></a>                  
+                                <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#category" id="{{ $item->id }}" onclick="categoryEdit(this.id)" title="Ubah"><i class="lni lni-eraser"></i></button>
+                                <a href="{{ route('delete.blog.category',$item->id) }}" class="btn btn-danger delete-btn" title="Hapus"><i class="lni lni-trash"></i></a>                  
                             </td>
                         </tr>
                         @endforeach
@@ -80,7 +80,7 @@
                     
                 </div>
                 <div class="modal-footer"> 
-                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
                 </div>
             </form>
             </div>
