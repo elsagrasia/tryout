@@ -37,12 +37,12 @@
                             <nav class="main-menu">
                                 <ul>
                                     @auth
-                                    <li><a href="#tryout">Tryout </a></li>
-                                    <li><a href="#blog">Blog </a></li>      
+                                    <li><a href="/#tryout">Tryout </a></li>
+                                    <li><a href="/#blog">Blog </a></li>      
                                     <li><a href="{{ route('user.dashboard') }}">Dashboard </a></li>     
                                     @else
-                                    <li><a href="#tryout">Tryout </a></li>
-                                    <li><a href="#blog">Blog </a></li>      
+                                    <li><a href="/#tryout">Tryout </a></li>
+                                    <li><a href="/#blog">Blog </a></li>      
                                     @endauth                      
                                 </ul><!-- end ul -->
                             </nav><!-- end main-menu -->
