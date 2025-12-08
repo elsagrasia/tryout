@@ -21,8 +21,6 @@ use App\Models\Question;
 class IndexController extends Controller
 {
     
-
-
     public function UserDashboard()
     {
         $user = Auth::user();

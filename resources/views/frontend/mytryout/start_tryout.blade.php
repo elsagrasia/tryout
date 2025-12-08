@@ -137,8 +137,16 @@
 
 <script>
 
-
+// WAKTU PENGERJAAN 
 document.addEventListener('DOMContentLoaded', function () {
+   
+    // RESET TIMER & PROGRESS SETIAP MASUK HALAMAN TRYOUT
+    localStorage.removeItem('tryout_remaining_time');
+    localStorage.removeItem('tryout_elapsed_time');
+    localStorage.removeItem('tryout_answers');
+    localStorage.removeItem('tryout_doubts');
+    localStorage.removeItem('tryout_index');
+
     // ======= KONFIGURASI =======
     const totalDuration   = {{ $tryout->duration * 60 }};
     const questionCards    = Array.from(document.querySelectorAll('.question-card'));
@@ -179,15 +187,20 @@ document.addEventListener('DOMContentLoaded', function () {
     const timerInterval = setInterval(() => {
         remainingTime--;
         elapsed++;
+
+        // Jika waktu habis, kunci ke 00:00:00 lalu submit
+        if (remainingTime <= 0) {
+            remainingTime = 0;                 // kunci nilai biar tidak negatif
+            updateTimerDisplay();              // tampilkan 00:00:00
+            saveProgress();                    
+            clearInterval(timerInterval);      // hentikan timer
+            form.submit();                     // langsung submit
+            return;                            // pastikan tidak lanjut ke bawah
+        }
+
         updateTimerDisplay();
 
-        // Simpan periodik agar bisa resume
         if (remainingTime % 5 === 0) saveProgress();
-
-        if (remainingTime < 0) {
-            clearInterval(timerInterval);
-            form.submit();
-        }
     }, 1000);
 
     function saveProgress() {

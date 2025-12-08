@@ -139,9 +139,6 @@ class UserTryoutController extends Controller
         return view('frontend.mytryout.start_tryout', compact('tryout', 'initialIndex')); 
     }
 
-
-   
-
     // GET progress + answers
     public function getProgress($id)
     {
@@ -406,7 +403,6 @@ class UserTryoutController extends Controller
             ]);
     }
 
-
     public function ResultTryout($id)
     {
         $user_id = Auth::id();
@@ -416,7 +412,6 @@ class UserTryoutController extends Controller
             ->where('tryout_package_id', $id)
             ->where('user_id', $user_id)
             ->get();
-
 
         // Ambil info paket & nama tryout
         $package = TryoutPackage::with('questions')->findOrFail($id);
@@ -451,7 +446,7 @@ class UserTryoutController extends Controller
             ];
         });
 
-        // 🔹 Leaderboard per tryout: ambil semua peserta tryout ini
+        // Leaderboard per tryout: ambil semua peserta tryout ini
         $leaderboard = ResultTryout::with('user')
             ->where('tryout_package_id', $id)
             ->orderByDesc('score')
@@ -467,7 +462,7 @@ class UserTryoutController extends Controller
                 ];
             });
 
-        // 🔹 User & ranking saat ini dalam leaderboard tryout tersebut
+        // User & ranking saat ini dalam leaderboard tryout tersebut
         $currentUser = Auth::user();
         $currentRank = ResultTryout::where('tryout_package_id', $id)
             ->where('score', '>', $result->score ?? 0)
@@ -530,7 +525,7 @@ class UserTryoutController extends Controller
             ->latest()
             ->first();
 
-        // ✅ Urutkan jawaban berdasarkan urutan soal di paket
+        // Urutkan jawaban berdasarkan urutan soal di paket
         $orderedIds = session('question_order_' . $id, $package->questions->pluck('id')->toArray());
 
         $userAnswers = $userAnswers->sortBy(function ($answer) use ($orderedIds) {
@@ -541,7 +536,7 @@ class UserTryoutController extends Controller
             $package->questions->pluck('category_id')->unique()
         )->get();
 
-        // ✅ Ubah ke struktur hasil untuk blade
+        // Ubah ke struktur hasil untuk blade
         $results = $userAnswers->map(function ($item) {
             if (!$item->question) return null; // skip jika question null
 
@@ -567,7 +562,7 @@ class UserTryoutController extends Controller
             ];
         })->filter(); // hapus null
 
-        // ✅ Kirim ke blade
+        // Kirim ke blade
         return view('frontend.history.explanation', [
             'tryoutName'      => $tryoutName,
             'results'         => $results,
@@ -581,7 +576,7 @@ class UserTryoutController extends Controller
             'id'              => $id,
             'allQuestionIds'  => $package->questions->pluck('id')->toArray(),
             'categories'      => $categories,
-            'tryout_package_id' => $id   // ← WAJIB TAMBAH INI
+            'tryout_package_id' => $id   //TAMBAH INI
         ]);
     }
 

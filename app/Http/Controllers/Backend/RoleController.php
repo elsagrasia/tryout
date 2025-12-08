@@ -101,10 +101,7 @@ class RoleController extends Controller
 
     }// End Method
     
-
-      ////////// ALL ROLE METHODS /////////
-
-
+    ////////// ALL ROLE METHODS /////////
     public function allRoles(){
 
         $roles = Role::all();
