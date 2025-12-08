@@ -25,7 +25,7 @@
                 <div class="row g-3">
                     <div class="col-md-6">
                         <label for="name" class="form-label">Nama Badge</label>
-                        <input type="text" name="name" id="name" class="form-control" value="{{ $badge->name }}" required>
+                        <input type="text" name="name" id="name" class="form-control" value="{{ $badge->name }}" disabled>
                     </div>
 
                     <div class="col-md-6">
@@ -35,7 +35,7 @@
 
                     <div class="col-md-6">
                         <label for="type" class="form-label">Kriteria Badge</label>
-                        <select name="type" id="type" class="form-select" required>
+                        <select name="type" id="type" class="form-select" disabled>
                             <option value="">-- Pilih Kriteria --</option>
                             <option value="points" {{ $badge->type == 'points' ? 'selected' : '' }}>Berdasarkan Poin</option>
                             <option value="tryout" {{ $badge->type == 'tryout' ? 'selected' : '' }}>Berdasarkan Tryout</option>

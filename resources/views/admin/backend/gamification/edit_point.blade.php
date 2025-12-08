@@ -27,7 +27,7 @@
 
                 <div class="form-group col-md-6">
                     <label for="input1" class="form-label">Aktivitas</label>
-                    <input type="text" name="activity" class="form-control" id="input1" value="{{ $point->activity }}" required>
+                    <input type="text" name="activity" class="form-control" id="input1" value="{{ $point->activity }}" disabled>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="input1" class="form-label">Poin</label>

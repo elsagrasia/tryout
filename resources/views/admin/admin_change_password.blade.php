@@ -6,7 +6,7 @@
 <div class="page-content">
     <!--breadcrumb-->
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-        <div class="breadcrumb-title pe-3">Ubah Password</div>
+        <div class="breadcrumb-title pe-3">Ubah Kata Sandi</div>
     </div>
     <!--end breadcrumb-->
     <div class="container">
