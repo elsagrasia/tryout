@@ -83,7 +83,7 @@ class IndexController extends Controller
             ->with('badges') // <= eager load
             ->orderByDesc('total_points')
             ->select('id', 'name', 'total_points', 'photo')
-            ->take(50)
+            ->take(10)
             ->get();
 
         // Tambahkan data tryout & nilai rata-rata
