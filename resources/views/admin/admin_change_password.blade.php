@@ -34,7 +34,7 @@
                             <div class="card-body">
                                 <div class="row mb-3">
                                     <div class="col-sm-3">
-                                        <h6 class="mb-0">Password Lama</h6>
+                                        <h6 class="mb-0">Kata Sandi Lama</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
                                         <input type="password" name="old_password" class="form-control @error('old_password') is-invalid @enderror" id="old_password"  />
@@ -45,7 +45,7 @@
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-sm-3">
-                                        <h6 class="mb-0">Password Baru</h6>
+                                        <h6 class="mb-0">Kata Sandi Baru</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
                                         <input type="password" name="new_password" class="form-control @error('new_password') is-invalid @enderror" id="new_password"  />
@@ -56,7 +56,7 @@
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-sm-3">
-                                        <h6 class="mb-0">Konfirmasi Password Baru</h6>
+                                        <h6 class="mb-0">Konfirmasi Kata Sandi Baru</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
                                         <input type="password" name="new_password_confirmation" class="form-control " id="new_password_confirmation"  />

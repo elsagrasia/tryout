@@ -86,8 +86,6 @@ class TryoutPackageController extends Controller
         return redirect()->route('all.tryout.packages')->with($notification);
     }
 
-
-
     public function editTryoutPackage($id) {
         $tryoutPackage = TryoutPackage::findOrFail($id);
         return view('instructor.tryout_packages.edit_tryout', compact('tryoutPackage'));
@@ -133,8 +131,6 @@ class TryoutPackageController extends Controller
         );
         return redirect()->route('all.tryout.packages')->with($notification);
     } // end method
-
-// TryoutPackageController.php
 
     public function updateTryoutPackageStatus(Request $request)
     {

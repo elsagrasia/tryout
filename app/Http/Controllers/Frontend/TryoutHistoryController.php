@@ -33,7 +33,7 @@ class TryoutHistoryController extends Controller
         //     ->where('user_id', $userId)
         //     ->get();
 
-         // Ambil semua jawaban user beserta question-nya
+        // Ambil semua jawaban user beserta question-nya
         $results = UserAnswer::with('question')
                     ->where('tryout_package_id', $id)
                     ->where('user_id', $userId)
@@ -41,8 +41,6 @@ class TryoutHistoryController extends Controller
 
         // Ambil info tryout
         $tryout = TryoutPackage::findOrFail($id);
-
-    
 
         // Generate PDF
         $pdf = Pdf::loadView('frontend.history.pembahasan', [
