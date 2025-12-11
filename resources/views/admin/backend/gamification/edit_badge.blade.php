@@ -2,18 +2,6 @@
 @section('admin')
 
 <div class="page-content">
-    <!--breadcrumb-->
-    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3"> 
-        <div class="ps-3">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mb-0 p-0">
-                    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i class="bx bx-home-alt"></i></a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Edit Badge</li>
-                </ol>
-            </nav>
-        </div>
-    </div>
-    <!--end breadcrumb-->
 
     <div class="card">
         <div class="card-body p-4">
@@ -25,7 +13,10 @@
                 <div class="row g-3">
                     <div class="col-md-6">
                         <label for="name" class="form-label">Nama Badge</label>
-                        <input type="text" name="name" id="name" class="form-control" value="{{ $badge->name }}" required>
+                        <!-- Disabled input untuk name -->
+                        <input type="text" name="name" id="name" class="form-control" value="{{ $badge->name }}" disabled>
+                        <!-- Input hidden untuk mengirimkan nilai name -->
+                        <input type="hidden" name="name" value="{{ $badge->name }}">
                     </div>
 
                     <div class="col-md-6">
@@ -35,12 +26,14 @@
 
                     <div class="col-md-6">
                         <label for="type" class="form-label">Kriteria Badge</label>
-                        <select name="type" id="type" class="form-select" required>
+                        <select name="type" id="type" class="form-select" disabled>
                             <option value="">-- Pilih Kriteria --</option>
                             <option value="points" {{ $badge->type == 'points' ? 'selected' : '' }}>Berdasarkan Poin</option>
                             <option value="tryout" {{ $badge->type == 'tryout' ? 'selected' : '' }}>Berdasarkan Tryout</option>
                             <option value="blog" {{ $badge->type == 'blog' ? 'selected' : '' }}>Berdasarkan Aktivitas Blog</option>
                         </select>
+                        <!-- Input hidden untuk mengirimkan nilai type -->
+                        <input type="hidden" name="type" value="{{ $badge->type }}">
                     </div>
             
                     <div class="form-group col-md-4"> 
@@ -51,7 +44,7 @@
                         <img id="showImage" src="{{ asset($badge->icon) }}" alt="Admin" class="rounded-circle p-1 bg-primary" width="80"> 
                     </div>           
            
-                        <div class="col-12">
+                    <div class="col-12">
                         <label for="description" class="form-label">Deskripsi</label>
                         <textarea name="description" id="description" rows="3" class="form-control">{{ $badge->description }}</textarea>
                     </div>
@@ -74,18 +67,17 @@
         </div>
     </div>
 </div>
-<script type="text/javascript">
 
+<script type="text/javascript">
     $(document).ready(function(){
-        $('#image').change(function(e){
+        $('#icon').change(function(e){
             var reader = new FileReader();
             reader.onload = function(e){
-                $('#showImage').attr('src',e.target.result);
+                $('#showImage').attr('src', e.target.result);
             }
-            reader.readAsDataURL(e.target.files['0']);
+            reader.readAsDataURL(e.target.files[0]);
         });
     });
-
 </script>
 
 @endsection

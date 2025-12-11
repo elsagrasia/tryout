@@ -77,12 +77,7 @@
                     <button type="submit" class="btn btn-primary">Masuk</button>
                 </div>
             </div>
-            <div class="col-12">
-                <div class="text-center ">
-                    <!-- <p class="mb-0">Belum punya akun? <a href="authentication-signup.html">Daftar di sini</a> -->
-                    </p>
-                </div>
-            </div>
+          
         </form>
 									</div>
 									

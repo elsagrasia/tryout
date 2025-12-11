@@ -51,12 +51,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/delete/tryout/{id}', 'DeleteTryout')->name('delete.tryout');
         Route::get('/mytryout/result/{id}', 'ResultTryout')->name('user.tryout.result');
         Route::get('/tryout/explanation/{tryout_id}', 'explanation')->name('tryout.explanation');
-        Route::post('tryout/{id}/complete', 'completeTryout')->name('tryout.complete');
+        // Route::post('tryout/{id}/complete', 'completeTryout')->name('tryout.complete');
         Route::get('/tryout/confirm/{id}', 'confirm')->name('tryout.confirm');
-
         Route::get('/tryout/progress/{id}', 'getProgress')->name('tryout.getProgress');
         Route::post('/tryout/save-progress', 'saveProgress')->name('tryout.saveProgress');
-        Route::get('/tryout/restart/{id}', 'restartTryout')->name('tryout.restart');   
+    
 
     });
 
@@ -77,11 +76,6 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
     Route::post('/admin/password/update', [AdminController::class, 'adminPasswordUpdate'])->name('admin.password.update');
 
     // Instructor All Routes
-    Route::controller(AdminController::class)->group(function () {
-        Route::get('/all/instructor', 'allInstructor')->name('all.instructor');
-        Route::post('/update/user/status', 'updateUserStatus')->name('update.user.status');
-       
-    });
 
     Route::controller(GamificationController::class)->group(function(){
         Route::get('/points/rules', 'pointsRules')->name('points.rules');
@@ -99,9 +93,6 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
         Route::post('/badges/update', 'updateBadge')->name('badges.update');
         Route::get('/badges/delete/{id}', 'deleteBadge')->name('badges.delete');
 
-        
-        // Route::get('/user/points', 'userPoints')->name('user.points');
-        // Route::get('/user/badges', 'userBadges')->name('user.badges');
     });
         
     // Admin All user and Instructor All Route 

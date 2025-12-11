@@ -3,20 +3,6 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 
 <div class="page-content">
-    <!--breadcrumb-->
-    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3"> 
-        <div class="ps-3">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mb-0 p-0">
-                    <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
-                    </li>
-                    <li class="breadcrumb-item active" aria-current="page">Edit Aturan Poin</li>
-                </ol>
-            </nav>
-        </div>
-         
-    </div>
-    <!--end breadcrumb-->
  
     <div class="card">
         <div class="card-body p-4">
@@ -27,7 +13,11 @@
 
                 <div class="form-group col-md-6">
                     <label for="input1" class="form-label">Aktivitas</label>
-                    <input type="text" name="activity" class="form-control" id="input1" value="{{ $point->activity }}" required>
+                    <!-- Aktivitas tetap ditampilkan, namun tidak bisa diubah karena disabled -->
+                    <input type="text" name="activity" class="form-control" id="input1" value="{{ $point->activity }}" disabled>
+                    
+                    <!-- Input hidden untuk mengirim nilai activity ke server -->
+                    <input type="hidden" name="activity" value="{{ $point->activity }}">
                 </div>
                 <div class="form-group col-md-6">
                     <label for="input1" class="form-label">Poin</label>
@@ -45,23 +35,17 @@
                         <option value="inactive" {{ $point->status === 'inactive' ? 'selected' : '' }}>Inactive</option>
                     </select>
                 </div>                
-             
-                <div class="col-md-12">
-                    <div class="d-md-flex d-grid align-items-center gap-3">
-          <button type="submit" class="btn btn-primary px-4">Save Changes</button>
-                      
+
+                 <div class="col-md-12">
+                    <div class="d-md-flex d-grid align-items-center gap-2">
+                        <button type="submit" class="btn btn-primary px-4">Simpan</button>
+                        <a href="{{ route('points.rules') }}" class="btn btn-secondary px-4">Kembali</a>
                     </div>
                 </div>
             </form>
         </div>
     </div>
 
-
-   
-   
 </div>
-
- 
-
 
 @endsection
