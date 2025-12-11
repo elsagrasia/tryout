@@ -39,12 +39,12 @@
 
                                 <div class="text-end">
                                     @if($isDone)
-                                        <a href="{{ route('tryout.start', $tryout->id) }}" 
+                                        <a href="{{ route('tryout.start', $tryout->id) }}?reset=1" 
                                             class="btn btn-outline-warning btn-sm rounded-pill px-3">
                                             <i class="la la-redo-alt me-1"></i> Ulangi
                                         </a>
                                     @else
-                                        <a href="{{ route('tryout.start', $tryout->id) }}" 
+                                        <a href="{{ route('tryout.start', $tryout->id) }}?r=0" 
                                             class="btn btn-success btn-sm rounded-pill px-3">
                                             <i class="la la-play-circle me-1"></i> Kerjakan
                                         </a>
@@ -55,7 +55,6 @@
                     </div>
                 @endif
             </div>
-
         </div>
     </div>
 </div>

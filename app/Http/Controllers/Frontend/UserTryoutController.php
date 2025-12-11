@@ -100,6 +100,22 @@ class UserTryoutController extends Controller
 
     public function StartTryout(Request $request, $id)
     {
+         // Jika ada request reset=1 -> hapus progress sementara user untuk tryout ini
+        if ($request->query('reset') == '1' && Auth::check()) {
+            $userId = Auth::id();
+
+            // Hapus semua jawaban (termasuk timer dummy question_id = 0) untuk user+tryout
+            UserAnswer::where('user_id', $userId)
+                ->where('tryout_package_id', $id)
+                ->delete();
+
+            // Buang session urutan soal agar dibuat ulang
+            session()->forget('question_order_' . $id);
+
+            // Redirect ke URL tanpa query string agar reset tidak terbawa ke refresh
+            return redirect()->route('tryout.start', $id);
+        }
+
         // Ambil data tryout + soal
         $tryout = TryoutPackage::with(['questions'])->findOrFail($id); 
 
@@ -164,7 +180,6 @@ class UserTryoutController extends Controller
             'answers' => $answers
         ]);
     }
-
 
     // POST save-progress
     public function saveProgress(Request $request, $id)

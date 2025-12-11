@@ -5,19 +5,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Backend\CategoryController;
-use App\Http\Controllers\Backend\CourseController;
 use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\Frontend\IndexController;
 use App\Http\Controllers\Frontend\UserTryoutController;
 use App\Http\Controllers\Frontend\TryoutHistoryController;
-use App\Http\Controllers\Frontend\CartController;
 use App\Http\Middleware\RedirectIfAuthenticated;
-use App\Http\Controllers\Backend\ReportController;
-use App\Http\Controllers\Backend\ReviewController;
 use App\Http\Controllers\Backend\ActiveUserController;
 use App\Http\Controllers\Backend\BlogController;
-use App\Http\Controllers\Backend\RoleController;
-use App\Http\Controllers\Backend\ChatController;
 use App\Http\Controllers\Backend\TryoutPackageController;
 use App\Http\Controllers\Backend\QuestionController;
 use App\Http\Controllers\Backend\GamificationController;
@@ -40,15 +34,12 @@ use App\Http\Controllers\Backend\GamificationController;
 
 Route::get('/', [UserController::class, 'index'])->name('index');
 
-
 Route::middleware('auth')->group(function () {
     Route::get('/user/profile', [UserController::class, 'userProfile'])->name('user.profile');
     Route::post('/user/profile/update', [UserController::class, 'userProfileUpdate'])->name('user.profile.update');
     Route::get('/user/logout', [UserController::class, 'userLogout'])->name('user.logout');
     Route::get('/user/change/password', [UserController::class, 'userChangePassword'])->name('user.change.password');
     Route::post('/user/password/update', [UserController::class, 'userPasswordUpdate'])->name('user.password.update');
-    
-    Route::get('/live/chat', [UserController::class, 'liveChat'])->name('live.chat');
 
     Route::get('/tryout/{tryout_id}/join', [UserTryoutController::class, 'AddToTryout']);
 
@@ -91,8 +82,6 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
         Route::post('/update/user/status', 'updateUserStatus')->name('update.user.status');
        
     });
-    
-
 
     Route::controller(GamificationController::class)->group(function(){
         Route::get('/points/rules', 'pointsRules')->name('points.rules');
@@ -115,9 +104,6 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
         // Route::get('/user/badges', 'userBadges')->name('user.badges');
     });
         
-
-
-
     // Admin All user and Instructor All Route 
     Route::controller(ActiveUserController::class)->group(function(){
         Route::get('/all/user','allUser')->name('all.user'); 
@@ -144,34 +130,6 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
         Route::get('/delete/post/{id}','deleteBlogPost')->name('delete.post');
     });
 
-    // Permission All Route 
-    Route::controller(RoleController::class)->group(function(){
-        Route::get('/all/permission','allPermission')->name('all.permission'); 
-        Route::get('/add/permission','addPermission')->name('add.permission');      
-        Route::post('/store/permission','storePermission')->name('store.permission');
-        Route::get('/edit/permission/{id}','editPermission')->name('edit.permission');  
-        Route::post('/update/permission','updatePermission')->name('update.permission');
-        Route::get('/delete/permission/{id}','deletePermission')->name('delete.permission');
-        Route::get('/import/permission','importPermission')->name('import.permission');
-        Route::get('/export','export')->name('export');
-        Route::post('/import','import')->name('import');
-    });
-
-        // Role All Route 
-    Route::controller(RoleController::class)->group(function(){
-        Route::get('/all/roles','allRoles')->name('all.roles');
-        Route::get('/add/roles','addRoles')->name('add.roles'); 
-        Route::post('/store/roles','storeRoles')->name('store.roles');
-        Route::get('/edit/roles/{id}','editRoles')->name('edit.roles');
-        Route::post('/update/roles','updateRoles')->name('update.roles');
-        Route::get('/delete/roles/{id}','deleteRoles')->name('delete.roles');
-        Route::get('/add/roles/permission','addRolesPermission')->name('add.roles.permission');        
-        Route::post('/role/permission/store','rolePermissionStore')->name('role.permission.store');        
-        Route::get('/all/roles/permission','allRolesPermission')->name('all.roles.permission');
-        Route::get('/admin/edit/roles/{id}','adminEditRoles')->name('admin.edit.roles');
-        Route::post('/admin/roles/update/{id}','adminUpdateRoles')->name('admin.roles.update');
-        Route::get('/admin/delete/roles/{id}','adminDeleteRoles')->name('admin.delete.roles');
-    });
     // Admin User All Route 
     Route::controller(AdminController::class)->group(function(){
         Route::get('/all/admin','allAdmin')->name('all.admin'); 
@@ -212,7 +170,6 @@ Route::middleware(['auth', 'roles:instructor'])->group(function () {
         Route::get('/instructor/packages/result','allPackageResult')->name('all.packages.result');
         Route::get('/instructor/packages/{package}/results','viewPackageResult')->name('packages.view.results');
         Route::get('instructor/packages/{package}/user/{id}/results','userResultTryout')->name('user.results');
-
     });
 
     Route::controller(CategoryController::class)->group(function () {
@@ -233,7 +190,6 @@ Route::middleware(['auth', 'roles:instructor'])->group(function () {
         Route::get('/delete/question/{id}', 'deleteQuestion')->name('delete.question');
         Route::get('/import/question','importQuestion')->name('import.question');
         Route::post('/import','import')->name('import');
-
     });
 
 

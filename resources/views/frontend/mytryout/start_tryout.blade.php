@@ -139,48 +139,85 @@
 
 // WAKTU PENGERJAAN 
 document.addEventListener('DOMContentLoaded', function () {
-   
-    // RESET TIMER & PROGRESS SETIAP MASUK HALAMAN TRYOUT
-    localStorage.removeItem('tryout_remaining_time');
-    localStorage.removeItem('tryout_elapsed_time');
-    localStorage.removeItem('tryout_answers');
-    localStorage.removeItem('tryout_doubts');
-    localStorage.removeItem('tryout_index');
+
+    if (window.location.search.includes('reset=1')) {
+        history.replaceState({}, '', window.location.pathname);
+    }
+
+    // RESET HANYA JIKA URL ADA ?reset=1
+    const urlParams = new URLSearchParams(window.location.search);
+    const shouldReset = urlParams.get('reset') === '1';
+
+    if (shouldReset) {
+        localStorage.removeItem('tryout_remaining_time');
+        localStorage.removeItem('tryout_elapsed_time');
+        localStorage.removeItem('tryout_answers');
+        localStorage.removeItem('tryout_doubts');
+        localStorage.removeItem('tryout_index');
+    }
 
     // ======= KONFIGURASI =======
-    const totalDuration   = {{ $tryout->duration * 60 }};
-    const questionCards    = Array.from(document.querySelectorAll('.question-card'));
-    const questionButtons  = Array.from(document.querySelectorAll('.question-btn'));
-    const timerDisplay     = document.getElementById('timer');
-    const form             = document.getElementById('tryoutForm');
-    const confirmButton    = document.getElementById('confirmButton');
-    const doubtTextEl      = document.getElementById('doubt-text');
+    const totalDuration = {{ $tryout->duration * 60 }};
+    const questionCards = Array.from(document.querySelectorAll('.question-card'));
+    const questionButtons = Array.from(document.querySelectorAll('.question-btn'));
+    const timerDisplay = document.getElementById('timer');
+    const form = document.getElementById('tryoutForm');
+    const confirmButton = document.getElementById('confirmButton');
+    const doubtTextEl = document.getElementById('doubt-text');
 
     if (questionCards.length === 0) return;
 
-    // ======= INISIALISASI DATA =======
+    // ======= INISIALISASI DATA (BENAR) =======
     let answers = {};
-    let doubts  = {};
+    let doubts = {};
     let currentIndex = 0;
     let remainingTime = totalDuration;
     let elapsed = 0;
 
-    // ======= LOAD DARI LOCALSTORAGE (RESUME JIKA ADA) =======
-    try { answers = JSON.parse(localStorage.getItem('tryout_answers') || '{}'); } catch {}
-    try { doubts  = JSON.parse(localStorage.getItem('tryout_doubts') || '{}'); } catch {}
-    currentIndex = parseInt(localStorage.getItem('tryout_index') || '0', 10);
-    if (isNaN(currentIndex) || currentIndex < 0 || currentIndex >= questionCards.length) currentIndex = 0;
-    remainingTime = parseInt(localStorage.getItem('tryout_remaining_time') || totalDuration, 10);
-    if (isNaN(remainingTime) || remainingTime < 0) remainingTime = totalDuration;
-    elapsed = parseInt(localStorage.getItem('tryout_elapsed_time') || 0, 10);
-    if (isNaN(elapsed) || elapsed < 0) elapsed = 0;
+    // ======= LOAD LOCALSTORAGE =======
+    const savedAnswers = JSON.parse(localStorage.getItem('tryout_answers'));
+    const savedDoubts = JSON.parse(localStorage.getItem('tryout_doubts'));
+    const savedIndex = localStorage.getItem('tryout_index');
+    const savedRemaining = localStorage.getItem('tryout_remaining_time');
+    const savedElapsed = localStorage.getItem('tryout_elapsed_time');
+
+    if (savedAnswers) answers = savedAnswers;
+    if (savedDoubts) doubts = savedDoubts;
+    if (savedIndex !== null) currentIndex = parseInt(savedIndex, 10);
+    if (savedRemaining !== null) remainingTime = parseInt(savedRemaining, 10);
+    if (savedElapsed !== null) elapsed = parseInt(savedElapsed, 10);
+
+    // ======= LOAD BACKEND (OPSIONAL, TAPI TIDAK MENIMPA LOCALSTORAGE) =======
+    const TRYOUT_ID = {{ $tryout->id }};
+
+    fetch(`/tryout/${TRYOUT_ID}/get-progress`)
+        .then(res => res.json())
+        .then(data => {
+
+            if (!savedAnswers && data.answers) answers = data.answers;
+
+            if (savedElapsed === null && data.elapsed_seconds != null) {
+                elapsed = data.elapsed_seconds;
+                remainingTime = totalDuration - elapsed;
+                if (remainingTime < 0) remainingTime = 0;
+            }
+
+            showQuestion(currentIndex);
+            highlightButtons();
+            saveProgress();
+        })
+        .catch(() => {
+            showQuestion(currentIndex);
+            highlightButtons();
+        });
 
     // ======= TIMER =======
     function updateTimerDisplay() {
         const h = Math.floor(remainingTime / 3600);
         const m = Math.floor((remainingTime % 3600) / 60);
         const s = remainingTime % 60;
-        timerDisplay.textContent = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+        timerDisplay.textContent =
+            `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
     }
     updateTimerDisplay();
 
@@ -188,18 +225,16 @@ document.addEventListener('DOMContentLoaded', function () {
         remainingTime--;
         elapsed++;
 
-        // Jika waktu habis, kunci ke 00:00:00 lalu submit
         if (remainingTime <= 0) {
-            remainingTime = 0;                 // kunci nilai biar tidak negatif
-            updateTimerDisplay();              // tampilkan 00:00:00
-            saveProgress();                    
-            clearInterval(timerInterval);      // hentikan timer
-            form.submit();                     // langsung submit
-            return;                            // pastikan tidak lanjut ke bawah
+            remainingTime = 0;
+            updateTimerDisplay();
+            saveProgress();
+            clearInterval(timerInterval);
+            form.submit();
+            return;
         }
 
         updateTimerDisplay();
-
         if (remainingTime % 5 === 0) saveProgress();
     }, 1000);
 
@@ -217,9 +252,9 @@ document.addEventListener('DOMContentLoaded', function () {
             const qid = btn.dataset.question;
             let colorClass = 'btn-secondary';
             if (answers[qid]) colorClass = 'btn-success';
-            if (doubts[qid])  colorClass = 'btn-warning';
+            if (doubts[qid]) colorClass = 'btn-warning';
             if (idx === currentIndex) colorClass = 'btn-primary';
-            btn.classList.remove('btn-secondary','btn-success','btn-primary','btn-warning');
+            btn.classList.remove('btn-secondary', 'btn-success', 'btn-primary', 'btn-warning');
             btn.classList.add(colorClass);
         });
     }
@@ -235,19 +270,23 @@ document.addEventListener('DOMContentLoaded', function () {
     function showQuestion(index) {
         if (index < 0) index = 0;
         if (index >= questionCards.length) index = questionCards.length - 1;
+
         currentIndex = index;
 
-        questionCards.forEach((card, i) => card.style.display = (i === index) ? 'block' : 'none');
+        questionCards.forEach((card, i) =>
+            card.style.display = (i === index) ? 'block' : 'none'
+        );
 
         const activeCard = questionCards[currentIndex];
         const qid = activeCard.dataset.question;
 
-        // Atur jawaban radio
-        const selectedRadio = activeCard.querySelector(`input.answer-radio[data-question="${qid}"][value="${answers[qid]}"]`);
+        const selectedRadio = activeCard.querySelector(
+            `input.answer-radio[data-question="${qid}"][value="${answers[qid]}"]`
+        );
         if (selectedRadio) selectedRadio.checked = true;
-        else activeCard.querySelectorAll(`input.answer-radio[data-question="${qid}"]`).forEach(r => r.checked = false);
+        else activeCard.querySelectorAll(`input.answer-radio[data-question="${qid}"]`)
+            .forEach(r => r.checked = false);
 
-        // Atur checkbox ragu
         const doubtCheckbox = activeCard.querySelector(`.mark-doubt-checkbox[data-question="${qid}"]`);
         if (doubtCheckbox) doubtCheckbox.checked = !!doubts[qid];
 
@@ -255,7 +294,7 @@ document.addEventListener('DOMContentLoaded', function () {
         highlightButtons();
         saveProgress();
 
-        window.scrollTo({ top: questionCards[currentIndex].offsetTop - 20, behavior: 'smooth' });
+        window.scrollTo({ top: activeCard.offsetTop - 20, behavior: 'smooth' });
     }
     showQuestion(currentIndex);
 
@@ -278,10 +317,18 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // ======= NAVIGASI TOMBOL SOAL =======
-    questionButtons.forEach(btn => btn.addEventListener('click', () => showQuestion(parseInt(btn.dataset.index, 10))));
-    document.querySelectorAll('.next-btn').forEach(btn => btn.addEventListener('click', () => showQuestion(currentIndex + 1)));
-    document.querySelectorAll('.prev-btn').forEach(btn => btn.addEventListener('click', () => showQuestion(currentIndex - 1)));
+    // ======= NAVIGASI =======
+    questionButtons.forEach(btn =>
+        btn.addEventListener('click', () =>
+            showQuestion(parseInt(btn.dataset.index, 10))
+        )
+    );
+
+    document.querySelectorAll('.next-btn')
+        .forEach(btn => btn.addEventListener('click', () => showQuestion(currentIndex + 1)));
+
+    document.querySelectorAll('.prev-btn')
+        .forEach(btn => btn.addEventListener('click', () => showQuestion(currentIndex - 1)));
 
     // ======= KONFIRMASI =======
     if (confirmButton) {
@@ -291,6 +338,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 });
+
 </script>
 
 
