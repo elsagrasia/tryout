@@ -5,19 +5,16 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Backend\CategoryController;
-use App\Http\Controllers\Backend\CourseController;
 use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\Frontend\IndexController;
 use App\Http\Controllers\Frontend\UserTryoutController;
 use App\Http\Controllers\Frontend\TryoutHistoryController;
-use App\Http\Controllers\Frontend\CartController;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Controllers\Backend\ReportController;
 use App\Http\Controllers\Backend\ReviewController;
 use App\Http\Controllers\Backend\ActiveUserController;
 use App\Http\Controllers\Backend\BlogController;
 use App\Http\Controllers\Backend\RoleController;
-use App\Http\Controllers\Backend\ChatController;
 use App\Http\Controllers\Backend\TryoutPackageController;
 use App\Http\Controllers\Backend\QuestionController;
 use App\Http\Controllers\Backend\GamificationController;
@@ -47,9 +44,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/user/logout', [UserController::class, 'userLogout'])->name('user.logout');
     Route::get('/user/change/password', [UserController::class, 'userChangePassword'])->name('user.change.password');
     Route::post('/user/password/update', [UserController::class, 'userPasswordUpdate'])->name('user.password.update');
-    
-    Route::get('/live/chat', [UserController::class, 'liveChat'])->name('live.chat');
-
     Route::get('/tryout/{tryout_id}/join', [UserTryoutController::class, 'AddToTryout']);
 
 
@@ -60,12 +54,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/delete/tryout/{id}', 'DeleteTryout')->name('delete.tryout');
         Route::get('/mytryout/result/{id}', 'ResultTryout')->name('user.tryout.result');
         Route::get('/tryout/explanation/{tryout_id}', 'explanation')->name('tryout.explanation');
-        Route::post('tryout/{id}/complete', 'completeTryout')->name('tryout.complete');
+        // Route::post('tryout/{id}/complete', 'completeTryout')->name('tryout.complete');
         Route::get('/tryout/confirm/{id}', 'confirm')->name('tryout.confirm');
-
         Route::get('/tryout/progress/{id}', 'getProgress')->name('tryout.getProgress');
         Route::post('/tryout/save-progress', 'saveProgress')->name('tryout.saveProgress');
-        Route::get('/tryout/restart/{id}', 'restartTryout')->name('tryout.restart');   
+    
 
     });
 
@@ -86,11 +79,7 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
     Route::post('/admin/password/update', [AdminController::class, 'adminPasswordUpdate'])->name('admin.password.update');
 
     // Instructor All Routes
-    Route::controller(AdminController::class)->group(function () {
-        Route::get('/all/instructor', 'allInstructor')->name('all.instructor');
-        Route::post('/update/user/status', 'updateUserStatus')->name('update.user.status');
-       
-    });
+  
     
 
 
@@ -110,9 +99,6 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
         Route::post('/badges/update', 'updateBadge')->name('badges.update');
         Route::get('/badges/delete/{id}', 'deleteBadge')->name('badges.delete');
 
-        
-        // Route::get('/user/points', 'userPoints')->name('user.points');
-        // Route::get('/user/badges', 'userBadges')->name('user.badges');
     });
         
 
@@ -157,21 +143,7 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
         Route::post('/import','import')->name('import');
     });
 
-        // Role All Route 
-    Route::controller(RoleController::class)->group(function(){
-        Route::get('/all/roles','allRoles')->name('all.roles');
-        Route::get('/add/roles','addRoles')->name('add.roles'); 
-        Route::post('/store/roles','storeRoles')->name('store.roles');
-        Route::get('/edit/roles/{id}','editRoles')->name('edit.roles');
-        Route::post('/update/roles','updateRoles')->name('update.roles');
-        Route::get('/delete/roles/{id}','deleteRoles')->name('delete.roles');
-        Route::get('/add/roles/permission','addRolesPermission')->name('add.roles.permission');        
-        Route::post('/role/permission/store','rolePermissionStore')->name('role.permission.store');        
-        Route::get('/all/roles/permission','allRolesPermission')->name('all.roles.permission');
-        Route::get('/admin/edit/roles/{id}','adminEditRoles')->name('admin.edit.roles');
-        Route::post('/admin/roles/update/{id}','adminUpdateRoles')->name('admin.roles.update');
-        Route::get('/admin/delete/roles/{id}','adminDeleteRoles')->name('admin.delete.roles');
-    });
+  
     // Admin User All Route 
     Route::controller(AdminController::class)->group(function(){
         Route::get('/all/admin','allAdmin')->name('all.admin'); 

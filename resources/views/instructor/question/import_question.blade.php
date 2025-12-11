@@ -7,20 +7,12 @@
     <!--breadcrumb-->
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3"> 
         <a href="{{ url()->previous() }}" class="btn btn-outline-primary px-3">Kembali</a>
-        <div class="ps-3">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mb-0 p-0">
-                    <a href="" class="btn btn-warning ">Download Xlsx </a>  
-                </ol>
-            </nav>
-        </div>
-         
     </div>
     <!--end breadcrumb-->
  
     <div class="card">
         <div class="card-body p-4">
-            <h5 class="mb-4">Import Permission</h5>
+            <h5 class="mb-4">Import Pertanyaan</h5>
             <form id="myForm" action="{{ route('import') }}" method="post" class="row g-3" enctype="multipart/form-data">          
                 @csrf
 
