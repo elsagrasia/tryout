@@ -4,15 +4,7 @@
 <div class="page-content">
     <!--breadcrumb-->
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3"> 
-        <div class="ps-3">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mb-0 p-0">
-                    <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
-                    </li>
-                    <li class="breadcrumb-item active" aria-current="page">Poin</li>
-                </ol>
-            </nav>
-        </div>
+    
         <div class="ms-auto">
             <div class="btn-group">
            <a href="{{ route('points.rules.create') }}" class="btn btn-primary px-5">Tambah Aturan Poin</a>  
@@ -51,8 +43,8 @@
 									</label>
                             </td>
                             <td>
-       <a href="{{ route('points.rules.edit',$item->id) }}" class="btn btn-info px-5">Edit </a>   
-       <a href="{{ route('points.rules.delete',$item->id) }}" class="btn btn-danger px-5 delete-btn">Delete </a>                    
+                                <a href="{{ route('points.rules.edit',$item->id) }}" class="btn btn-info" title="Edit"><i class="lni lni-eraser"></i></a>   
+                                <a href="{{ route('points.rules.delete',$item->id) }}" class="btn btn-danger delete-btn" title="Delete"><i class="lni lni-trash"></i></a>                    
                             </td>
                         </tr>
                         @endforeach
