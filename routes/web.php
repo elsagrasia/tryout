@@ -189,7 +189,6 @@ Route::middleware(['auth', 'roles:instructor'])->group(function () {
 Route::get('/tryout/{tryout_id}/join',[UserTryoutController::class, 'AddToTryout'])->name('user.join.tryout');
 ///route accessable for allnote
 Route::get('/instructor/login', [InstructorController::class, 'instructorLogin'])->name('instructor.login')->middleware(RedirectIfAuthenticated::class);
-
 Route::get('/instructor/details/{id}', [IndexController::class, 'instructorDetails'])->name('instructor.details');
 
 

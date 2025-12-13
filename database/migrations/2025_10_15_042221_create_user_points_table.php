@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('activity'); // contoh: "Selesai Tryout", "Baca Blog"
             $table->integer('points');
-            $table->foreignId('point_rule_id')->nullable()->constrained()->onDelete('set null');
+            $table->foreignId('point_rule_id')->nullable()->constrained('points')->onDelete('set null');
             $table->timestamps();
         });
     }

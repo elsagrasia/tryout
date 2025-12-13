@@ -9,9 +9,9 @@ use App\Models\User;
 use App\Models\Tryout;
 use App\Models\UserBadge;
 use App\Models\Badge;
-use App\Models\userTryout;
+use App\Models\UserTryout;
 use App\Models\category;
-use App\Models\resultTryout;
+use App\Models\ResultTryout;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Auth; 
 use Carbon\Carbon;
@@ -67,9 +67,9 @@ class IndexController extends Controller
     {
         $userId = Auth::id();
 
-        $badges = \App\Models\Badge::orderBy('threshold', 'asc')->get();
+        $badges = Badge::orderBy('threshold', 'asc')->get();
 
-        $ownedBadges = \App\Models\UserBadge::where('user_id', $userId)
+        $ownedBadges = UserBadge::where('user_id', $userId)
             ->pluck('badge_id')
             ->toArray();
 
